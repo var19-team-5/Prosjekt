@@ -18,6 +18,20 @@ class StatusService {
       success(results);
     });
   }
+  hentSykler(success) {
+    connection.query('SELECT * from sykkel', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  hentUtstyr(success) {
+    connection.query('SELECT * from utstyr', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 export let bestillingService = new BestillingService();

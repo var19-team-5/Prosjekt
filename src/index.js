@@ -134,35 +134,61 @@ class BestillingNew extends Component {
 
 class Status extends Component {
   varer = [];
+  sykler = [];
+  utstyr = [];
 
   render() {
-    return (
-      <Table responsive>
-        <thead>
-          <tr>
-            <th>vare ID</th>
-            <th>type</th>
-            <th>pris</th>
-            <th>status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.varer.map(varer => (
-            <tr key={varer.v_id}>
-              {varer.v_id}
-              <td key={varer.id}>{varer.type}</td>
-              <td key={varer.id}>{varer.pris}</td>
-              <td key={varer.id}>{varer.status}</td>
+    return [
+      <React.Fragment>
+        <Dropdown>
+          <Dropdown.Toggle variant="success">Velg sykkel</Dropdown.Toggle>
+          <Dropdown.Menu>
+            {this.sykler.map(sykler => (
+              <Dropdown.Item key={sykler.type}>{sykler.type}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown>
+          <Dropdown.Toggle variant="success">Velg utstyr</Dropdown.Toggle>
+          <Dropdown.Menu>
+            {this.utstyr.map(utstyr => (
+              <Dropdown.Item key={utstyr.type}>{utstyr.type}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Pris</th>
+              <th>Status</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    );
+          </thead>
+          <tbody>
+            {this.varer.map(varer => (
+              <tr key={varer.v_id}>
+                {varer.v_id}
+                <td key={varer.id}>{varer.type}</td>
+                <td key={varer.id}>{varer.pris}</td>
+                <td key={varer.id}>{varer.status}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    ];
   }
 
   mounted() {
     statusService.hentVarer(varer => {
       this.varer = varer;
+    });
+    statusService.hentSykler(sykler => {
+      this.sykler = sykler;
+    });
+    statusService.hentUtstyr(utstyr => {
+      this.utstyr = utstyr;
     });
   }
 }
