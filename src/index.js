@@ -67,12 +67,11 @@ class BestillingNew extends Component {
   til = '';
   fra = '';
 
-  hentested = '';
-  leveringssted = '';
+  steder = [];
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <Card>
           <ListGroup>
             <Form.Row>
@@ -110,25 +109,30 @@ class BestillingNew extends Component {
           </ListGroup>
         </Card>
         <Card>
-          <ListGroup>
-            <Form.Row>
-              <ListGroup.Item className="list-group-item">
-                <Form.Label> Hentested: </Form.Label>
-                <Form.Control type="text" value={this.hentested} onChange={e => (this.hentested = e.target.value)} />
-              </ListGroup.Item>
-              <ListGroup.Item className="list-group-item">
-                <Form.Label> Leveringssted: </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={this.leveringssted}
-                  onChange={e => (this.leveringssted = e.target.value)}
-                />
-              </ListGroup.Item>
-            </Form.Row>
-          </ListGroup>
+          <Dropdown>
+            <Dropdown.Toggle variant="success">Hentested</Dropdown.Toggle>
+            <Dropdown.Menu>
+              {this.steder.map(steder => (
+                <Dropdown.Item key={steder.l_id}>{steder.lokasjon}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown>
+            <Dropdown.Toggle variant="success">Leveringssted</Dropdown.Toggle>
+            <Dropdown.Menu>
+              {this.steder.map(steder => (
+                <Dropdown.Item key={steder.l_id}>{steder.lokasjon}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         </Card>
-      </div>
+      </React.Fragment>
     );
+  }
+  mounted() {
+    bestillingService.hentSteder(steder => {
+      this.steder = steder;
+    });
   }
 }
 
@@ -144,7 +148,9 @@ class Status extends Component {
           <Dropdown.Toggle variant="success">Velg sykkel</Dropdown.Toggle>
           <Dropdown.Menu>
             {this.sykler.map(sykler => (
-              <Dropdown.Item key={sykler.type}>{sykler.type}</Dropdown.Item>
+              <Dropdown.Item as="button" to={'/status/' + sykler.type} key={sykler.type}>
+                {sykler.type}
+              </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
@@ -152,7 +158,9 @@ class Status extends Component {
           <Dropdown.Toggle variant="success">Velg utstyr</Dropdown.Toggle>
           <Dropdown.Menu>
             {this.utstyr.map(utstyr => (
-              <Dropdown.Item key={utstyr.type}>{utstyr.type}</Dropdown.Item>
+              <Dropdown.Item as="button" key={utstyr.type}>
+                {utstyr.type}
+              </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
@@ -193,6 +201,12 @@ class Status extends Component {
   }
 }
 
+class StatusType extends Component {
+  render() {
+    return <div />;
+  }
+}
+
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -200,6 +214,7 @@ ReactDOM.render(
       <Route exact path="/" component={Home} />
       <Route exact path="/bestilling" component={BestillingNew} />
       <Route exact path="/status" component={Status} />
+      <Route exact path="/status/:type" component={StatusType} />
     </div>
   </HashRouter>,
   document.getElementById('root')

@@ -1,6 +1,13 @@
 import { connection } from './mysql_connection';
 
 class BestillingService {
+  hentSteder(success) {
+    connection.query('select * from lokasjon', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
   hentKunder(success) {
     connection.query('select * from kunde', (error, results) => {
       if (error) return console.error(error);
@@ -19,14 +26,14 @@ class StatusService {
     });
   }
   hentSykler(success) {
-    connection.query('SELECT * from sykkel', (error, results) => {
+    connection.query('SELECT * FROM sykkel', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   hentUtstyr(success) {
-    connection.query('SELECT * from utstyr', (error, results) => {
+    connection.query('SELECT * FROM utstyr', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
