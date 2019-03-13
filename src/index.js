@@ -36,7 +36,7 @@ class Menu extends Component {
     return (
       <Nav defaultActiveKey="/" as="ul">
         <Nav.Item as="li">
-          <Nav.Link href="#/">SUSU v2.3</Nav.Link>
+          <Nav.Link href="#/">SUSU v3.3</Nav.Link>
         </Nav.Item>
         <Nav.Item as="li">
           <Nav.Link href="#/bestilling/ny">Bestilling</Nav.Link>
@@ -53,7 +53,7 @@ class Home extends Component {
   render() {
     return (
       <Card>
-        Til SUSU v2.0!
+        Til SUSU v3.2!
         <br />
         Dette er verdens beste informasjonssystem for utleie av sykler og utstyr.
       </Card>
@@ -156,46 +156,51 @@ class BestillingNew extends Component {
             <Form.Row>
               <ListGroup.Item className="list-group-item">
                 <Form.Label> Navn: </Form.Label>
-                <Form.Control type="text" onChange={e => (this.navn = e.target.value)} />
+                <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
                 <Form.Label> Email: </Form.Label>
-                <Form.Control type="text" onChange={e => (this.email = e.target.value)} />
+                <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
                 <Form.Label> Mobilnummer: </Form.Label>
-                <Form.Control type="number" onChange={e => (this.mobilnummer = e.target.value)} />
+                <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
               </ListGroup.Item>
             </Form.Row>
           </ListGroup>
         </Card>
-        <Button onClick={this.leggTil}>Ny bestilling</Button>
+        <Button onClick={this.nyKunde}>Ny kunde</Button>
         <Card>
           <ListGroup>
             <Form.Row>
               <ListGroup.Item className="list-group-item">
                 <Form.Label> Fra: </Form.Label>
-                <Form.Control type="datetime-local" value={this.fra} onChange={e => (this.fra = e.target.value)} />
+                <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
                 <Form.Label> Til: </Form.Label>
-                <Form.Control type="datetime-local" value={this.til} onChange={e => (this.il = e.target.value)} />
+                <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
               </ListGroup.Item>
             </Form.Row>
           </ListGroup>
         </Card>
         <Card>
-          <Dropdown>
-            <Dropdown.Toggle variant="success">Hentested</Dropdown.Toggle>
-            <Dropdown.Menu>
-              {this.steder.map(steder => (
-                <Dropdown.Item key={steder.l_id}>{steder.lokasjon}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown>
-            <Dropdown.Toggle variant="success">Leveringssted</Dropdown.Toggle>
-            <Dropdown.Menu>
-              {this.steder.map(steder => (
-                <Dropdown.Item key={steder.l_id}>{steder.lokasjon}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+          <ListGroup>
+            <Form.Row>
+              <ListGroup.Item className="list-group-item">
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                  <Form.Label>Hentested:</Form.Label>
+                  <Form.Control as="select">
+                    {this.steder.map(steder => (
+                      <option onChange={e => (this.levering = e.target.value)}>{steder.lokasjon}</option>
+                    ))}
+                  </Form.Control>
+                  <Form.Label>Leveringsted:</Form.Label>
+                  <Form.Control as="select">
+                    {this.steder.map(steder => (
+                      <option onChange={e => (this.henting = e.target.value)}>{steder.lokasjon}</option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+              </ListGroup.Item>
+            </Form.Row>
+          </ListGroup>
         </Card>
+        <Button onClick={this.nyBestilling}>Ny bestilling</Button>
       </React.Fragment>
     );
   }
@@ -204,8 +209,11 @@ class BestillingNew extends Component {
       this.steder = steder;
     });
   }
-  leggTil() {
-    bestillingService.leggTilBestilling(this.navn, this.email, this.mobilnummer);
+  nyKunde() {
+    bestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
+  }
+  nyBestilling() {
+    bestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
   }
 }
 

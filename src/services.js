@@ -22,10 +22,21 @@ class BestillingService {
       success(results);
     });
   }
-  leggTilBestilling(navn, email, mobilnummer, success) {
+  leggTilKunde(navn, email, mobilnummer, success) {
     connection.query(
       'insert into kunde (navn, email, mobilnummer) values (?, ?, ?)',
       [navn, email, mobilnummer],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  leggTilBestilling(fra, til, henting, levering, success) {
+    connection.query(
+      'insert into bestilling (fra, til, henting, levering) values (?, ?, ?, ?)',
+      [fra, til, henting, levering],
       (error, results) => {
         if (error) return console.error(error);
 
