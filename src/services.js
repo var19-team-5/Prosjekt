@@ -56,6 +56,38 @@ class StatusService {
       success(results);
     });
   }
+  hentStatuser(success) {
+    connection.query('SELECT DISTINCT status FROM vare ', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  hentSyklerType(type, success) {
+    connection.query('SELECT * FROM sykkel where type=?', [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  hentUtstyrType(type, success) {
+    connection.query('SELECT * FROM utstyr where type=? ', [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  hentVarerStatus(status, success) {
+    connection.query(
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type where status=? ',
+      [status],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
 }
 
 export let bestillingService = new BestillingService();

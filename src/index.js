@@ -139,6 +139,11 @@ class BestillingNew extends Component {
 }
 
 class StatusListe extends Component {
+  typerSykler = [];
+  typerUtstyr = [];
+
+  statuser = [];
+
   varer = [];
   sykler = [];
   utstyr = [];
@@ -156,32 +161,56 @@ class StatusListe extends Component {
           <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
 
           <Dropdown.Menu>
-            {this.sykler.map(sykkel => (
-              <Dropdown.Item key={sykkel.type} href={'#/status/' + sykkel.type}>
-                {sykkel.type}
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
+                {typerSykler.type}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/utstyr" variant="success">
+            Utstyr
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <DropdownButton id="dropdown-basic-button" title="Status">
+          {this.statuser.map(statuser => (
+            <Dropdown.Item key={statuser.status} href={'#/status' + statuser.status}>
+              {statuser.status}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
 
         <Table striped bordered hover>
           <thead>
             <tr>
               <th>Vare ID</th>
               <th>Type</th>
-              <th>Pris</th>
               <th>Befinner seg</th>
               <th>Status</th>
+              <th>Pris</th>
             </tr>
           </thead>
           <tbody>
             {this.varer.map(vare => (
               <tr key={vare.v_id}>
                 {vare.v_id}
-                <td key={vare.id}>{vare.type}</td>
-                <td key={vare.id}>{vare.pris}</td>
-                <td key={vare.id}>{vare.lokasjon}</td>
-                <td key={vare.id}>{vare.status}</td>
+                <td key={vare.v_id}>{vare.type}</td>
+                <td key={vare.v_id}>{vare.lokasjon}</td>
+                <td key={vare.v_id}>{vare.status}</td>
+                <td key={vare.v_id}>{vare.pris}</td>
               </tr>
             ))}
           </tbody>
@@ -194,23 +223,27 @@ class StatusListe extends Component {
     statusService.hentVarer(varer => {
       this.varer = varer;
     });
-    statusService.hentSyklerTyper(sykler => {
-      this.sykler = sykler;
+    statusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
     });
-    statusService.hentUtstyrTyper(utstyr => {
-      this.utstyr = utstyr;
+    statusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+    statusService.hentStatuser(statuser => {
+      this.statuser = statuser;
     });
   }
 }
 
-class StatusType extends Component {
-  render() {
-    return <div />;
-  }
-}
+class StatusStatus extends Component {
+  typerSykler = [];
+  typerUtstyr = [];
 
-class StatusSykler extends Component {
+  statuser = [];
+
+  varer = [];
   sykler = [];
+  utstyr = [];
 
   render() {
     return [
@@ -225,18 +258,321 @@ class StatusSykler extends Component {
           <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
 
           <Dropdown.Menu>
-            {this.sykler.map(sykkel => (
-              <Dropdown.Item key={sykkel.type} href={'#/status/' + sykkel.type}>
-                {sykkel.type}
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
+                {typerSykler.type}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
 
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/utstyr" variant="success">
+            Utstyr
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <DropdownButton id="dropdown-basic-button" title="Status">
+          {this.statuser.map(statuser => (
+            <Dropdown.Item key={statuser.status} href={'#/status' + statuser.status}>
+              {statuser.status}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+
         <Table striped bordered hover>
           <thead>
             <tr>
               <th>Vare ID</th>
+              <th>Type</th>
+              <th>Befinner seg</th>
+              <th>Status</th>
+              <th>Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.varer.map(vare => (
+              <tr key={vare.v_id}>
+                {vare.v_id}
+                <td>{vare.type}</td>
+                <td>{vare.lokasjon}</td>
+                <td>{vare.status}</td>
+                <td>{vare.pris}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    ];
+  }
+
+  mounted() {
+    statusService.hentVarerStatus(this.props.match.params.status, varer => {
+      this.varer = varer;
+    });
+    statusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+    statusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+    statusService.hentStatuser(statuser => {
+      this.statuser = statuser;
+    });
+  }
+}
+
+class StatusSyklerType extends Component {
+  typerSykler = [];
+  typerUtstyr = [];
+
+  statuser = [];
+
+  sykler = [];
+  utstyr = [];
+
+  render() {
+    return [
+      <React.Fragment>
+        <Button href="#/status">Alle varer</Button>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/sykler" variant="success">
+            TYPE (?)
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
+                {typerSykler.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/utstyr" variant="success">
+            Utstyr
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <DropdownButton id="dropdown-basic-button" title="Status">
+          {this.statuser.map(statuser => (
+            <Dropdown.Item key={statuser.status} href={'#/status' + statuser.status}>
+              {statuser.status}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.sykler.map(sykler => (
+              <tr key={sykler.v_id}>
+                {sykler.v_id}
+                <td>{sykler.type}</td>
+                <td>{sykler.pris}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    ];
+  }
+  mounted() {
+    statusService.hentSyklerType(this.props.match.params.type, sykler => {
+      this.sykler = sykler;
+    });
+    statusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+    statusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+    statusService.hentStatuser(statuser => {
+      this.statuser = statuser;
+    });
+  }
+}
+
+class StatusUtstyrType extends Component {
+  typerSykler = [];
+  typerUtstyr = [];
+
+  statuser = [];
+
+  sykler = [];
+  utstyr = [];
+
+  render() {
+    return [
+      <React.Fragment>
+        <Button href="#/status">Alle varer</Button>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/sykler" variant="success">
+            Sykler
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
+                {typerSykler.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/utstyr" variant="success">
+            TYPE (?)
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <DropdownButton id="dropdown-basic-button" title="Status">
+          {this.statuser.map(statuser => (
+            <Dropdown.Item key={statuser.status} href={'#/status' + statuser.status}>
+              {statuser.status}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.utstyr.map(utstyr => (
+              <tr key={utstyr.v_id}>
+                {utstyr.v_id}
+                <td>{utstyr.type}</td>
+                <td>{utstyr.pris}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    ];
+  }
+  mounted() {
+    statusService.hentUtstyrType(this.props.match.params.type, utstyr => {
+      this.utstyr = utstyr;
+    });
+    statusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+    statusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+    statusService.hentStatuser(statuser => {
+      this.statuser = statuser;
+    });
+  }
+}
+
+class StatusSykler extends Component {
+  typerSykler = [];
+  typerUtstyr = [];
+
+  statuser = [];
+
+  sykler = [];
+  utstyr = [];
+
+  render() {
+    return [
+      <React.Fragment>
+        <Button href="#/status">Alle varer</Button>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/sykler" variant="success">
+            Sykler
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
+                {typerSykler.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/utstyr" variant="success">
+            Utstyr
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <DropdownButton id="dropdown-basic-button" title="Status">
+          {this.statuser.map(statuser => (
+            <Dropdown.Item key={statuser.status} href={'#/status' + statuser.status}>
+              {statuser.status}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
               <th>Ramme</th>
               <th>Girsystem</th>
               <th>Størrelse på hjul</th>
@@ -247,10 +583,11 @@ class StatusSykler extends Component {
             {this.sykler.map(sykkel => (
               <tr key={sykkel.v_id}>
                 {sykkel.v_id}
-                <td key={sykkel.id}>{sykkel.ramme}</td>
-                <td key={sykkel.id}>{sykkel.girsystem}</td>
-                <td key={sykkel.id}>{sykkel.størrelse_hjul}</td>
-                <td key={sykkel.id}>{sykkel.pris}</td>
+                <td>{sykkel.type}</td>
+                <td>{sykkel.ramme}</td>
+                <td>{sykkel.girsystem}</td>
+                <td>{sykkel.størrelse_hjul}</td>
+                <td>{sykkel.pris}</td>
               </tr>
             ))}
           </tbody>
@@ -261,6 +598,106 @@ class StatusSykler extends Component {
   mounted() {
     statusService.hentSykler(sykler => {
       this.sykler = sykler;
+    });
+    statusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+    statusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+    statusService.hentStatuser(statuser => {
+      this.statuser = statuser;
+    });
+  }
+}
+
+class StatusUtstyr extends Component {
+  typerSykler = [];
+  typerUtstyr = [];
+
+  statuser = [];
+
+  sykler = [];
+  utstyr = [];
+
+  render() {
+    return [
+      <React.Fragment>
+        <Button href="#/status">Alle varer</Button>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/sykler" variant="success">
+            Sykler
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
+                {typerSykler.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown as={ButtonGroup}>
+          <Button href="#/status/utstyr" variant="success">
+            Utstyr
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
+        <DropdownButton id="dropdown-basic-button" title="Status">
+          {this.statuser.map(statuser => (
+            <Dropdown.Item key={statuser.status} href={'#/status' + statuser.status}>
+              {statuser.status}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
+
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.utstyr.map(utstyr => (
+              <tr key={utstyr.v_id}>
+                {utstyr.v_id}
+                <td>{utstyr.type}</td>
+                <td>{utstyr.pris}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </React.Fragment>
+    ];
+  }
+  mounted() {
+    statusService.hentUtstyr(utstyr => {
+      this.utstyr = utstyr;
+    });
+    statusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+    statusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+    statusService.hentStatuser(statuser => {
+      this.statuser = statuser;
     });
   }
 }
@@ -273,7 +710,10 @@ ReactDOM.render(
       <Route exact path="/bestilling" component={BestillingNew} />
       <Route exact path="/status" component={StatusListe} />
       <Route exact path="/status/sykler" component={StatusSykler} />
-      <Route exact path="/status/:type" component={StatusType} />
+      <Route exact path="/status/utstyr" component={StatusUtstyr} />
+      <Route exact path="/status/sykler:type" component={StatusSyklerType} />
+      <Route exact path="/status:status" component={StatusStatus} />
+      <Route exact path="/status/utstyr:type" component={StatusUtstyrType} />
     </div>
   </HashRouter>,
   document.getElementById('root')
