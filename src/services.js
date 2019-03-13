@@ -19,21 +19,38 @@ class BestillingService {
 
 class StatusService {
   hentVarer(success) {
-    connection.query('SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type', (error, results) => {
-      if (error) return console.error(error);
+    connection.query(
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id ',
+      (error, results) => {
+        if (error) return console.error(error);
 
-      success(results);
-    });
+        success(results);
+      }
+    );
   }
   hentSykler(success) {
-    connection.query('SELECT * FROM sykkel', (error, results) => {
+    connection.query('SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   hentUtstyr(success) {
-    connection.query('SELECT * FROM utstyr', (error, results) => {
+    connection.query('SELECT * FROM utstyr INNER JOIN prisliste on utstyr.type = prisliste.type ', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  hentSyklerTyper(success) {
+    connection.query('SELECT * FROM sykkel', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  hentUtstyrTyper(success) {
+    connection.query('SELECT * FROM utstyr ', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
