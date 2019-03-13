@@ -39,7 +39,7 @@ class Menu extends Component {
           <Nav.Link href="#/">SUSU v2.3</Nav.Link>
         </Nav.Item>
         <Nav.Item as="li">
-          <Nav.Link href="#/bestilling">Bestilling</Nav.Link>
+          <Nav.Link href="#/bestilling/ny">Bestilling</Nav.Link>
         </Nav.Item>
         <Nav.Item as="li">
           <Nav.Link href="#/status/alle">Status</Nav.Link>
@@ -61,14 +61,21 @@ class Home extends Component {
   }
 }
 
+class Bestilling extends Component {
+  render() {
+    return (
+      <React.Fragment>
+        <Button href="#/bestilling/ny">Ny bestilling</Button>
+        <Button href="#/bestilling/liste">Bestillinger</Button>
+      </React.Fragment>
+    );
+  }
+}
+
 class Status extends Component {
   typerSykler = [];
   typerUtstyr = [];
-
   statuser = [];
-
-  sykler = [];
-  utstyr = [];
 
   render() {
     return [
@@ -107,7 +114,7 @@ class Status extends Component {
           </Dropdown.Menu>
         </Dropdown>
 
-        <DropdownButton id="dropdown-basic-button" title="Status">
+        <DropdownButton as={ButtonGroup} title="Status" variant="success">
           {this.statuser.map(statuser => (
             <Dropdown.Item key={statuser.status} href={'#/status/statuser' + statuser.status}>
               {statuser.status}
@@ -149,31 +156,22 @@ class BestillingNew extends Component {
             <Form.Row>
               <ListGroup.Item className="list-group-item">
                 <Form.Label> Navn: </Form.Label>
-                <Form.Control type="text" value={this.navn} onChange={e => (this.navn = e.target.value)} />
-              </ListGroup.Item>
-              <ListGroup.Item className="list-group-item">
+                <Form.Control type="text" onChange={e => (this.navn = e.target.value)} />
                 <Form.Label> Email: </Form.Label>
-                <Form.Control type="text" value={this.email} onChange={e => (this.email = e.target.value)} />
-              </ListGroup.Item>
-              <ListGroup.Item className="list-group-item">
+                <Form.Control type="text" onChange={e => (this.email = e.target.value)} />
                 <Form.Label> Mobilnummer: </Form.Label>
-                <Form.Control
-                  type="text"
-                  value={this.mobilnummer}
-                  onChange={e => (this.mobilnummer = e.target.value)}
-                />
+                <Form.Control type="number" onChange={e => (this.mobilnummer = e.target.value)} />
               </ListGroup.Item>
             </Form.Row>
           </ListGroup>
         </Card>
+        <Button onClick={this.leggTil}>Ny bestilling</Button>
         <Card>
           <ListGroup>
             <Form.Row>
               <ListGroup.Item className="list-group-item">
                 <Form.Label> Fra: </Form.Label>
                 <Form.Control type="datetime-local" value={this.fra} onChange={e => (this.fra = e.target.value)} />
-              </ListGroup.Item>
-              <ListGroup.Item className="list-group-item">
                 <Form.Label> Til: </Form.Label>
                 <Form.Control type="datetime-local" value={this.til} onChange={e => (this.il = e.target.value)} />
               </ListGroup.Item>
@@ -206,6 +204,39 @@ class BestillingNew extends Component {
       this.steder = steder;
     });
   }
+  leggTil() {
+    bestillingService.leggTilBestilling(this.navn, this.email, this.mobilnummer);
+  }
+}
+
+class BestillingListe extends Component {
+  bestillinger = [];
+
+  render() {
+    return (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Bestillings ID</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.bestillinger.map(bestilling => (
+            <tr key={bestilling.b_id}>
+              {bestilling.b_id}
+              <td>{bestilling.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  }
+  mounted() {
+    bestillingService.hentBestillinger(bestillinger => {
+      this.bestillinger = bestillinger;
+    });
+  }
 }
 
 class StatusListe extends Component {
@@ -227,10 +258,10 @@ class StatusListe extends Component {
           {this.varer.map(vare => (
             <tr key={vare.v_id}>
               {vare.v_id}
-              <td key={vare.v_id}>{vare.type}</td>
-              <td key={vare.v_id}>{vare.lokasjon}</td>
-              <td key={vare.v_id}>{vare.status}</td>
-              <td key={vare.v_id}>{vare.pris}</td>
+              <td>{vare.type}</td>
+              <td>{vare.lokasjon}</td>
+              <td>{vare.status}</td>
+              <td>{vare.pris}</td>
             </tr>
           ))}
         </tbody>
@@ -247,8 +278,6 @@ class StatusListe extends Component {
 
 class StatusStatus extends Component {
   varer = [];
-  sykler = [];
-  utstyr = [];
 
   render() {
     return [
@@ -286,7 +315,6 @@ class StatusStatus extends Component {
 
 class StatusSyklerType extends Component {
   sykler = [];
-  utstyr = [];
 
   render() {
     return [
@@ -318,7 +346,6 @@ class StatusSyklerType extends Component {
 }
 
 class StatusUtstyrType extends Component {
-  sykler = [];
   utstyr = [];
 
   render() {
@@ -352,7 +379,6 @@ class StatusUtstyrType extends Component {
 
 class StatusSykler extends Component {
   sykler = [];
-  utstyr = [];
 
   render() {
     return [
@@ -390,7 +416,6 @@ class StatusSykler extends Component {
 }
 
 class StatusUtstyr extends Component {
-  sykler = [];
   utstyr = [];
 
   render() {
@@ -428,7 +453,9 @@ ReactDOM.render(
       <Menu />
       <Route exact path="/" component={Home} />
 
-      <Route exact path="/bestilling" component={BestillingNew} />
+      <Route path="/bestilling" component={Bestilling} />
+      <Route exact path="/bestilling/ny" component={BestillingNew} />
+      <Route exact path="/bestilling/liste" component={BestillingListe} />
 
       <Route path="/status" component={Status} />
       <Route exact path="/status/alle" component={StatusListe} />
