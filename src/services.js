@@ -79,7 +79,7 @@ class StatusService {
   }
   hentVarerStatus(status, success) {
     connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type where status=? ',
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id where status=? ',
       [status],
       (error, results) => {
         if (error) return console.error(error);
