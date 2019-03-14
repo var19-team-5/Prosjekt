@@ -380,7 +380,7 @@ class StatusUtstyrType extends Component {
         </thead>
         <tbody>
           {this.utstyr.map(utstyr => (
-            <tr key={utstyrvb_id}>
+            <tr key={utstyr.v_id}>
               <td>{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
               <td>{utstyr.pris}</td>
