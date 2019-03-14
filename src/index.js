@@ -20,7 +20,8 @@ import {
   FormControl,
   ListGroup,
   Table,
-  ButtonGroup
+  ButtonGroup,
+  InputGroup
 } from 'react-bootstrap';
 
 import createHashHistory from 'history/createHashHistory';
@@ -76,6 +77,7 @@ class Status extends Component {
   typerSykler = [];
   typerUtstyr = [];
   statuser = [];
+  varer = [];
 
   render() {
     return [
@@ -121,6 +123,23 @@ class Status extends Component {
             </Dropdown.Item>
           ))}
         </DropdownButton>
+
+        <br />
+        <br />
+
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder="vare ID"
+            aria-describedby="basic-addon2"
+            type="text"
+            onChange={e => (this.v_id = e.target.value)}
+          />
+          <InputGroup.Append>
+            <Button variant="outline-secondary" href={'#/status/alle' + this.v_id}>
+              SØK
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
       </React.Fragment>
     ];
   }
@@ -134,6 +153,9 @@ class Status extends Component {
     });
     statusService.hentStatuser(statuser => {
       this.statuser = statuser;
+    });
+    statusService.hentVarer(varer => {
+      this.varer = varer;
     });
   }
 }
@@ -455,6 +477,43 @@ class StatusUtstyr extends Component {
   }
 }
 
+class StatusSøkVare extends Component {
+  vare = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Vare ID</th>
+            <th>Type</th>
+            <th>Befinner seg</th>
+            <th>Status</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.vare.map(vare => (
+            <tr key={vare.v_id}>
+              {vare.v_id}
+              <td>{vare.type}</td>
+              <td>{vare.lokasjon}</td>
+              <td>{vare.status}</td>
+              <td>{vare.pris}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    ];
+  }
+
+  mounted() {
+    statusService.hentVarerSøk(this.props.match.params.v_id, vare => {
+      this.vare = vare;
+    });
+  }
+}
+
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -467,6 +526,7 @@ ReactDOM.render(
 
       <Route path="/status" component={Status} />
       <Route exact path="/status/alle" component={StatusListe} />
+      <Route exact path="/status/alle:v_id" component={StatusSøkVare} />
       <Route exact path="/status/sykler" component={StatusSykler} />
       <Route exact path="/status/utstyr" component={StatusUtstyr} />
       <Route exact path="/status/sykler:type" component={StatusSyklerType} />
