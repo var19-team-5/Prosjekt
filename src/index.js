@@ -173,56 +173,46 @@ class BestillingNew extends Component {
   render() {
     return (
       <React.Fragment>
-        <Card>
-          <ListGroup>
-            <Form.Row>
-              <ListGroup.Item className="list-group-item">
-                <Form.Label> Navn: </Form.Label>
-                <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
-                <Form.Label> Email: </Form.Label>
-                <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
-                <Form.Label> Mobilnummer: </Form.Label>
-                <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
-              </ListGroup.Item>
-            </Form.Row>
-          </ListGroup>
-        </Card>
-        <Button onClick={this.nyKunde}>Ny kunde</Button>
-        <Card>
-          <ListGroup>
-            <Form.Row>
-              <ListGroup.Item className="list-group-item">
-                <Form.Label> Fra: </Form.Label>
-                <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
-                <Form.Label> Til: </Form.Label>
-                <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
-              </ListGroup.Item>
-            </Form.Row>
-          </ListGroup>
-        </Card>
-        <Card>
-          <ListGroup>
-            <Form.Row>
-              <ListGroup.Item className="list-group-item">
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                  <Form.Label>Hentested:</Form.Label>
-                  <Form.Control as="select">
-                    {this.steder.map(steder => (
-                      <option onChange={e => (this.levering = e.target.value)}>{steder.lokasjon}</option>
-                    ))}
-                  </Form.Control>
-                  <Form.Label>Leveringsted:</Form.Label>
-                  <Form.Control as="select">
-                    {this.steder.map(steder => (
-                      <option onChange={e => (this.henting = e.target.value)}>{steder.lokasjon}</option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-              </ListGroup.Item>
-            </Form.Row>
-          </ListGroup>
-        </Card>
-        <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+        <Form.Group as={Column}>
+          <ListGroup.Item className="list-group-item">
+            <Form.Label> Navn: </Form.Label>
+            <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
+            <Form.Label> Email: </Form.Label>
+            <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
+            <Form.Label> Mobilnummer: </Form.Label>
+            <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
+            <br />
+            <Button onClick={this.nyKunde}>Ny kunde</Button>
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label> Fra: </Form.Label>
+            <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+            <Form.Label> Til: </Form.Label>
+            <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Hentested:</Form.Label>
+            <Form.Control as="select">
+              {this.steder.map(steder => (
+                <option key={steder.lokasjon} onChange={e => (this.levering = e.target.value)}>
+                  {steder.lokasjon}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Label>Leveringsted:</Form.Label>
+            <Form.Control as="select">
+              {this.steder.map(steder => (
+                <option key={steder.lokasjon} onChange={e => (this.henting = e.target.value)}>
+                  {steder.lokasjon}
+                </option>
+              ))}
+            </Form.Control>
+            <br />
+            <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+          </ListGroup.Item>
+        </Form.Group>
       </React.Fragment>
     );
   }
@@ -254,7 +244,7 @@ class BestillingListe extends Component {
         <tbody>
           {this.bestillinger.map(bestilling => (
             <tr key={bestilling.b_id}>
-              {bestilling.b_id}
+              <td>{bestilling.b_id}</td>
               <td>{bestilling.status}</td>
             </tr>
           ))}
@@ -287,7 +277,7 @@ class StatusListe extends Component {
         <tbody>
           {this.varer.map(vare => (
             <tr key={vare.v_id}>
-              {vare.v_id}
+              <td>{vare.v_id}</td>
               <td>{vare.type}</td>
               <td>{vare.lokasjon}</td>
               <td>{vare.status}</td>
@@ -324,7 +314,7 @@ class StatusStatus extends Component {
         <tbody>
           {this.varer.map(vare => (
             <tr key={vare.v_id}>
-              {vare.v_id}
+              <td>{vare.v_id}</td>
               <td>{vare.type}</td>
               <td>{vare.lokasjon}</td>
               <td>{vare.status}</td>
@@ -359,7 +349,7 @@ class StatusSyklerType extends Component {
         <tbody>
           {this.sykler.map(sykler => (
             <tr key={sykler.v_id}>
-              {sykler.v_id}
+              <td>{sykler.v_id}</td>
               <td>{sykler.type}</td>
               <td>{sykler.pris}</td>
             </tr>
@@ -390,8 +380,8 @@ class StatusUtstyrType extends Component {
         </thead>
         <tbody>
           {this.utstyr.map(utstyr => (
-            <tr key={utstyr.v_id}>
-              {utstyr.v_id}
+            <tr key={utstyrvb_id}>
+              <td>{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
               <td>{utstyr.pris}</td>
             </tr>
@@ -426,7 +416,7 @@ class StatusSykler extends Component {
         <tbody>
           {this.sykler.map(sykkel => (
             <tr key={sykkel.v_id}>
-              {sykkel.v_id}
+              <td>{sykkel.v_id}</td>
               <td>{sykkel.type}</td>
               <td>{sykkel.ramme}</td>
               <td>{sykkel.girsystem}</td>
@@ -461,7 +451,7 @@ class StatusUtstyr extends Component {
         <tbody>
           {this.utstyr.map(utstyr => (
             <tr key={utstyr.v_id}>
-              {utstyr.v_id}
+              <td>{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
               <td>{utstyr.pris}</td>
             </tr>
@@ -495,7 +485,7 @@ class StatusSøkVare extends Component {
         <tbody>
           {this.vare.map(vare => (
             <tr key={vare.v_id}>
-              {vare.v_id}
+              <td>{vare.v_id}</td>
               <td>{vare.type}</td>
               <td>{vare.lokasjon}</td>
               <td>{vare.status}</td>
