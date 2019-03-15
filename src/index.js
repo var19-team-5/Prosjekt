@@ -238,15 +238,35 @@ class BestillingListe extends Component {
         <thead>
           <tr>
             <th>Bestillings ID</th>
+            <th>Fra</th>
+            <th>Til</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           {this.bestillinger.map(bestilling => (
             <tr key={bestilling.b_id}>
-              <td>{bestilling.b_id}</td>
+                <td>{bestilling.b_id}</td>
+                <td>
+              {new Intl.DateTimeFormat('en-GB', {
+          year: 'numeric',
+          month: 'numeric',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        }).format(bestilling.fra)}
+              </td>
+              <td>
+              {new Intl.DateTimeFormat('en-GB', {
+          year: 'numeric',
+          month: 'numeric',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        }).format(bestilling.til)}
+              </td>
               <td>{bestilling.status}</td>
-            </tr>
+              </tr>
           ))}
         </tbody>
       </Table>
