@@ -1,6 +1,8 @@
 import { connection } from './mysql_connection';
 
-class BestillingService {
+class NyService {}
+
+class NyBestillingService {
   hentSteder(success) {
     connection.query('select * from lokasjon', (error, results) => {
       if (error) return console.error(error);
@@ -10,13 +12,6 @@ class BestillingService {
   }
   hentKunder(success) {
     connection.query('select * from kunde', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentBestillinger(success) {
-    connection.query('select * from bestilling', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -46,6 +41,16 @@ class BestillingService {
   }
 }
 
+class ListeBestillingService {
+  hentBestillinger(success) {
+    connection.query('select * from bestilling', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+}
+
 class StatusService {
   hentVarerSøk(v_id, success) {
     connection.query(
@@ -59,18 +64,15 @@ class StatusService {
     );
   }
   hentVarer(success) {
-    connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id ORDER BY vare.type ',
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alle_varer ', (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
   hentSykler(success) {
     connection.query(
-      'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type ORDER BY sykkel.type',
+      'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type ORDER BY sykkel.type, sykkel.ramme',
       (error, results) => {
         if (error) return console.error(error);
 
@@ -88,20 +90,7 @@ class StatusService {
       }
     );
   }
-  hentSyklerTyper(success) {
-    connection.query('SELECT DISTINCT type FROM sykkel', (error, results) => {
-      if (error) return console.error(error);
 
-      success(results);
-    });
-  }
-  hentUtstyrTyper(success) {
-    connection.query('SELECT DISTINCT type FROM utstyr ', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
   hentStatuser(success) {
     connection.query('SELECT DISTINCT status FROM vare ', (error, results) => {
       if (error) return console.error(error);
@@ -109,6 +98,21 @@ class StatusService {
       success(results);
     });
   }
+
+  hentVarerStatus(status, success) {
+    connection.query(
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id where status=? ORDER BY vare.type',
+      [status],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+}
+
+class TypeStatusService {
   hentSyklerType(type, success) {
     connection.query(
       'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type where sykkel.type=?',
@@ -131,18 +135,26 @@ class StatusService {
       }
     );
   }
-  hentVarerStatus(status, success) {
-    connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id where status=? ORDER BY vare.type',
-      [status],
-      (error, results) => {
-        if (error) return console.error(error);
+  hentSyklerTyper(success) {
+    connection.query('SELECT DISTINCT type FROM sykkel', (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
+  }
+  hentUtstyrTyper(success) {
+    connection.query('SELECT DISTINCT type FROM utstyr ', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
   }
 }
 
-export let bestillingService = new BestillingService();
+export let nyBestillingService = new NyBestillingService();
+export let listeBestillingService = new ListeBestillingService();
+
 export let statusService = new StatusService();
+export let typeStatusService = new TypeStatusService();
+
+export let nyService = new NyService();

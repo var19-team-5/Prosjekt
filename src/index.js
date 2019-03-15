@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { bestillingService, statusService } from './services';
+import { nyBestillingService, listeBestillingService, statusService, typeStatusService, nyService } from './services';
 import {
   Card,
   List,
@@ -133,15 +133,15 @@ class BestillingNew extends Bestilling {
     );
   }
   mounted() {
-    bestillingService.hentSteder(steder => {
+    nyBestillingService.hentSteder(steder => {
       this.steder = steder;
     });
   }
   nyKunde() {
-    bestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
+    nyBestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
   }
   nyBestilling() {
-    bestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
+    nyBestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
   }
 }
 
@@ -189,7 +189,7 @@ class BestillingListe extends Bestilling {
     );
   }
   mounted() {
-    bestillingService.hentBestillinger(bestillinger => {
+    listeBestillingService.hentBestillinger(bestillinger => {
       this.bestillinger = bestillinger;
     });
   }
@@ -267,10 +267,10 @@ class Status extends Component {
   }
 
   mounted() {
-    statusService.hentSyklerTyper(typerSykler => {
+    typeStatusService.hentSyklerTyper(typerSykler => {
       this.typerSykler = typerSykler;
     });
-    statusService.hentUtstyrTyper(typerUtstyr => {
+    typeStatusService.hentUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
     });
     statusService.hentStatuser(statuser => {
@@ -495,7 +495,7 @@ class StatusSyklerType extends StatusSykler {
     ];
   }
   mounted() {
-    statusService.hentSyklerType(this.props.match.params.type, sykler => {
+    typeStatusService.hentSyklerType(this.props.match.params.type, sykler => {
       this.sykler = sykler;
     });
   }
@@ -527,7 +527,7 @@ class StatusUtstyrType extends StatusUtstyr {
     ];
   }
   mounted() {
-    statusService.hentUtstyrType(this.props.match.params.type, utstyr => {
+    typeStatusService.hentUtstyrType(this.props.match.params.type, utstyr => {
       this.utstyr = utstyr;
     });
   }
