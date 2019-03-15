@@ -60,21 +60,21 @@ class StatusService {
     });
   }
   hentVarer(success) {
-    connection.query('SELECT * FROM alle_varer ORDER BY alle_varer.type', (error, results) => {
+    connection.query('SELECT * FROM alle_varer', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   hentSykler(success) {
-    connection.query('SELECT * FROM alle_sykler ORDER BY alle_sykler.type', (error, results) => {
+    connection.query('SELECT * FROM alle_sykler', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   hentUtstyr(success) {
-    connection.query('SELECT * FROM alt_utstyr ORDER BY alt_utstyr.type', (error, results) => {
+    connection.query('SELECT * FROM alt_utstyr', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -90,7 +90,7 @@ class StatusService {
   }
 
   hentVarerStatus(status, success) {
-    connection.query('SELECT * FROM alle_varer WHERE status=? ORDER BY alle_varer.type', [status], (error, results) => {
+    connection.query('SELECT * FROM alle_varer WHERE status=?', [status], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
