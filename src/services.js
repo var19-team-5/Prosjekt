@@ -53,42 +53,32 @@ class ListeBestillingService {
 
 class StatusService {
   hentVarerSøk(v_id, success) {
-    connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type where vare.v_id=?',
-      [v_id],
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alle_varer WHERE alle_varer.v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
   hentVarer(success) {
-    connection.query('SELECT * FROM alle_varer ', (error, results) => {
+    connection.query('SELECT * FROM alle_varer ORDER BY alle_varer.type', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   hentSykler(success) {
-    connection.query(
-      'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type ORDER BY sykkel.type, sykkel.ramme',
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alle_sykler ORDER BY alle_sykler.type', (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
   hentUtstyr(success) {
-    connection.query(
-      'SELECT * FROM utstyr INNER JOIN prisliste on utstyr.type = prisliste.type ORDER BY utstyr.type',
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alt_utstyr ORDER BY alt_utstyr.type', (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
 
   hentStatuser(success) {
@@ -100,40 +90,28 @@ class StatusService {
   }
 
   hentVarerStatus(status, success) {
-    connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id where status=? ORDER BY vare.type',
-      [status],
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alle_varer WHERE status=? ORDER BY alle_varer.type', [status], (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
 }
 
 class TypeStatusService {
   hentSyklerType(type, success) {
-    connection.query(
-      'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type where sykkel.type=?',
-      [type],
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alle_sykler WHERE alle_sykler.type=?', [type], (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
   hentUtstyrType(type, success) {
-    connection.query(
-      'SELECT * FROM utstyr INNER JOIN prisliste on utstyr.type = prisliste.type where utstyr.type=? ',
-      [type],
-      (error, results) => {
-        if (error) return console.error(error);
+    connection.query('SELECT * FROM alt_utstyr WHERE alt_utstyr.type=? ', [type], (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
   hentSyklerTyper(success) {
     connection.query('SELECT DISTINCT type FROM sykkel', (error, results) => {

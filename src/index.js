@@ -200,6 +200,7 @@ class Status extends Component {
   typerUtstyr = [];
   statuser = [];
   varer = [];
+  v_id = '';
 
   render() {
     return [
@@ -207,11 +208,9 @@ class Status extends Component {
         <Button href="#/status/alle">Alle varer</Button>
 
         <Dropdown as={ButtonGroup}>
-          <Button href="#/status/sykler" variant="success">
-            Sykler
-          </Button>
+          <Button href="#/status/sykler">Sykler</Button>
 
-          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+          <Dropdown.Toggle split id="dropdown-split-basic" />
 
           <Dropdown.Menu>
             {this.typerSykler.map(typeSykkel => (
@@ -223,11 +222,9 @@ class Status extends Component {
         </Dropdown>
 
         <Dropdown as={ButtonGroup}>
-          <Button href="#/status/utstyr" variant="success">
-            Utstyr
-          </Button>
+          <Button href="#/status/utstyr">Utstyr</Button>
 
-          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+          <Dropdown.Toggle split id="dropdown-split-basic" />
 
           <Dropdown.Menu>
             {this.typerUtstyr.map(typeUtstyr => (
@@ -238,7 +235,7 @@ class Status extends Component {
           </Dropdown.Menu>
         </Dropdown>
 
-        <DropdownButton as={ButtonGroup} title="Status" variant="success">
+        <DropdownButton as={ButtonGroup} title="Status">
           {this.statuser.map(status => (
             <Dropdown.Item key={status.status} href={'#/status/statuser' + status.status}>
               {status.status}
