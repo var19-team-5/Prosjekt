@@ -1,6 +1,14 @@
 import { connection } from './mysql_connection';
 
-class NyService {}
+class NyService {
+  nyLokasjon(lokasjon, success) {
+    connection.query('insert into lokasjon (lokasjon) values (?)', [lokasjon], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+}
 
 class NyBestillingService {
   hentSteder(success) {

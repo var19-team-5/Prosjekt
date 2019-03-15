@@ -8,6 +8,7 @@ import {
   List,
   Row,
   Column,
+  NavBar,
   Navbar,
   Button,
   Form,
@@ -21,7 +22,9 @@ import {
   ListGroup,
   Table,
   ButtonGroup,
-  InputGroup
+  InputGroup,
+  Alert,
+  Brand
 } from 'react-bootstrap';
 
 import createHashHistory from 'history/createHashHistory';
@@ -35,20 +38,14 @@ class FormLabel extends Component {
 class Menu extends Component {
   render() {
     return (
-      <Nav defaultActiveKey="/" as="ul">
-        <Nav.Item as="li">
-          <Nav.Link href="#/">SUSU v3.3</Nav.Link>
-        </Nav.Item>
-        <Nav.Item as="li">
-          <Nav.Link href="#/bestilling/ny">Bestilling</Nav.Link>
-        </Nav.Item>
-        <Nav.Item as="li">
-          <Nav.Link href="#/status/alle">Status</Nav.Link>
-        </Nav.Item>
-        <Nav.Item as="li">
-          <Nav.Link href="#/ny">Ny</Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <Navbar bg="light" variant="light">
+        <Navbar.Brand href="#/">SUSU</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="#bestilling/ny">Bestilling</Nav.Link>
+          <Nav.Link href="#status/alle">Status</Nav.Link>
+          <Nav.Link href="#ny">Ny</Nav.Link>
+        </Nav>
+      </Navbar>
     );
   }
 }
@@ -76,7 +73,7 @@ class Bestilling extends Component {
   }
 }
 
-class BestillingNew extends Bestilling {
+class BestillingNy extends Bestilling {
   navn = '';
   email = '';
   mobilnummer = '';
@@ -85,6 +82,8 @@ class BestillingNew extends Bestilling {
   fra = '';
 
   steder = [];
+  typerSykler = [];
+  typerUtstyr = [];
 
   render() {
     return (
@@ -128,6 +127,26 @@ class BestillingNew extends Bestilling {
             <br />
             <Button onClick={this.nyBestilling}>Ny bestilling</Button>
           </ListGroup.Item>
+
+          <Dropdown>
+            <Dropdown.Toggle>Sykkel</Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              {this.typerSykler.map(typeSykkel => (
+                <Dropdown.Item key={typeSykkel.type}>{typeSykkel.type}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+          <Dropdown>
+            <Dropdown.Toggle>Utstyr</Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              {this.typerUtstyr.map(typeUtstyr => (
+                <Dropdown.Item key={typeUtstyr.type}>{typeUtstyr.type}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         </Form.Group>
       </React.Fragment>
     );
@@ -135,6 +154,12 @@ class BestillingNew extends Bestilling {
   mounted() {
     nyBestillingService.hentSteder(steder => {
       this.steder = steder;
+    });
+    typeStatusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+    typeStatusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
     });
   }
   nyKunde() {
@@ -150,7 +175,7 @@ class BestillingListe extends Bestilling {
 
   render() {
     return (
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Bestillings ID</th>
@@ -284,7 +309,7 @@ class StatusListe extends Status {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -321,7 +346,7 @@ class StatusStatus extends Status {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -358,7 +383,7 @@ class StatusSykler extends Status {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -396,7 +421,7 @@ class StatusUtstyr extends Status {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -428,7 +453,7 @@ class StatusSøkVare extends Status {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -465,7 +490,7 @@ class StatusSyklerType extends StatusSykler {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -503,7 +528,7 @@ class StatusUtstyrType extends StatusUtstyr {
 
   render() {
     return [
-      <Table striped bordered hover>
+      <Table striped bordered hover size="sm">
         <thead>
           <tr>
             <th>Vare ID</th>
@@ -554,7 +579,20 @@ class NyUtstyr extends Ny {
 }
 class NyLokasjon extends Ny {
   render() {
-    return <div />;
+    return (
+      <Form.Group as={Column}>
+        <ListGroup.Item className="list-group-item">
+          <Form.Label> Sted: </Form.Label>
+          <Form.Control required type="text" onChange={e => (this.lokasjon = e.target.value)} />
+          <br />
+          <Button onClick={this.nyLokasjon}>Legg til</Button>
+        </ListGroup.Item>
+      </Form.Group>
+    );
+  }
+  nyLokasjon() {
+    nyService.nyLokasjon(this.lokasjon);
+    alert('Lokasjonen ' + this.lokasjon + ' er lagt til!');
   }
 }
 
@@ -565,7 +603,7 @@ ReactDOM.render(
       <Route exact path="/" component={Home} />
 
       <Route path="/bestilling" component={Bestilling} />
-      <Route exact path="/bestilling/ny" component={BestillingNew} />
+      <Route exact path="/bestilling/ny" component={BestillingNy} />
       <Route exact path="/bestilling/liste" component={BestillingListe} />
 
       <Route path="/status" component={Status} />
