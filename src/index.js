@@ -111,17 +111,17 @@ class BestillingNew extends Bestilling {
           <ListGroup.Item className="list-group-item">
             <Form.Label>Hentested:</Form.Label>
             <Form.Control as="select">
-              {this.steder.map(steder => (
-                <option key={steder.lokasjon} onChange={e => (this.levering = e.target.value)}>
-                  {steder.lokasjon}
+              {this.steder.map(sted => (
+                <option key={sted.lokasjon} onChange={e => (this.levering = e.target.value)}>
+                  {sted.lokasjon}
                 </option>
               ))}
             </Form.Control>
             <Form.Label>Leveringsted:</Form.Label>
             <Form.Control as="select">
-              {this.steder.map(steder => (
-                <option key={steder.lokasjon} onChange={e => (this.henting = e.target.value)}>
-                  {steder.lokasjon}
+              {this.steder.map(sted => (
+                <option key={sted.lokasjon} onChange={e => (this.henting = e.target.value)}>
+                  {sted.lokasjon}
                 </option>
               ))}
             </Form.Control>
@@ -214,9 +214,9 @@ class Status extends Component {
           <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
 
           <Dropdown.Menu>
-            {this.typerSykler.map(typerSykler => (
-              <Dropdown.Item key={typerSykler.type} href={'#/status/sykler' + typerSykler.type}>
-                {typerSykler.type}
+            {this.typerSykler.map(typeSykkel => (
+              <Dropdown.Item key={typeSykkel.type} href={'#/status/sykler' + typeSykkel.type}>
+                {typeSykkel.type}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
@@ -230,18 +230,18 @@ class Status extends Component {
           <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
 
           <Dropdown.Menu>
-            {this.typerUtstyr.map(typerUtstyr => (
-              <Dropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
-                {typerUtstyr.type}
+            {this.typerUtstyr.map(typeUtstyr => (
+              <Dropdown.Item key={typeUtstyr.type} href={'#/status/utstyr' + typeUtstyr.type}>
+                {typeUtstyr.type}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
 
         <DropdownButton as={ButtonGroup} title="Status" variant="success">
-          {this.statuser.map(statuser => (
-            <Dropdown.Item key={statuser.status} href={'#/status/statuser' + statuser.status}>
-              {statuser.status}
+          {this.statuser.map(status => (
+            <Dropdown.Item key={status.status} href={'#/status/statuser' + status.status}>
+              {status.status}
             </Dropdown.Item>
           ))}
         </DropdownButton>
