@@ -60,7 +60,7 @@ class StatusService {
   }
   hentVarer(success) {
     connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id ',
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id ORDER BY vare.type ',
       (error, results) => {
         if (error) return console.error(error);
 
@@ -69,28 +69,34 @@ class StatusService {
     );
   }
   hentSykler(success) {
-    connection.query('SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type', (error, results) => {
-      if (error) return console.error(error);
+    connection.query(
+      'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type ORDER BY sykkel.type',
+      (error, results) => {
+        if (error) return console.error(error);
 
-      success(results);
-    });
+        success(results);
+      }
+    );
   }
   hentUtstyr(success) {
-    connection.query('SELECT * FROM utstyr INNER JOIN prisliste on utstyr.type = prisliste.type ', (error, results) => {
-      if (error) return console.error(error);
+    connection.query(
+      'SELECT * FROM utstyr INNER JOIN prisliste on utstyr.type = prisliste.type ORDER BY utstyr.type',
+      (error, results) => {
+        if (error) return console.error(error);
 
-      success(results);
-    });
+        success(results);
+      }
+    );
   }
   hentSyklerTyper(success) {
-    connection.query('SELECT * FROM sykkel', (error, results) => {
+    connection.query('SELECT DISTINCT type FROM sykkel', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   hentUtstyrTyper(success) {
-    connection.query('SELECT * FROM utstyr ', (error, results) => {
+    connection.query('SELECT DISTINCT type FROM utstyr ', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -127,7 +133,7 @@ class StatusService {
   }
   hentVarerStatus(status, success) {
     connection.query(
-      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id where status=? ',
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id where status=? ORDER BY vare.type',
       [status],
       (error, results) => {
         if (error) return console.error(error);

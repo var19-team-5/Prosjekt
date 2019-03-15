@@ -45,6 +45,9 @@ class Menu extends Component {
         <Nav.Item as="li">
           <Nav.Link href="#/status/alle">Status</Nav.Link>
         </Nav.Item>
+        <Nav.Item as="li">
+          <Nav.Link href="#/ny">Ny</Nav.Link>
+        </Nav.Item>
       </Nav>
     );
   }
@@ -70,6 +73,125 @@ class Bestilling extends Component {
         <Button href="#/bestilling/liste">Bestillinger</Button>
       </React.Fragment>
     );
+  }
+}
+
+class BestillingNew extends Bestilling {
+  navn = '';
+  email = '';
+  mobilnummer = '';
+
+  til = '';
+  fra = '';
+
+  steder = [];
+
+  render() {
+    return (
+      <React.Fragment>
+        <Form.Group as={Column}>
+          <ListGroup.Item className="list-group-item">
+            <Form.Label> Navn: </Form.Label>
+            <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
+            <Form.Label> Email: </Form.Label>
+            <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
+            <Form.Label> Mobilnummer: </Form.Label>
+            <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
+            <br />
+            <Button onClick={this.nyKunde}>Ny kunde</Button>
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label> Fra: </Form.Label>
+            <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+            <Form.Label> Til: </Form.Label>
+            <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Hentested:</Form.Label>
+            <Form.Control as="select">
+              {this.steder.map(steder => (
+                <option key={steder.lokasjon} onChange={e => (this.levering = e.target.value)}>
+                  {steder.lokasjon}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Label>Leveringsted:</Form.Label>
+            <Form.Control as="select">
+              {this.steder.map(steder => (
+                <option key={steder.lokasjon} onChange={e => (this.henting = e.target.value)}>
+                  {steder.lokasjon}
+                </option>
+              ))}
+            </Form.Control>
+            <br />
+            <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+          </ListGroup.Item>
+        </Form.Group>
+      </React.Fragment>
+    );
+  }
+  mounted() {
+    bestillingService.hentSteder(steder => {
+      this.steder = steder;
+    });
+  }
+  nyKunde() {
+    bestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
+  }
+  nyBestilling() {
+    bestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
+  }
+}
+
+class BestillingListe extends Bestilling {
+  bestillinger = [];
+
+  render() {
+    return (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Bestillings ID</th>
+            <th>Fra</th>
+            <th>Til</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.bestillinger.map(bestilling => (
+            <tr key={bestilling.b_id}>
+              <td>{bestilling.b_id}</td>
+              <td>
+                {new Intl.DateTimeFormat('en-GB', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }).format(bestilling.fra)}
+              </td>
+              <td>
+                {new Intl.DateTimeFormat('en-GB', {
+                  year: 'numeric',
+                  month: 'numeric',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }).format(bestilling.til)}
+              </td>
+              <td>{bestilling.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    );
+  }
+  mounted() {
+    bestillingService.hentBestillinger(bestillinger => {
+      this.bestillinger = bestillinger;
+    });
   }
 }
 
@@ -160,126 +282,7 @@ class Status extends Component {
   }
 }
 
-class BestillingNew extends Component {
-  navn = '';
-  email = '';
-  mobilnummer = '';
-
-  til = '';
-  fra = '';
-
-  steder = [];
-
-  render() {
-    return (
-      <React.Fragment>
-        <Form.Group as={Column}>
-          <ListGroup.Item className="list-group-item">
-            <Form.Label> Navn: </Form.Label>
-            <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
-            <Form.Label> Email: </Form.Label>
-            <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
-            <Form.Label> Mobilnummer: </Form.Label>
-            <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
-            <br />
-            <Button onClick={this.nyKunde}>Ny kunde</Button>
-          </ListGroup.Item>
-
-          <ListGroup.Item className="list-group-item">
-            <Form.Label> Fra: </Form.Label>
-            <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
-            <Form.Label> Til: </Form.Label>
-            <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
-          </ListGroup.Item>
-
-          <ListGroup.Item className="list-group-item">
-            <Form.Label>Hentested:</Form.Label>
-            <Form.Control as="select">
-              {this.steder.map(steder => (
-                <option key={steder.lokasjon} onChange={e => (this.levering = e.target.value)}>
-                  {steder.lokasjon}
-                </option>
-              ))}
-            </Form.Control>
-            <Form.Label>Leveringsted:</Form.Label>
-            <Form.Control as="select">
-              {this.steder.map(steder => (
-                <option key={steder.lokasjon} onChange={e => (this.henting = e.target.value)}>
-                  {steder.lokasjon}
-                </option>
-              ))}
-            </Form.Control>
-            <br />
-            <Button onClick={this.nyBestilling}>Ny bestilling</Button>
-          </ListGroup.Item>
-        </Form.Group>
-      </React.Fragment>
-    );
-  }
-  mounted() {
-    bestillingService.hentSteder(steder => {
-      this.steder = steder;
-    });
-  }
-  nyKunde() {
-    bestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
-  }
-  nyBestilling() {
-    bestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
-  }
-}
-
-class BestillingListe extends Component {
-  bestillinger = [];
-
-  render() {
-    return (
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Bestillings ID</th>
-            <th>Fra</th>
-            <th>Til</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.bestillinger.map(bestilling => (
-            <tr key={bestilling.b_id}>
-                <td>{bestilling.b_id}</td>
-                <td>
-              {new Intl.DateTimeFormat('en-GB', {
-          year: 'numeric',
-          month: 'numeric',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        }).format(bestilling.fra)}
-              </td>
-              <td>
-              {new Intl.DateTimeFormat('en-GB', {
-          year: 'numeric',
-          month: 'numeric',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        }).format(bestilling.til)}
-              </td>
-              <td>{bestilling.status}</td>
-              </tr>
-          ))}
-        </tbody>
-      </Table>
-    );
-  }
-  mounted() {
-    bestillingService.hentBestillinger(bestillinger => {
-      this.bestillinger = bestillinger;
-    });
-  }
-}
-
-class StatusListe extends Component {
+class StatusListe extends Status {
   varer = [];
 
   render() {
@@ -316,7 +319,7 @@ class StatusListe extends Component {
   }
 }
 
-class StatusStatus extends Component {
+class StatusStatus extends Status {
   varer = [];
 
   render() {
@@ -353,71 +356,7 @@ class StatusStatus extends Component {
   }
 }
 
-class StatusSyklerType extends Component {
-  sykler = [];
-
-  render() {
-    return [
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Vare ID</th>
-            <th>Type</th>
-            <th>Pris</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.sykler.map(sykler => (
-            <tr key={sykler.v_id}>
-              <td>{sykler.v_id}</td>
-              <td>{sykler.type}</td>
-              <td>{sykler.pris}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    ];
-  }
-  mounted() {
-    statusService.hentSyklerType(this.props.match.params.type, sykler => {
-      this.sykler = sykler;
-    });
-  }
-}
-
-class StatusUtstyrType extends Component {
-  utstyr = [];
-
-  render() {
-    return [
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Vare ID</th>
-            <th>Type</th>
-            <th>Pris</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.utstyr.map(utstyr => (
-            <tr key={utstyr.v_id}>
-              <td>{utstyr.v_id}</td>
-              <td>{utstyr.type}</td>
-              <td>{utstyr.pris}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    ];
-  }
-  mounted() {
-    statusService.hentUtstyrType(this.props.match.params.type, utstyr => {
-      this.utstyr = utstyr;
-    });
-  }
-}
-
-class StatusSykler extends Component {
+class StatusSykler extends Status {
   sykler = [];
 
   render() {
@@ -455,7 +394,7 @@ class StatusSykler extends Component {
   }
 }
 
-class StatusUtstyr extends Component {
+class StatusUtstyr extends Status {
   utstyr = [];
 
   render() {
@@ -487,7 +426,7 @@ class StatusUtstyr extends Component {
   }
 }
 
-class StatusSøkVare extends Component {
+class StatusSøkVare extends Status {
   vare = [];
 
   render() {
@@ -524,6 +463,104 @@ class StatusSøkVare extends Component {
   }
 }
 
+class StatusSyklerType extends StatusSykler {
+  sykler = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Vare ID</th>
+            <th>Type</th>
+            <th>Ramme</th>
+            <th>Girsystem</th>
+            <th>Størrelse på hjul</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.sykler.map(sykkel => (
+            <tr key={sykkel.v_id}>
+              <td>{sykkel.v_id}</td>
+              <td>{sykkel.type}</td>
+              <td>{sykkel.ramme}</td>
+              <td>{sykkel.girsystem}</td>
+              <td>{sykkel.størrelse_hjul}</td>
+              <td>{sykkel.pris}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    ];
+  }
+  mounted() {
+    statusService.hentSyklerType(this.props.match.params.type, sykler => {
+      this.sykler = sykler;
+    });
+  }
+}
+
+class StatusUtstyrType extends StatusUtstyr {
+  utstyr = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Vare ID</th>
+            <th>Type</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.utstyr.map(utstyr => (
+            <tr key={utstyr.v_id}>
+              <td>{utstyr.v_id}</td>
+              <td>{utstyr.type}</td>
+              <td>{utstyr.pris}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    ];
+  }
+  mounted() {
+    statusService.hentUtstyrType(this.props.match.params.type, utstyr => {
+      this.utstyr = utstyr;
+    });
+  }
+}
+
+class Ny extends Component {
+  render() {
+    return (
+      <React.Fragment>
+        <Button href="#/ny/sykkel">Sykkel</Button>
+        <Button href="#/ny/utstyr">Utstyr</Button>
+        <Button href="#/ny/lokasjon">Lokasjon</Button>
+      </React.Fragment>
+    );
+  }
+}
+
+class NySykkel extends Ny {
+  render() {
+    return <div />;
+  }
+}
+class NyUtstyr extends Ny {
+  render() {
+    return <div />;
+  }
+}
+class NyLokasjon extends Ny {
+  render() {
+    return <div />;
+  }
+}
+
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -537,11 +574,19 @@ ReactDOM.render(
       <Route path="/status" component={Status} />
       <Route exact path="/status/alle" component={StatusListe} />
       <Route exact path="/status/alle:v_id" component={StatusSøkVare} />
-      <Route exact path="/status/sykler" component={StatusSykler} />
-      <Route exact path="/status/utstyr" component={StatusUtstyr} />
+
+      <Route path="/status/sykler" component={StatusSykler} />
       <Route exact path="/status/sykler:type" component={StatusSyklerType} />
+
+      <Route path="/status/utstyr" component={StatusUtstyr} />
       <Route exact path="/status/utstyr:type" component={StatusUtstyrType} />
+
       <Route exact path="/status/statuser:status" component={StatusStatus} />
+
+      <Route path="/ny" component={Ny} />
+      <Route exact path="/ny/sykkel" component={NySykkel} />
+      <Route exact path="/ny/utstyr" component={NyUtstyr} />
+      <Route exact path="/ny/lokasjon" component={NyLokasjon} />
     </div>
   </HashRouter>,
   document.getElementById('root')
