@@ -541,22 +541,84 @@ class Ny extends Component {
     );
   }
 }
-
 class NySykkel extends Ny {
+  steder = [];
+  typerSykler = [];
   render() {
-    return <div />;
+    return [
+      <React.Fragment>
+        <Form.Group as={Column}>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Tilhører:</Form.Label>
+            <Form.Control as="select">
+              {this.steder.map(sted => (
+                <option key={sted.lokasjon} onChange={e => (this.tilhører = e.target.value)}>
+                  {sted.lokasjon}
+                </option>
+              ))}
+            <br />
+            </Form.Control>
+          </ListGroup.Item>
+
+            <ListGroup.Item className="list-group-item">
+              <Form.Label>Lokasjon:</Form.Label>
+              <Form.Control as="select">
+                {this.steder.map(sted => (
+                  <option key={sted.lokasjon} onChange={e => (this.lokasjon = e.target.value)}>
+                    {sted.lokasjon}
+                  </option>
+                ))}
+              <br />
+              </Form.Control>
+            </ListGroup.Item>
+
+
+            <ListGroup.Item className="list-group-item">
+              <Form.Label>Type sykkel:</Form.Label>
+              <Form.Control as="select">
+                {this.typerSykler.map(typeSykkel => (
+                  <option key={typeSykkel.type} onChange={e => (this.type = e.target.value)}>
+                    {typeSykkel.type}
+                  </option>
+                ))}
+              <br />
+              </Form.Control>
+            </ListGroup.Item>
+            <br/>
+
+
+
+            <br/>
+
+            <Button onClick={this.nySykkel}>Legg til</Button>
+        </Form.Group>
+      </React.Fragment>
+  ];
+}
+
+mounted() {
+  typeStatusService.hentSyklerTyper(typerSykler => {
+    this.typerSykler = typerSykler;
+  });
+  nyBestillingService.hentSteder(steder => {
+    this.steder = steder;
+  });
+}
+  nySykkel() {
+    nyService.leggTilSykkel(this.tilhører, this.status, this.lokasjon, this.type);
   }
 }
-class NyUtstyr extends Ny {
-  render() {
-    return <div />;
-  }
-}
-class NyLokasjon extends Ny {
-  render() {
-    return <div />;
-  }
-}
+// class NyUtstyr extends Ny {
+//   render() {
+//     return <div />;
+//   }
+// }
+// class NyLokasjon extends Ny {
+//   render() {
+//     return <div />;
+//   }
+// }
 
 ReactDOM.render(
   <HashRouter>
@@ -582,8 +644,7 @@ ReactDOM.render(
 
       <Route path="/ny" component={Ny} />
       <Route exact path="/ny/sykkel" component={NySykkel} />
-      <Route exact path="/ny/utstyr" component={NyUtstyr} />
-      <Route exact path="/ny/lokasjon" component={NyLokasjon} />
+
     </div>
   </HashRouter>,
   document.getElementById('root')

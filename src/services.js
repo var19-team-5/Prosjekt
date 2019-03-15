@@ -1,6 +1,18 @@
 import { connection } from './mysql_connection';
 
-class NyService {}
+class NyService {
+  leggTilSykkel(tilhører, status, lokasjon, type, success) {
+    connection.query('INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ( (SELECT DISTINCT l_id FROM lokasjon WHERE lokasjon=?) , 'på lager', (SELECT DISTINCT l_id FROM lokasjon WHERE lokasjon=?), (SELECT DISTINCT type FROM sykkel WHERE type =?) )',
+      [tilhører, status, lokasjon, type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      });
+    }
+}
+
+
 
 class NyBestillingService {
   hentSteder(success) {
