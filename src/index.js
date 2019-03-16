@@ -91,9 +91,9 @@ class BestillingNy extends Bestilling {
         <Form.Group as={Column}>
           <ListGroup.Item className="list-group-item">
             <Form.Label> Navn: </Form.Label>
-            <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
+            <Form.Control required type="text" value={this.navn} onChange={e => (this.navn = e.target.value)} />
             <Form.Label> Email: </Form.Label>
-            <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
+            <Form.Control required type="text" value={this.email} onChange={e => (this.email = e.target.value)} />
             <Form.Label> Mobilnummer: </Form.Label>
             <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
             <br />
@@ -109,19 +109,15 @@ class BestillingNy extends Bestilling {
 
           <ListGroup.Item className="list-group-item">
             <Form.Label>Hentested:</Form.Label>
-            <Form.Control as="select">
+            <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
               {this.steder.map(sted => (
-                <option key={sted.lokasjon} onChange={e => (this.levering = e.target.value)}>
-                  {sted.lokasjon}
-                </option>
+                <option key={sted.l_id}>{sted.lokasjon}</option>
               ))}
             </Form.Control>
             <Form.Label>Leveringsted:</Form.Label>
-            <Form.Control as="select">
+            <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
               {this.steder.map(sted => (
-                <option key={sted.lokasjon} onChange={e => (this.henting = e.target.value)}>
-                  {sted.lokasjon}
-                </option>
+                <option key={sted.l_id}>{sted.lokasjon}</option>
               ))}
             </Form.Control>
             <br />
@@ -166,7 +162,7 @@ class BestillingNy extends Bestilling {
     nyBestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
   }
   nyBestilling() {
-    nyBestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
+    nyBestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
   }
 }
 
@@ -569,67 +565,100 @@ class Ny extends Component {
 class NySykkel extends Ny {
   steder = [];
   typerSykler = [];
+
+  ramme = '';
+  girsystem = '';
+  størrelse_hjul = '';
+
   render() {
     return [
       <React.Fragment>
         <Form.Group as={Column}>
-
           <ListGroup.Item className="list-group-item">
             <Form.Label>Tilhører:</Form.Label>
-            <Form.Control as="select">
+            <Form.Control as="select" onChange={e => (this.tilhører = e.target.value)}>
               {this.steder.map(sted => (
-                <option key={sted.lokasjon} onChange={e => (this.tilhører = e.target.value)}>
+                <option key={sted.lokasjon} value={sted.tilhører}>
                   {sted.lokasjon}
                 </option>
               ))}
-            <br />
+              <br />
             </Form.Control>
           </ListGroup.Item>
 
-            <ListGroup.Item className="list-group-item">
-              <Form.Label>Lokasjon:</Form.Label>
-              <Form.Control as="select">
-                {this.steder.map(sted => (
-                  <option key={sted.lokasjon} onChange={e => (this.lokasjon = e.target.value)}>
-                    {sted.lokasjon}
-                  </option>
-                ))}
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Lokasjon:</Form.Label>
+            <Form.Control as="select" onChange={e => (this.lokasjon = e.target.value)}>
+              {this.steder.map(sted => (
+                <option key={sted.lokasjon} value={sted.lokasjon}>
+                  {sted.lokasjon}
+                </option>
+              ))}
               <br />
-              </Form.Control>
-            </ListGroup.Item>
+            </Form.Control>
+          </ListGroup.Item>
 
-
-            <ListGroup.Item className="list-group-item">
-              <Form.Label>Type sykkel:</Form.Label>
-              <Form.Control as="select">
-                {this.typerSykler.map(typeSykkel => (
-                  <option key={typeSykkel.type} onChange={e => (this.type = e.target.value)}>
-                    {typeSykkel.type}
-                  </option>
-                ))}
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Type sykkel:</Form.Label>
+            <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+              {this.typerSykler.map(typeSykkel => (
+                <option key={typeSykkel.type} value={typeSykkel.type}>
+                  {typeSykkel.type}
+                </option>
+              ))}
               <br />
-              </Form.Control>
-            </ListGroup.Item>
-            <br/>
+            </Form.Control>
+          </ListGroup.Item>
 
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Ramme:</Form.Label>
+            <Form.Control onChange={e => (this.ramme = e.target.value)} />
+            <Form.Label>Girsystem:</Form.Label>
+            <Form.Control type="number" onChange={e => (this.girsystem = e.target.value)} />
+            <Form.Label>Størrese hjul:</Form.Label>
+            <Form.Control type="number" onChange={e => (this.størrelse_hjul = e.target.value)} />
+          </ListGroup.Item>
 
-
-            <br/>
-
-            <Button onClick={this.nySykkel}>Legg til</Button>
+          <Button onClick={this.nySykkel}>Legg til</Button>
         </Form.Group>
       </React.Fragment>
-  ];
+    ];
+  }
+
+  mounted() {
+    typeStatusService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+      this.type = typerSykler[0].type;
+    });
+    nyBestillingService.hentSteder(steder => {
+      this.steder = steder;
+      this.tilhører = steder[0].lokasjon;
+      this.lokasjon = steder[0].lokasjon;
+    });
+  }
+  nySykkel() {
+    nyService.nySykkel(this.tilhører, this.lokasjon, this.type, this.ramme, this.girsystem, this.størrelse_hjul);
+    alert(
+      'Sykkelen som tilhører: ' +
+        this.tilhører +
+        ' og befinner seg: ' +
+        this.lokasjon +
+        ' med type: ' +
+        this.type +
+        ' med ramme: ' +
+        this.ramme +
+        ' med girsystem: ' +
+        this.girsystem +
+        ' med størrese hjul: ' +
+        this.størrelse_hjul +
+        ' er lagt til!'
+    );
+    console.log(this.ramme);
+    console.log(this.girsystem);
+    console.log(this.størrelse_hjul);
+  }
 }
 
-mounted() {
-  typeStatusService.hentSyklerTyper(typerSykler => {
-    this.typerSykler = typerSykler;
-  });
-  nyBestillingService.hentSteder(steder => {
-    this.steder = steder;
-  });
-}
 class NyLokasjon extends Ny {
   render() {
     return (
@@ -648,16 +677,81 @@ class NyLokasjon extends Ny {
     alert('Lokasjonen ' + this.lokasjon + ' er lagt til!');
   }
 }
-// class NyUtstyr extends Ny {
-//   render() {
-//     return <div />;
-//   }
-// }
-// class NyLokasjon extends Ny {
-//   render() {
-//     return <div />;
-//   }
-// }
+
+class NyUtstyr extends Ny {
+  steder = [];
+  typerUtstyr = [];
+
+  render() {
+    return [
+      <React.Fragment>
+        <Form.Group as={Column}>
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Tilhører:</Form.Label>
+            <Form.Control as="select" onChange={e => (this.tilhører = e.target.value)}>
+              {this.steder.map(sted => (
+                <option key={sted.lokasjon} value={sted.tilhører}>
+                  {sted.lokasjon}
+                </option>
+              ))}
+              <br />
+            </Form.Control>
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Lokasjon:</Form.Label>
+            <Form.Control as="select" onChange={e => (this.lokasjon = e.target.value)}>
+              {this.steder.map(sted => (
+                <option key={sted.lokasjon} value={sted.lokasjon}>
+                  {sted.lokasjon}
+                </option>
+              ))}
+              <br />
+            </Form.Control>
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Type sykkel:</Form.Label>
+            <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+              {this.typerUtstyr.map(typeUtstyr => (
+                <option key={typeUtstyr.type} value={typeUtstyr.type}>
+                  {typeUtstyr.type}
+                </option>
+              ))}
+              <br />
+            </Form.Control>
+          </ListGroup.Item>
+
+          <Button onClick={this.nyUtstyr}>Legg til</Button>
+        </Form.Group>
+      </React.Fragment>
+    ];
+  }
+
+  mounted() {
+    typeStatusService.hentUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+      this.type = typerUtstyr[0].type;
+    });
+    nyBestillingService.hentSteder(steder => {
+      this.steder = steder;
+      this.tilhører = steder[0].lokasjon;
+      this.lokasjon = steder[0].lokasjon;
+    });
+  }
+  nyUtstyr() {
+    nyService.nyUtstyr(this.tilhører, this.lokasjon, this.type);
+    alert(
+      'Sykkelen som tilhører: ' +
+        this.tilhører +
+        ' og befinner seg: ' +
+        this.lokasjon +
+        ' med type: ' +
+        this.type +
+        ' er lagt til!'
+    );
+  }
+}
 
 ReactDOM.render(
   <HashRouter>
@@ -683,7 +777,8 @@ ReactDOM.render(
 
       <Route path="/ny" component={Ny} />
       <Route exact path="/ny/sykkel" component={NySykkel} />
-
+      <Route exact path="/ny/utstyr" component={NyUtstyr} />
+      <Route exact path="/ny/lokasjon" component={NyLokasjon} />
     </div>
   </HashRouter>,
   document.getElementById('root')

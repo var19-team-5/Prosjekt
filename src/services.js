@@ -8,19 +8,43 @@ class NyService {
       success(results);
     });
   }
-}
-  leggTilSykkel(tilhører, status, lokasjon, type, success) {
-    connection.query('INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ( (SELECT DISTINCT l_id FROM lokasjon WHERE lokasjon=?) , 'på lager', (SELECT DISTINCT l_id FROM lokasjon WHERE lokasjon=?), (SELECT DISTINCT type FROM sykkel WHERE type =?) )',
-      [tilhører, status, lokasjon, type],
+
+  nyUtstyr(tilhører, lokasjon, type, success) {
+    connection.query(
+      'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
+      [tilhører, lokasjon, type],
       (error, results) => {
-        if (error) return console.error(error);
+        connection.query(
+          'INSERT INTO utstyr (v_id, type) VALUES ((SELECT MAX(v_id) FROM vare),?)',
+          [type],
+          (error, results) => {
+            if (error) return console.error(error);
 
-        success(results);
-      });
-    }
+            success(results);
+          }
+        );
+      }
+    );
+  }
+
+  nySykkel(tilhører, lokasjon, type, ramme, girsystem, størrelse_hjul, success) {
+    connection.query(
+      'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
+      [tilhører, lokasjon, type],
+      (error, results) => {
+        connection.query(
+          'INSERT INTO sykkel (v_id, ramme, girsystem, størrelse_hjul, type) VALUES ((SELECT MAX(v_id) FROM vare),?,?,?,?)',
+          [ramme, girsystem, størrelse_hjul, type],
+          (error, results) => {
+            if (error) return console.error(error);
+
+            success(results);
+          }
+        );
+      }
+    );
+  }
 }
-
-
 
 class NyBestillingService {
   hentSteder(success) {
@@ -48,10 +72,10 @@ class NyBestillingService {
       }
     );
   }
-  leggTilBestilling(fra, til, henting, levering, success) {
+  leggTilBestilling(fra, til, henting, levering, mobilnummer, success) {
     connection.query(
-      'insert into bestilling (fra, til, henting, levering) values (?, ?, ?, ?)',
-      [fra, til, henting, levering],
+      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),"35","bestilt")',
+      [fra, til, henting, levering, mobilnummer],
       (error, results) => {
         if (error) return console.error(error);
 
