@@ -302,6 +302,7 @@ class Status extends Component {
 
 class StatusListe extends Status {
   varer = [];
+  lokasjoner = [];
 
   render() {
     return [
@@ -316,13 +317,13 @@ class StatusListe extends Status {
           </tr>
         </thead>
         <tbody>
-          {this.varer.map(vare => (
-            <tr key={vare.v_id}>
-              <td>{vare.v_id}</td>
-              <td>{vare.type}</td>
-              <td>{vare.lokasjon}</td>
-              <td>{vare.status}</td>
-              <td>{vare.pris}</td>
+          {this.varer.map(alle_varer => (
+            <tr key={alle_varer.v_id}>
+              <td>{alle_varer.v_id}</td>
+              <td>{alle_varer.type}</td>
+              <td>{alle_varer.lokasjon}</td>
+              <td>{alle_varer.status}</td>
+              <td>{alle_varer.pris}</td>
             </tr>
           ))}
         </tbody>
@@ -336,7 +337,6 @@ class StatusListe extends Status {
     });
   }
 }
-
 class StatusStatus extends Status {
   varer = [];
 
@@ -391,14 +391,14 @@ class StatusSykler extends Status {
           </tr>
         </thead>
         <tbody>
-          {this.sykler.map(sykkel => (
-            <tr key={sykkel.v_id}>
-              <td>{sykkel.v_id}</td>
-              <td>{sykkel.type}</td>
-              <td>{sykkel.ramme}</td>
-              <td>{sykkel.girsystem}</td>
-              <td>{sykkel.størrelse_hjul}</td>
-              <td>{sykkel.pris}</td>
+          {this.sykler.map(alle_sykler => (
+            <tr key={alle_sykler.v_id}>
+              <td>{alle_sykler.v_id}</td>
+              <td>{alle_sykler.type}</td>
+              <td>{alle_sykler.ramme}</td>
+              <td>{alle_sykler.girsystem}</td>
+              <td>{alle_sykler.størrelse_hjul}</td>
+              <td>{alle_sykler.pris}</td>
             </tr>
           ))}
         </tbody>
@@ -494,6 +494,8 @@ class StatusSyklerType extends StatusSykler {
             <th>Ramme</th>
             <th>Girsystem</th>
             <th>Størrelse på hjul</th>
+            <th>Befinner seg</th>
+            <th>Status</th>
             <th>Pris</th>
           </tr>
         </thead>
@@ -505,6 +507,8 @@ class StatusSyklerType extends StatusSykler {
               <td>{sykkel.ramme}</td>
               <td>{sykkel.girsystem}</td>
               <td>{sykkel.størrelse_hjul}</td>
+              <td>{sykkel.lokasjon}</td>
+              <td>{sykkel.status}</td>
               <td>{sykkel.pris}</td>
             </tr>
           ))}
@@ -529,6 +533,8 @@ class StatusUtstyrType extends StatusUtstyr {
           <tr>
             <th>Vare ID</th>
             <th>Type</th>
+            <th>Befinner seg</th>
+            <th>Status</th>
             <th>Pris</th>
           </tr>
         </thead>
@@ -537,6 +543,8 @@ class StatusUtstyrType extends StatusUtstyr {
             <tr key={utstyr.v_id}>
               <td>{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
+              <td>{utstyr.lokasjon}</td>
+              <td>{utstyr.status}</td>
               <td>{utstyr.pris}</td>
             </tr>
           ))}
