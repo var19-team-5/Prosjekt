@@ -9,10 +9,10 @@ class NyService {
     });
   }
 
-  nyUtstyr(tilhører, lokasjon, type, success) {
+  nyUtstyr(tilhører, type, antall, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
-      [tilhører, lokasjon, type],
+      [tilhører, tilhører, type],
       (error, results) => {
         connection.query(
           'INSERT INTO utstyr (v_id, type) VALUES ((SELECT MAX(v_id) FROM vare),?)',
@@ -27,10 +27,10 @@ class NyService {
     );
   }
 
-  nySykkel(tilhører, lokasjon, type, ramme, girsystem, størrelse_hjul, success) {
+  nySykkel(tilhører, type, ramme, girsystem, størrelse_hjul, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
-      [tilhører, lokasjon, type],
+      [tilhører, tilhører, type],
       (error, results) => {
         connection.query(
           'INSERT INTO sykkel (v_id, ramme, girsystem, størrelse_hjul, type) VALUES ((SELECT MAX(v_id) FROM vare),?,?,?,?)',
@@ -170,6 +170,43 @@ class TypeStatusService {
 
       success(results);
     });
+  }
+  alleSykkelTyper(success) {
+    connection.query('SELECT type FROM prisliste WHERE kategori="sykkel"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  alleUtstyrTyper(success) {
+    connection.query('SELECT type FROM prisliste WHERE kategori="utstyr"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  nyTypeSykkel(nytype, nypris, success) {
+    connection.query(
+      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"sykkel")',
+      [nytype, nypris],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  nyTypeUtstyr(nytype, nypris, success) {
+    connection.query(
+      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"utstyr")',
+      [nytype, nypris],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
   }
 }
 
