@@ -22,7 +22,7 @@ class BestillingService {
       success(results);
     });
   }
-  leggTilBestilling(navn, email, mobilnummer, success) {
+  leggTilKunde(navn, email, mobilnummer, success) {
     connection.query(
       'insert into kunde (navn, email, mobilnummer) values (?, ?, ?)',
       [navn, email, mobilnummer],
@@ -33,9 +33,38 @@ class BestillingService {
       }
     );
   }
+  hentSyklerTyper(success) {
+    connection.query('SELECT * FROM sykkel', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  leggTilBestilling(fra, til, henting, levering, success) {
+    connection.query(
+      'insert into bestilling (fra, til, henting, levering) values (?, ?, ?, ?)',
+      [fra, til, henting, levering],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
 }
 
 class StatusService {
+  hentVarerSøk(v_id, success) {
+    connection.query(
+      'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type where vare.v_id=?',
+      [v_id],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
   hentVarer(success) {
     connection.query(
       'SELECT * FROM vare INNER JOIN prisliste on vare.type = prisliste.type INNER JOIN lokasjon on vare.lokasjon = lokasjon.l_id ',

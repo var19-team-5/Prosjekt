@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
@@ -7,6 +8,7 @@ import {
   Card,
   List,
   Row,
+  Col,
   Column,
   Navbar,
   Button,
@@ -20,7 +22,8 @@ import {
   FormControl,
   ListGroup,
   Table,
-  ButtonGroup
+  ButtonGroup,
+  InputGroup
 } from 'react-bootstrap';
 
 import createHashHistory from 'history/createHashHistory';
@@ -36,7 +39,7 @@ class Menu extends Component {
     return (
       <Nav defaultActiveKey="/" as="ul">
         <Nav.Item as="li">
-          <Nav.Link href="#/">SUSU v2.3</Nav.Link>
+          <Nav.Link href="#/">SUSU v3.3</Nav.Link>
         </Nav.Item>
         <Nav.Item as="li">
           <Nav.Link href="#/bestilling/ny">Bestilling</Nav.Link>
@@ -53,7 +56,7 @@ class Home extends Component {
   render() {
     return (
       <Card>
-        Til SUSU v2.0!
+        Til SUSU v3.2!
         <br />
         Dette er verdens beste informasjonssystem for utleie av sykler og utstyr.
       </Card>
@@ -76,6 +79,7 @@ class Status extends Component {
   typerSykler = [];
   typerUtstyr = [];
   statuser = [];
+  varer = [];
 
   render() {
     return [
@@ -121,6 +125,23 @@ class Status extends Component {
             </Dropdown.Item>
           ))}
         </DropdownButton>
+
+        <br />
+        <br />
+
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder="vare ID"
+            aria-describedby="basic-addon2"
+            type="text"
+            onChange={e => (this.v_id = e.target.value)}
+          />
+          <InputGroup.Append>
+            <Button variant="outline-secondary" href={'#/status/alle' + this.v_id}>
+              SØK
+            </Button>
+          </InputGroup.Append>
+        </InputGroup>
       </React.Fragment>
     ];
   }
@@ -135,6 +156,9 @@ class Status extends Component {
     statusService.hentStatuser(statuser => {
       this.statuser = statuser;
     });
+    statusService.hentVarer(varer => {
+      this.varer = varer;
+    });
   }
 }
 
@@ -147,65 +171,115 @@ class BestillingNew extends Component {
   fra = '';
 
   steder = [];
+  typerSykler = [];
+  typerUtstyr = [];
 
   render() {
     return (
       <React.Fragment>
-        <Card>
-          <ListGroup>
-            <Form.Row>
-              <ListGroup.Item className="list-group-item">
-                <Form.Label> Navn: </Form.Label>
-                <Form.Control type="text" onChange={e => (this.navn = e.target.value)} />
-                <Form.Label> Email: </Form.Label>
-                <Form.Control type="text" onChange={e => (this.email = e.target.value)} />
-                <Form.Label> Mobilnummer: </Form.Label>
-                <Form.Control type="number" onChange={e => (this.mobilnummer = e.target.value)} />
-              </ListGroup.Item>
-            </Form.Row>
-          </ListGroup>
-        </Card>
-        <Button onClick={this.leggTil}>Ny bestilling</Button>
-        <Card>
-          <ListGroup>
-            <Form.Row>
-              <ListGroup.Item className="list-group-item">
-                <Form.Label> Fra: </Form.Label>
-                <Form.Control type="datetime-local" value={this.fra} onChange={e => (this.fra = e.target.value)} />
-                <Form.Label> Til: </Form.Label>
-                <Form.Control type="datetime-local" value={this.til} onChange={e => (this.il = e.target.value)} />
-              </ListGroup.Item>
-            </Form.Row>
-          </ListGroup>
-        </Card>
-        <Card>
-          <Dropdown>
-            <Dropdown.Toggle variant="success">Hentested</Dropdown.Toggle>
-            <Dropdown.Menu>
+        <Form.Group as={Column}>
+          <ListGroup.Item className="list-group-item">
+            <Form.Label> Navn: </Form.Label>
+            <Form.Control required type="text" onChange={e => (this.navn = e.target.value)} />
+            <Form.Label> Email: </Form.Label>
+            <Form.Control required type="text" onChange={e => (this.email = e.target.value)} />
+            <Form.Label> Mobilnummer: </Form.Label>
+            <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
+            <br />
+            <Button onClick={this.nyKunde}>Ny kunde</Button>
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label> Fra: </Form.Label>
+            <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+            <Form.Label> Til: </Form.Label>
+            <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+          </ListGroup.Item>
+
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Hentested:</Form.Label>
+            <Form.Control as="select">
               {this.steder.map(steder => (
-                <Dropdown.Item key={steder.l_id}>{steder.lokasjon}</Dropdown.Item>
+                <option key={steder.lokasjon} onChange={e => (this.levering = e.target.value)}>
+                  {steder.lokasjon}
+                </option>
+              ))}
+            </Form.Control>
+            <Form.Label>Leveringsted:</Form.Label>
+            <Form.Control as="select">
+              {this.steder.map(steder => (
+                <option key={steder.lokasjon} onChange={e => (this.henting = e.target.value)}>
+                  {steder.lokasjon}
+                </option>
+              ))}
+            </Form.Control>
+            <br />
+            <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+          </ListGroup.Item>
+        </Form.Group>
+        <Dropdown >
+          <Button href="#/bestilling/ny" variant="success">
+            Sykler
+          </Button>
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+           <Dropdown.Menu>
+              {this.typerSykler.map(typerSykler => (
+                <Dropdown.Item key={typerSykler.type} href={'#/bestilling/ny' + typerSykler.type}>
+                  {typerSykler.type}
+                </Dropdown.Item>
               ))}
             </Dropdown.Menu>
-          </Dropdown>
-          <Dropdown>
-            <Dropdown.Toggle variant="success">Leveringssted</Dropdown.Toggle>
-            <Dropdown.Menu>
-              {this.steder.map(steder => (
-                <Dropdown.Item key={steder.l_id}>{steder.lokasjon}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </Card>
-      </React.Fragment>
+            </Dropdown>
+
+          </React.Fragment>
+
+
+
     );
   }
   mounted() {
     bestillingService.hentSteder(steder => {
       this.steder = steder;
     });
+    bestillingService.hentSyklerTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
   }
-  leggTil() {
-    bestillingService.leggTilBestilling(this.navn, this.email, this.mobilnummer);
+  nyKunde() {
+    bestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
+  }
+  nyBestilling() {
+    bestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
+  }
+
+}
+class BestillingSyklerType extends Component {
+  sykler = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.sykler.map(sykler => (
+            <tr key={sykler.type}>
+              <td>{sykler.pris}</td>
+
+      </tr>
+          ))}
+        </tbody>
+      </Table>
+    ];
+  }
+  mounted() {
+    bestillingService.hentSyklerType(this.props.match.params.type, sykler => {
+      this.sykler = sykler;
+    });
   }
 }
 
@@ -224,7 +298,7 @@ class BestillingListe extends Component {
         <tbody>
           {this.bestillinger.map(bestilling => (
             <tr key={bestilling.b_id}>
-              {bestilling.b_id}
+              <td>{bestilling.b_id}</td>
               <td>{bestilling.status}</td>
             </tr>
           ))}
@@ -257,7 +331,7 @@ class StatusListe extends Component {
         <tbody>
           {this.varer.map(vare => (
             <tr key={vare.v_id}>
-              {vare.v_id}
+              <td>{vare.v_id}</td>
               <td>{vare.type}</td>
               <td>{vare.lokasjon}</td>
               <td>{vare.status}</td>
@@ -294,7 +368,7 @@ class StatusStatus extends Component {
         <tbody>
           {this.varer.map(vare => (
             <tr key={vare.v_id}>
-              {vare.v_id}
+              <td>{vare.v_id}</td>
               <td>{vare.type}</td>
               <td>{vare.lokasjon}</td>
               <td>{vare.status}</td>
@@ -329,7 +403,7 @@ class StatusSyklerType extends Component {
         <tbody>
           {this.sykler.map(sykler => (
             <tr key={sykler.v_id}>
-              {sykler.v_id}
+              <td>{sykler.v_id}</td>
               <td>{sykler.type}</td>
               <td>{sykler.pris}</td>
             </tr>
@@ -339,7 +413,7 @@ class StatusSyklerType extends Component {
     ];
   }
   mounted() {
-    statusService.hentSyklerType(this.props.match.params.type, sykler => {
+    bestillingService.hentSyklerType(this.props.match.params.type, sykler => {
       this.sykler = sykler;
     });
   }
@@ -361,7 +435,7 @@ class StatusUtstyrType extends Component {
         <tbody>
           {this.utstyr.map(utstyr => (
             <tr key={utstyr.v_id}>
-              {utstyr.v_id}
+              <td>{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
               <td>{utstyr.pris}</td>
             </tr>
@@ -396,7 +470,7 @@ class StatusSykler extends Component {
         <tbody>
           {this.sykler.map(sykkel => (
             <tr key={sykkel.v_id}>
-              {sykkel.v_id}
+              <td>{sykkel.v_id}</td>
               <td>{sykkel.type}</td>
               <td>{sykkel.ramme}</td>
               <td>{sykkel.girsystem}</td>
@@ -431,7 +505,7 @@ class StatusUtstyr extends Component {
         <tbody>
           {this.utstyr.map(utstyr => (
             <tr key={utstyr.v_id}>
-              {utstyr.v_id}
+              <td>{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
               <td>{utstyr.pris}</td>
             </tr>
@@ -447,6 +521,43 @@ class StatusUtstyr extends Component {
   }
 }
 
+class StatusSøkVare extends Component {
+  vare = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Vare ID</th>
+            <th>Type</th>
+            <th>Befinner seg</th>
+            <th>Status</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+          {this.vare.map(vare => (
+            <tr key={vare.v_id}>
+              <td>{vare.v_id}</td>
+              <td>{vare.type}</td>
+              <td>{vare.lokasjon}</td>
+              <td>{vare.status}</td>
+              <td>{vare.pris}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    ];
+  }
+
+  mounted() {
+    statusService.hentVarerSøk(this.props.match.params.v_id, vare => {
+      this.vare = vare;
+    });
+  }
+}
+
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -456,9 +567,12 @@ ReactDOM.render(
       <Route path="/bestilling" component={Bestilling} />
       <Route exact path="/bestilling/ny" component={BestillingNew} />
       <Route exact path="/bestilling/liste" component={BestillingListe} />
+      <Route exact path="/bestilling/ny" component={BestillingSyklerType} />
+
 
       <Route path="/status" component={Status} />
       <Route exact path="/status/alle" component={StatusListe} />
+      <Route exact path="/status/alle:v_id" component={StatusSøkVare} />
       <Route exact path="/status/sykler" component={StatusSykler} />
       <Route exact path="/status/utstyr" component={StatusUtstyr} />
       <Route exact path="/status/sykler:type" component={StatusSyklerType} />
