@@ -1,22 +1,21 @@
 import { connection } from './mysql_connection';
 
-class NyService {
-  nyRestriksjon(s_type, u_type) {
+class s_Ny {
+  Restriksjon(s_type, u_type) {
     connection.query('insert into lokasjon (s_type, u_type) values (?,?)', [s_type, u_type], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-  nyLokasjon(lokasjon, success) {
+  Lokasjon(lokasjon, success) {
     connection.query('insert into lokasjon (lokasjon) values (?)', [lokasjon], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-
-  nyUtstyr(tilhører, type, success) {
+  Utstyr(tilhører, type, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
       [tilhører, tilhører, type],
@@ -33,8 +32,7 @@ class NyService {
       }
     );
   }
-
-  nySykkel(tilhører, type, ramme, girsystem, størrelse_hjul, success) {
+  Sykkel(tilhører, type, ramme, girsystem, størrelse_hjul, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
       [tilhører, tilhører, type],
@@ -51,42 +49,7 @@ class NyService {
       }
     );
   }
-}
-
-class NyBestillingService {
-  hentSteder(success) {
-    connection.query('select * from lokasjon', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentKunder(success) {
-    connection.query('select * from kunde', (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  søkKunde(mobilnummer, success) {
-    connection.query('select * from kunde where mobilnummer=?', [mobilnummer], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  leggTilKunde(navn, email, mobilnummer, success) {
-    connection.query(
-      'insert into kunde (navn, email, mobilnummer) values (?, ?, ?)',
-      [navn, email, mobilnummer],
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    );
-  }
-  leggTilBestilling(fra, til, henting, levering, mobilnummer, success) {
+  Bestilling(fra, til, henting, levering, mobilnummer, success) {
     connection.query(
       'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),"35","bestilt")',
       [fra, til, henting, levering, mobilnummer],
@@ -97,57 +60,109 @@ class NyBestillingService {
       }
     );
   }
+  Kunde(navn, email, mobilnummer, success) {
+    connection.query(
+      'insert into kunde (navn, email, mobilnummer) values (?, ?, ?)',
+      [navn, email, mobilnummer],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  TypeSykkel(nytype, nypris, success) {
+    connection.query(
+      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"sykkel")',
+      [nytype, nypris],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  TypeUtstyr(nytype, nypris, success) {
+    connection.query(
+      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"utstyr")',
+      [nytype, nypris],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
 }
 
-class ListeBestillingService {
-  hentBestillinger(success) {
+class s_Hent {
+  Steder(success) {
+    connection.query('select * from lokasjon', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  Bestillinger(success) {
     connection.query('select * from alle_bestillinger', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-}
-
-class StatusService {
-  hentVarerSøk(v_id, success) {
-    connection.query('SELECT * FROM alle_varer WHERE alle_varer.v_id=?', [v_id], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentVarer(success) {
+  Varer(success) {
     connection.query('SELECT * FROM alle_varer', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-  hentSykler(success) {
+  Sykler(success) {
     connection.query('SELECT * FROM alle_sykler', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-  hentUtstyr(success) {
+  Utstyr(success) {
     connection.query('SELECT * FROM alt_utstyr', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
+}
 
-  hentStatuser(success) {
-    connection.query('SELECT DISTINCT status FROM vare ', (error, results) => {
+class s_Sok {
+  Kunde(mobilnummer, success) {
+    connection.query('select * from kunde where mobilnummer=?', [mobilnummer], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
+  Vare(v_id, success) {
+    connection.query('SELECT * FROM alle_varer WHERE alle_varer.v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
 
-  hentVarerStatus(status, success) {
+      success(results);
+    });
+  }
+  SyklerType(type, success) {
+    connection.query('SELECT * FROM alle_sykler WHERE alle_sykler.type=?', [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  UtstyrType(type, success) {
+    connection.query('SELECT * FROM alt_utstyr WHERE alt_utstyr.type=? ', [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  VarerStatus(status, success) {
     connection.query('SELECT * FROM alle_varer WHERE status=?', [status], (error, results) => {
       if (error) return console.error(error);
 
@@ -156,29 +171,15 @@ class StatusService {
   }
 }
 
-class TypeStatusService {
-  hentSyklerType(type, success) {
-    connection.query('SELECT * FROM alle_sykler WHERE alle_sykler.type=?', [type], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentUtstyrType(type, success) {
-    connection.query('SELECT * FROM alt_utstyr WHERE alt_utstyr.type=? ', [type], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentSyklerTyper(success) {
+class s_Typer {
+  SyklerTyper(success) {
     connection.query('SELECT DISTINCT type FROM sykkel', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-  hentUtstyrTyper(success) {
+  UtstyrTyper(success) {
     connection.query('SELECT DISTINCT type FROM utstyr ', (error, results) => {
       if (error) return console.error(error);
 
@@ -200,34 +201,16 @@ class TypeStatusService {
       success(results);
     });
   }
-  nyTypeSykkel(nytype, nypris, success) {
-    connection.query(
-      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"sykkel")',
-      [nytype, nypris],
-      (error, results) => {
-        if (error) return console.error(error);
+  Statuser(success) {
+    connection.query('SELECT DISTINCT status FROM vare ', (error, results) => {
+      if (error) return console.error(error);
 
-        success(results);
-      }
-    );
-  }
-  nyTypeUtstyr(nytype, nypris, success) {
-    connection.query(
-      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"utstyr")',
-      [nytype, nypris],
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    );
+      success(results);
+    });
   }
 }
 
-export let nyBestillingService = new NyBestillingService();
-export let listeBestillingService = new ListeBestillingService();
-
-export let statusService = new StatusService();
-export let typeStatusService = new TypeStatusService();
-
-export let nyService = new NyService();
+export let s_ny = new s_Ny();
+export let s_hent = new s_Hent();
+export let s_typer = new s_Typer();
+export let s_sok = new s_Sok();
