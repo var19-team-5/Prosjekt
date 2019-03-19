@@ -9,7 +9,7 @@ class NyService {
     });
   }
 
-  nyUtstyr(tilhører, type, antall, success) {
+  nyUtstyr(tilhører, type, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
       [tilhører, tilhører, type],
@@ -61,6 +61,13 @@ class NyBestillingService {
       success(results);
     });
   }
+  søkKunde(mobilnummer, success) {
+    connection.query('select * from kunde where mobilnummer=?', [mobilnummer], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
   leggTilKunde(navn, email, mobilnummer, success) {
     connection.query(
       'insert into kunde (navn, email, mobilnummer) values (?, ?, ?)',
@@ -87,7 +94,7 @@ class NyBestillingService {
 
 class ListeBestillingService {
   hentBestillinger(success) {
-    connection.query('select * from bestilling', (error, results) => {
+    connection.query('select * from alle_bestillinger', (error, results) => {
       if (error) return console.error(error);
 
       success(results);

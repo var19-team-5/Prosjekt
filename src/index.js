@@ -98,6 +98,7 @@ class BestillingNy extends Bestilling {
             <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
             <br />
             <Button onClick={this.nyKunde}>Ny kunde</Button>
+            <Button onClick={this.søkKunde}>Søk kunde</Button>
           </ListGroup.Item>
 
           <ListGroup.Item className="list-group-item">
@@ -161,6 +162,14 @@ class BestillingNy extends Bestilling {
   nyKunde() {
     nyBestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
   }
+
+  søkKunde() {
+    nyBestillingService.søkKunde(this.mobilnummer);
+    nyBestillingService.søkKunde(kunde => {
+      this.navn = kunde.navn;
+      this.email = kunde.email;
+    });
+  }
   nyBestilling() {
     nyBestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
   }
@@ -177,6 +186,10 @@ class BestillingListe extends Bestilling {
             <th>Bestillings ID</th>
             <th>Fra</th>
             <th>Til</th>
+            <th>Kunde</th>
+            <th>Hentested</th>
+            <th>Leveringssted</th>
+            <th>Rabatt</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -202,6 +215,10 @@ class BestillingListe extends Bestilling {
                   minute: '2-digit'
                 }).format(bestilling.til)}
               </td>
+              <td>{bestilling.navn}</td>
+              <td>{bestilling.hentested}</td>
+              <td>{bestilling.leveringssted}</td>
+              <td>{bestilling.rabatt}</td>
               <td>{bestilling.status}</td>
             </tr>
           ))}
@@ -387,6 +404,8 @@ class StatusSykler extends Status {
             <th>Ramme</th>
             <th>Girsystem</th>
             <th>Størrelse på hjul</th>
+            <th>Befinner seg</th>
+            <th>Status</th>
             <th>Pris</th>
           </tr>
         </thead>
@@ -398,6 +417,8 @@ class StatusSykler extends Status {
               <td>{alle_sykler.ramme}</td>
               <td>{alle_sykler.girsystem}</td>
               <td>{alle_sykler.størrelse_hjul}</td>
+              <td>{alle_sykler.lokasjon}</td>
+              <td>{alle_sykler.status}</td>
               <td>{alle_sykler.pris}</td>
             </tr>
           ))}
@@ -422,15 +443,19 @@ class StatusUtstyr extends Status {
           <tr>
             <th>Vare ID</th>
             <th>Type</th>
+            <th>Befinner seg</th>
+            <th>Status</th>
             <th>Pris</th>
           </tr>
         </thead>
         <tbody>
           {this.utstyr.map(utstyr => (
             <tr key={utstyr.v_id}>
-              <td>{utstyr.v_id}</td>
-              <td>{utstyr.type}</td>
-              <td>{utstyr.pris}</td>
+              <td>{vare.v_id}</td>
+              <td>{vare.type}</td>
+              <td>{vare.lokasjon}</td>
+              <td>{vare.status}</td>
+              <td>{vare.pris}</td>
             </tr>
           ))}
         </tbody>
@@ -646,21 +671,6 @@ class NySykkel extends Ny {
   }
   nySykkel() {
     nyService.nySykkel(this.tilhører, this.lokasjon, this.type, this.ramme, this.girsystem, this.størrelse_hjul);
-    alert(
-      'Sykkelen som tilhører: ' +
-        this.tilhører +
-        ' og befinner seg: ' +
-        this.lokasjon +
-        ' med type: ' +
-        this.type +
-        ' med ramme: ' +
-        this.ramme +
-        ' med girsystem: ' +
-        this.girsystem +
-        ' med størrese hjul: ' +
-        this.størrelse_hjul +
-        ' er lagt til!'
-    );
   }
   nyTypeSykkel() {
     typeStatusService.nyTypeSykkel(this.nytype, this.nypris);
@@ -754,20 +764,9 @@ class NyUtstyr extends Ny {
   nyUtstyr() {
     nyService.nyUtstyr(this.tilhører, this.type, this.antall);
     console.log(this.antall);
-
-    alert(
-      'Sykkelen som tilhører: ' +
-        this.tilhører +
-        ' og befinner seg: ' +
-        this.lokasjon +
-        ' med type: ' +
-        this.type +
-        ' er lagt til!'
-    );
   }
   nyTypeUtstyr() {
     typeStatusService.nyTypeUtstyr(this.nytype, this.nypris);
-    this.type = this.nytype;
   }
 }
 
