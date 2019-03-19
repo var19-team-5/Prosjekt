@@ -7,6 +7,7 @@ import {
   Card,
   List,
   Row,
+  Col,
   Column,
   NavBar,
   Navbar,
@@ -85,43 +86,75 @@ class BestillingNy extends Bestilling {
   typerSykler = [];
   typerUtstyr = [];
 
+  kunde = [];
+
   render() {
     return (
       <React.Fragment>
-        <Form.Group as={Column}>
+        <Form.Group>
           <ListGroup.Item className="list-group-item">
-            <Form.Label> Navn: </Form.Label>
-            <Form.Control required type="text" value={this.navn} onChange={e => (this.navn = e.target.value)} />
-            <Form.Label> Email: </Form.Label>
-            <Form.Control required type="text" value={this.email} onChange={e => (this.email = e.target.value)} />
-            <Form.Label> Mobilnummer: </Form.Label>
-            <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
-            <br />
+            <Row>
+              <Col>
+                <Form.Label> Navn: </Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  value={this.kunde.navn}
+                  onChange={e => (this.navn = e.target.value)}
+                />
+              </Col>
+              <Col>
+                <Form.Label> Email: </Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  value={this.kunde.email}
+                  onChange={e => (this.email = e.target.value)}
+                />
+              </Col>
+              <Col>
+                <Form.Label> Mobilnummer: </Form.Label>
+                <Form.Control required type="number" onChange={e => (this.mobilnummer = e.target.value)} />
+                <br />
+              </Col>
+            </Row>
             <Button onClick={this.nyKunde}>Ny kunde</Button>
             <Button onClick={this.søkKunde}>Søk kunde</Button>
           </ListGroup.Item>
 
           <ListGroup.Item className="list-group-item">
-            <Form.Label> Fra: </Form.Label>
-            <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
-            <Form.Label> Til: </Form.Label>
-            <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+            <Row>
+              <Col>
+                <Form.Label> Fra: </Form.Label>
+                <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+              </Col>
+              <Col>
+                <Form.Label> Til: </Form.Label>
+                <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+              </Col>
+            </Row>
           </ListGroup.Item>
 
           <ListGroup.Item className="list-group-item">
-            <Form.Label>Hentested:</Form.Label>
-            <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
-              {this.steder.map(sted => (
-                <option key={sted.l_id}>{sted.lokasjon}</option>
-              ))}
-            </Form.Control>
-            <Form.Label>Leveringsted:</Form.Label>
-            <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
-              {this.steder.map(sted => (
-                <option key={sted.l_id}>{sted.lokasjon}</option>
-              ))}
-            </Form.Control>
-            <br />
+            <Row>
+              <Col>
+                <Form.Label>Hentested:</Form.Label>
+                <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
+                  {this.steder.map(sted => (
+                    <option key={sted.l_id}>{sted.lokasjon}</option>
+                  ))}
+                </Form.Control>
+              </Col>
+              <Col>
+                <Form.Label>Leveringsted:</Form.Label>
+                <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
+                  {this.steder.map(sted => (
+                    <option key={sted.l_id}>{sted.lokasjon}</option>
+                  ))}
+                </Form.Control>
+                <br />
+              </Col>
+            </Row>
             <Button onClick={this.nyBestilling}>Ny bestilling</Button>
           </ListGroup.Item>
 
@@ -133,9 +166,7 @@ class BestillingNy extends Bestilling {
                 <Dropdown.Item key={typeSykkel.type}>{typeSykkel.type}</Dropdown.Item>
               ))}
             </Dropdown.Menu>
-          </Dropdown>
 
-          <Dropdown>
             <Dropdown.Toggle>Utstyr</Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -281,22 +312,22 @@ class Status extends Component {
           ))}
         </DropdownButton>
 
-        <br />
-        <br />
+        <ListGroup.Item className="list-group-item">
+          <InputGroup className="mb-3">
+            <FormControl
+              placeholder="vare ID"
+              aria-describedby="basic-addon2"
+              type="text"
+              onChange={e => (this.v_id = e.target.value)}
+            />
 
-        <InputGroup className="mb-3">
-          <FormControl
-            placeholder="vare ID"
-            aria-describedby="basic-addon2"
-            type="text"
-            onChange={e => (this.v_id = e.target.value)}
-          />
-          <InputGroup.Append>
-            <Button variant="outline-secondary" href={'#/status/alle' + this.v_id}>
-              SØK
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
+            <InputGroup.Append>
+              <Button variant="outline-secondary" href={'#/status/alle' + this.v_id}>
+                SØK
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
+        </ListGroup.Item>
       </React.Fragment>
     ];
   }
@@ -451,11 +482,11 @@ class StatusUtstyr extends Status {
         <tbody>
           {this.utstyr.map(utstyr => (
             <tr key={utstyr.v_id}>
-              <td>{vare.v_id}</td>
-              <td>{vare.type}</td>
-              <td>{vare.lokasjon}</td>
-              <td>{vare.status}</td>
-              <td>{vare.pris}</td>
+              <td>{utstyr.v_id}</td>
+              <td>{utstyr.type}</td>
+              <td>{utstyr.lokasjon}</td>
+              <td>{utstyr.status}</td>
+              <td>{utstyr.pris}</td>
             </tr>
           ))}
         </tbody>
@@ -591,6 +622,7 @@ class Ny extends Component {
         <Button href="#/ny/sykkel">Sykkel</Button>
         <Button href="#/ny/utstyr">Utstyr</Button>
         <Button href="#/ny/lokasjon">Lokasjon</Button>
+        <Button href="#/ny/restriksjon">Restriksjon</Button>
       </React.Fragment>
     );
   }
@@ -623,35 +655,49 @@ class NySykkel extends Ny {
 
         <ListGroup.Item className="list-group-item">
           <h4>Ligger ikke typen inne? Legg til ny her!</h4>
-          <Form.Label>Ny type:</Form.Label>
-          <Form.Control onChange={e => (this.nytype = e.target.value)} />
-          <Form.Label>Pris:</Form.Label>
-          <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} />
-          <br />
+          <Row>
+            <Col>
+              <Form.Label>Ny type:</Form.Label>
+              <Form.Control onChange={e => (this.nytype = e.target.value)} />
+            </Col>
+            <Col>
+              <Form.Label>Pris:</Form.Label>
+              <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} />
+              <br />
+            </Col>
+          </Row>
           <Button onClick={this.nyTypeSykkel}>Legg til ny type</Button>
         </ListGroup.Item>
 
         <Form.Group as={Column}>
           <ListGroup.Item className="list-group-item">
-            <Form.Label>Tilhører:</Form.Label>
-            <Form.Control as="select" onChange={e => (this.tilhører = e.target.value)}>
-              {this.steder.map(sted => (
-                <option key={sted.lokasjon} value={sted.tilhører}>
-                  {sted.lokasjon}
-                </option>
-              ))}
-              <br />
-            </Form.Control>
-          </ListGroup.Item>
+            <Row>
+              <Col>
+                <Form.Label>Tilhører:</Form.Label>
+                <Form.Control as="select" onChange={e => (this.tilhører = e.target.value)}>
+                  {this.steder.map(sted => (
+                    <option key={sted.lokasjon} value={sted.tilhører}>
+                      {sted.lokasjon}
+                    </option>
+                  ))}
+                  <br />
+                </Form.Control>
+              </Col>
 
-          <ListGroup.Item className="list-group-item">
-            <Form.Label>Ramme:</Form.Label>
-            <Form.Control onChange={e => (this.ramme = e.target.value)} />
-            <Form.Label>Girsystem:</Form.Label>
-            <Form.Control type="number" onChange={e => (this.girsystem = e.target.value)} />
-            <Form.Label>Størrese hjul:</Form.Label>
-            <Form.Control type="number" onChange={e => (this.størrelse_hjul = e.target.value)} />
-            <br />
+              <Col>
+                <Form.Label>Ramme:</Form.Label>
+                <Form.Control onChange={e => (this.ramme = e.target.value)} />
+              </Col>
+              <Col>
+                <Form.Label>Girsystem:</Form.Label>
+                <Form.Control type="number" onChange={e => (this.girsystem = e.target.value)} />
+              </Col>
+              <Col>
+                <Form.Label>Størrese hjul:</Form.Label>
+                <Form.Control type="number" onChange={e => (this.størrelse_hjul = e.target.value)} />
+                <br />
+              </Col>
+            </Row>
             <Button onClick={this.nySykkel}>Legg til ny sykkel</Button>
           </ListGroup.Item>
         </Form.Group>
@@ -720,11 +766,17 @@ class NyUtstyr extends Ny {
 
         <ListGroup.Item className="list-group-item">
           <h4>Ligger ikke typen inne? Legg til ny her!</h4>
-          <Form.Label>Ny type:</Form.Label>
-          <Form.Control onChange={e => (this.nytype = e.target.value)} />
-          <Form.Label>Pris:</Form.Label>
-          <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} />
-          <br />
+          <Row>
+            <Col>
+              <Form.Label>Ny type:</Form.Label>
+              <Form.Control onChange={e => (this.nytype = e.target.value)} />
+            </Col>
+            <Col>
+              <Form.Label>Pris:</Form.Label>
+              <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} />
+              <br />
+            </Col>
+          </Row>
           <Button onClick={this.nyTypeUtstyr}>Legg til ny type</Button>
         </ListGroup.Item>
 
@@ -770,6 +822,54 @@ class NyUtstyr extends Ny {
   }
 }
 
+class NyRestriksjon extends Ny {
+  typerSykler = [];
+  typerUtstyr = [];
+
+  render() {
+    return [
+      <React.Fragment>
+        <ListGroup.Item className="list-group-item">
+          <Row>
+            <Col>
+              <Form.Label>Type sykkel:</Form.Label>
+              <Form.Control as="select" onChange={e => (this.s_type = e.target.value)}>
+                {this.typerSykler.map(typeSykkel => (
+                  <option key={typeSykkel.type} value={typeSykkel.type}>
+                    {typeSykkel.type}
+                  </option>
+                ))}
+              </Form.Control>
+            </Col>
+            <Col>
+              <Form.Label>Type Utstyr:</Form.Label>
+              <Form.Control as="select" onChange={e => (this.u_type = e.target.value)}>
+                {this.typerUtstyr.map(typerUtstyr => (
+                  <option key={typerUtstyr.type} value={typerUtstyr.type}>
+                    {typerUtstyr.type}
+                  </option>
+                ))}
+              </Form.Control>
+            </Col>
+          </Row>
+        </ListGroup.Item>
+      </React.Fragment>
+    ];
+  }
+  mounted() {
+    typeStatusService.alleSykkelTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+
+    typeStatusService.alleUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+    });
+  }
+  nyRestriksjon() {
+    nyService.nyRestriksjon(this.s_type, this.u_type);
+  }
+}
+
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -796,6 +896,7 @@ ReactDOM.render(
       <Route exact path="/ny/sykkel" component={NySykkel} />
       <Route exact path="/ny/utstyr" component={NyUtstyr} />
       <Route exact path="/ny/lokasjon" component={NyLokasjon} />
+      <Route exact path="/ny/restriksjon" component={NyRestriksjon} />
     </div>
   </HashRouter>,
   document.getElementById('root')
