@@ -15,6 +15,7 @@ import {
   Dropdown,
   Item,
   Link,
+  Select,
   Nav,
   NavDropdown,
   FormControl,
@@ -169,6 +170,8 @@ class BestillingNew extends Component {
   fra = '';
 
   steder = [];
+  typerSykler = [];
+  typerUtstyr = [];
 
   render() {
     return (
@@ -213,6 +216,36 @@ class BestillingNew extends Component {
             <Button onClick={this.nyBestilling}>Ny bestilling</Button>
           </ListGroup.Item>
         </Form.Group>
+        <Dropdown >
+          <Button href="#/bestilling/sykler" variant="success">
+            TypeSykler
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerSykler.map(typerSykler => (
+              <Dropdown.Item key={typerSykler.type} href={'#/bestilling/sykler' + typerSykler.type}>
+                {typerSykler.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        <Dropdown >
+          <Button href="#/bestilling/Utstyr" variant="success">
+            typerUtstyr
+          </Button>
+
+          <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
+
+          <Dropdown.Menu>
+            {this.typerUtstyr.map(typerUtstyr => (
+              <Dropdown.Item key={typerUtstyr.type} href={'#/bestilling/Utstyr' + typerUtstyr.type}>
+                {typerUtstyr.type}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
       </React.Fragment>
     );
   }
@@ -220,12 +253,87 @@ class BestillingNew extends Component {
     bestillingService.hentSteder(steder => {
       this.steder = steder;
     });
-  }
+    bestillingService.hentLedigeSykler(typerSykler => {
+      this.typerSykler = typerSykler;
+    });
+
+  bestillingService.hentLedigeUtstyr(typerUtstyr => {
+    this.typerUtstyr = typerUtstyr;
+  });
+}
   nyKunde() {
     bestillingService.leggTilKunde(this.navn, this.email, this.mobilnummer);
   }
   nyBestilling() {
     bestillingService.leggTilBestilling(this.fra, this.til, this.henting, this.levering);
+  }
+}
+class LedigeSyklerType extends Component {
+  sykler = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Vare ID</th>
+            <th>Type</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+
+    {this.sykler.map(sykler => (
+            <tr key={sykler.v_id}>
+              <td>{sykler.v_id}</td>
+              <td>{sykler.type}</td>
+              <td>{sykler.pris}</td>
+            </tr>
+
+          ))}
+
+        </tbody>
+      </Table>
+    ];
+  }
+  mounted() {
+  bestillingService.hentSyklerLedige(this.props.match.params.type, sykler => {
+      this.sykler = sykler;
+    });
+  }
+}
+class LedigeUtstyrType extends Component {
+  utstyr = [];
+
+  render() {
+    return [
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Vare ID</th>
+            <th>Type</th>
+            <th>Pris</th>
+          </tr>
+        </thead>
+        <tbody>
+
+    {this.utstyr.map(utstyr => (
+            <tr key={utstyr.v_id}>
+              <td>{utstyr.v_id}</td>
+              <td>{utstyr.type}</td>
+              <td>{utstyr.pris}</td>
+            </tr>
+
+          ))}
+
+        </tbody>
+      </Table>
+    ];
+  }
+  mounted() {
+  bestillingService.hentUtstyrLedige(this.props.match.params.type, utstyr => {
+      this.utstyr = utstyr;
+    });
   }
 }
 
@@ -513,7 +621,8 @@ ReactDOM.render(
       <Route path="/bestilling" component={Bestilling} />
       <Route exact path="/bestilling/ny" component={BestillingNew} />
       <Route exact path="/bestilling/liste" component={BestillingListe} />
-
+    <Route exact path="/bestilling/sykler:type" component={LedigeSyklerType} />
+    <Route exact path="/bestilling/utstyr:type" component={LedigeUtstyrType} />
       <Route path="/status" component={Status} />
       <Route exact path="/status/alle" component={StatusListe} />
       <Route exact path="/status/alle:v_id" component={StatusSøkVare} />
