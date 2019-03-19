@@ -17,6 +17,7 @@ import {
   Dropdown,
   Item,
   Link,
+  Select,
   Nav,
   NavDropdown,
   FormControl,
