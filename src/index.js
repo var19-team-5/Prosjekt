@@ -286,43 +286,34 @@ class Status extends Component {
   render() {
     return [
       <React.Fragment>
-        <Button href="#/status/alle">Alle varer</Button>
-
-        <Dropdown as={ButtonGroup}>
-          <Button href="#/status/sykler">Sykler</Button>
-
-          <Dropdown.Toggle split id="dropdown-split-basic" />
-
-          <Dropdown.Menu>
-            {this.typerSykler.map(typeSykkel => (
-              <Dropdown.Item key={typeSykkel.type} href={'#/status/sykler' + typeSykkel.type}>
-                {typeSykkel.type}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-
-        <Dropdown as={ButtonGroup}>
-          <Button href="#/status/utstyr">Utstyr</Button>
-
-          <Dropdown.Toggle split id="dropdown-split-basic" />
-
-          <Dropdown.Menu>
-            {this.typerUtstyr.map(typeUtstyr => (
-              <Dropdown.Item key={typeUtstyr.type} href={'#/status/utstyr' + typeUtstyr.type}>
-                {typeUtstyr.type}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-
-        <DropdownButton as={ButtonGroup} title="Status">
-          {this.statuser.map(status => (
-            <Dropdown.Item key={status.status} href={'#/status/statuser' + status.status}>
-              {status.status}
-            </Dropdown.Item>
-          ))}
-        </DropdownButton>
+        <Navbar bg="light" variant="light">
+          <Nav>
+            <Nav.Link href="#/status/alle">Alle varer</Nav.Link>
+            <Nav.Link href="#/status/sykler">Sykler</Nav.Link>
+            <NavDropdown id="nav-dropdown">
+              {this.typerSykler.map(typeSykkel => (
+                <NavDropdown.Item key={typeSykkel.type} href={'#/status/sykler' + typeSykkel.type}>
+                  {typeSykkel.type}
+                </NavDropdown.Item>
+              ))}
+            </NavDropdown>
+            <Nav.Link href="#/status/utstyr">Utstyr</Nav.Link>
+            <NavDropdown id="nav-dropdown">
+              {this.typerUtstyr.map(typerUtstyr => (
+                <NavDropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
+                  {typerUtstyr.type}
+                </NavDropdown.Item>
+              ))}
+            </NavDropdown>
+            <NavDropdown title="Status" id="nav-dropdown">
+              {this.statuser.map(status => (
+                <NavDropdown.Item key={status.status} href={'#/status/statuser' + status.status}>
+                  {status.status}
+                </NavDropdown.Item>
+              ))}
+            </NavDropdown>
+          </Nav>
+        </Navbar>
 
         <ListGroup.Item className="list-group-item">
           <InputGroup className="mb-3">
@@ -630,12 +621,14 @@ class StatusUtstyrType extends StatusUtstyr {
 class Ny extends Component {
   render() {
     return (
-      <React.Fragment>
-        <Button href="#/ny/sykkel">Sykkel</Button>
-        <Button href="#/ny/utstyr">Utstyr</Button>
-        <Button href="#/ny/lokasjon">Lokasjon</Button>
-        <Button href="#/ny/restriksjon">Restriksjon</Button>
-      </React.Fragment>
+      <Navbar bg="light" variant="light">
+        <Nav>
+          <Nav.Link href="#/ny/sykkel">Sykkel</Nav.Link>
+          <Nav.Link href="#/ny/utstyr">Utstyr</Nav.Link>
+          <Nav.Link href="#/ny/lokasjon">Lokasjon</Nav.Link>
+          <Nav.Link href="#/ny/restriksjon">Restriksjon</Nav.Link>
+        </Nav>
+      </Navbar>
     );
   }
 }

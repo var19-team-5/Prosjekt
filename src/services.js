@@ -75,44 +75,6 @@ class NyBestillingService {
       success(results);
     });
   }
-  hentLedigeSykler( success) {
-    connection.query('select distinct type from sykkel ',
-   (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentLedigeUtstyr( success) {
-    connection.query('select distinct type from utstyr ',
-   (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  hentSyklerLedige(type, success) {
-    connection.query(
-      'SELECT * FROM sykkel INNER JOIN prisliste on sykkel.type = prisliste.type where sykkel.type=?',
-      [type],
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    );
-  }
-  hentUtstyrLedige(type, success) {
-    connection.query(
-      'SELECT * FROM utstyr INNER JOIN prisliste on utstyr.type = prisliste.type where utstyr.type=?',
-      [type],
-      (error, results) => {
-        if (error) return console.error(error);
-
-        success(results);
-      }
-    );
-  }
   leggTilKunde(navn, email, mobilnummer, success) {
     connection.query(
       'insert into kunde (navn, email, mobilnummer) values (?, ?, ?)',
