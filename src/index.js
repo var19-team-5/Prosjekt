@@ -39,7 +39,7 @@ class FormLabel extends Component {
 class Menu extends Component {
   render() {
     return (
-      <Navbar bg="light" variant="light">
+      <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#/">SUSU</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="#bestilling/ny">Bestilling</Nav.Link>
@@ -66,10 +66,12 @@ class Home extends Component {
 class Bestilling extends Component {
   render() {
     return (
-      <React.Fragment>
-        <Button href="#/bestilling/ny">Ny bestilling</Button>
-        <Button href="#/bestilling/liste">Bestillinger</Button>
-      </React.Fragment>
+      <Navbar bg="light" variant="light">
+        <Nav>
+          <Nav.Link href="#/bestilling/ny">Ny bestilling</Nav.Link>
+          <Nav.Link href="#/bestilling/liste">Bestillinger</Nav.Link>
+        </Nav>
+      </Navbar>
     );
   }
 }
@@ -158,23 +160,32 @@ class BestillingNy extends Bestilling {
             <Button onClick={this.nyBestilling}>Ny bestilling</Button>
           </ListGroup.Item>
 
-          <Dropdown>
-            <Dropdown.Toggle>Sykkel</Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              {this.typerSykler.map(typeSykkel => (
-                <Dropdown.Item key={typeSykkel.type}>{typeSykkel.type}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-
-            <Dropdown.Toggle>Utstyr</Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              {this.typerUtstyr.map(typeUtstyr => (
-                <Dropdown.Item key={typeUtstyr.type}>{typeUtstyr.type}</Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+          <ListGroup.Item className="list-group-item">
+            <Row>
+              <Col>
+                <Form.Label>Type sykkel:</Form.Label>
+                <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+                  {this.typerSykler.map(typeSykkel => (
+                    <option key={typeSykkel.type} value={typeSykkel.type}>
+                      {typeSykkel.type}
+                    </option>
+                  ))}
+                  <br />
+                </Form.Control>
+              </Col>
+              <Col>
+                <Form.Label>Type sykkel:</Form.Label>
+                <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+                  {this.typerUtstyr.map(typerUtstyr => (
+                    <option key={typerUtstyr.type} value={typerUtstyr.type}>
+                      {typerUtstyr.type}
+                    </option>
+                  ))}
+                  <br />
+                </Form.Control>
+              </Col>
+            </Row>
+          </ListGroup.Item>
         </Form.Group>
       </React.Fragment>
     );
