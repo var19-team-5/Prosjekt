@@ -9,6 +9,7 @@ import { Home } from './Innhold/hjem';
 
 import { Bestilling } from './Innhold/Bestilling/nav';
 import { BestillingNy } from './Innhold/Bestilling/ny';
+import { BestillingNyKunde } from './Innhold/Bestilling/Ny/kunde';
 import { BestillingListe } from './Innhold/Bestilling/liste';
 
 import { Status } from './Innhold/Status/nav';
