@@ -17,13 +17,17 @@ export class BestillingNy extends Bestilling {
   typerUtstyr = [];
   kunde = [];
   sykler = [];
+  utstyr = [];
   kundeListe = [];
 
   render() {
     return (
       <React.Fragment>
-        <Form.Group>
+
+        <Row>
+         <Col>
           <ListGroup.Item className="list-group-item">
+
             <Row>
               <Col>
                 <Form.Label> Mobilnummer: </Form.Label>
@@ -55,7 +59,7 @@ export class BestillingNy extends Bestilling {
                   onChange={e => (this.email = e.target.value)}
                 />
               </Col>
-            </Row>
+             </Row>
             <Button onClick={this.nyKunde}>Ny kunde</Button>
           </ListGroup.Item>
 
@@ -94,7 +98,8 @@ export class BestillingNy extends Bestilling {
             </Row>
             <Button onClick={this.nyBestilling}>Ny bestilling</Button>
           </ListGroup.Item>
-
+          </Col>
+         <Col>
           <ListGroup.Item className="list-group-item">
             <Row>
               <Col>
@@ -111,6 +116,34 @@ export class BestillingNy extends Bestilling {
                   ))}
                   <br />
                 </Form.Control>
+                <Table striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>Vare ID</th>
+                      <th>Type</th>
+                      <th>ramme</th>
+                      <th>girsystem</th>
+                      <th>størreslse på hjul</th>
+                      <th>Befinner seg</th>
+                      <th>Status</th>
+                      <th>Pris</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.sykler.map(sykkel => (
+                      <tr key={sykkel.v_id}>
+                        <td>{sykkel.v_id}</td>
+                        <td>{sykkel.type}</td>
+                        <td>{sykkel.ramme}</td>
+                        <td>{sykkel.girsystem}</td>
+                        <td>{sykkel.størrelse_hjul}</td>
+                        <td>{sykkel.lokasjon}</td>
+                        <td>{sykkel.status}</td>
+                        <td>{sykkel.pris}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </Col>
               <Col>
                 <Form.Label>Type utstyr:</Form.Label>
@@ -124,39 +157,36 @@ export class BestillingNy extends Bestilling {
                     </option>
                   ))}
                   <br />
+
                 </Form.Control>
+                <Table striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>Vare ID</th>
+                      <th>Type</th>
+                      <th>Befinner seg</th>
+                      <th>Status</th>
+                      <th>Pris</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.utstyr.map(utstyr => (
+                      <tr key={utstyr.v_id}>
+                        <td>{utstyr.v_id}</td>
+                        <td>{utstyr.type}</td>
+                        <td>{utstyr.lokasjon}</td>
+                        <td>{utstyr.status}</td>
+                        <td>{utstyr.pris}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </Col>
             </Row>
           </ListGroup.Item>
-        </Form.Group>
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th>Vare ID</th>
-              <th>Type</th>
-              <th>Ramme</th>
-              <th>Girsystem</th>
-              <th>Storrelse på hjul</th>
-              <th>Befinner seg</th>
-              <th>Status</th>
-              <th>Pris</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.sykler.map(sykkel => (
-              <tr key={sykkel.v_id}>
-                <td>{sykkel.v_id}</td>
-                <td>{sykkel.type}</td>
-                <td>{sykkel.ramme}</td>
-                <td>{sykkel.girsystem}</td>
-                <td>{sykkel.størrelse_hjul}</td>
-                <td>{sykkel.lokasjon}</td>
-                <td>{sykkel.status}</td>
-                <td>{sykkel.pris}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+
+      </Col>
+      </Row>
       </React.Fragment>
     );
   }
