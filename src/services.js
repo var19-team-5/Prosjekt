@@ -169,6 +169,28 @@ class s_Sok {
       success(results);
     });
   }
+  LedigeSykler(fra, til, success) {
+    connection.query(
+      'SELECT * FROM vare LEFT JOIN utleieliste ON utleieliste.v_id = vare.v_id LEFT JOIN bestilling ON bestilling.b_id = utleieliste.b_id LEFT JOIN sykkel ON sykkel.v_id = vare.v_id WHERE ((bestilling.fra NOT BETWEEN ? AND ?) OR (bestilling.fra IS NULL) ) AND sykkel.v_id IS NOT NULL OR ((bestilling.til NOT BETWEEN ? AND ?) OR( bestilling.til IS NULL)) AND sykkel.v_id IS NOT NULL ORDER BY `sykkel`.`v_id`  ASC',
+      [fra, til, fra, til],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  LedigeSyklerTyper(fra, til, type, success) {
+    connection.query(
+      'SELECT * FROM vare LEFT JOIN utleieliste ON utleieliste.v_id = vare.v_id LEFT JOIN bestilling ON bestilling.b_id = utleieliste.b_id LEFT JOIN sykkel ON sykkel.v_id = vare.v_id WHERE ((bestilling.fra NOT BETWEEN ? AND ?) OR (bestilling.fra IS NULL) ) AND sykkel.v_id IS NOT NULL AND sykkel.type=? OR ((bestilling.til NOT BETWEEN ? AND ?) OR( bestilling.til IS NULL)) AND sykkel.v_id IS NOT NULL AND sykkel.type=? ORDER BY `sykkel`.`v_id`  ASC',
+      [fra, til, type, fra, til, type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
 }
 
 class s_Typer {

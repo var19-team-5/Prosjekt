@@ -19,6 +19,8 @@ export class BestillingNy extends Bestilling {
   sykler = [];
   kundeListe = [];
 
+  sykkelliste = [];
+
   render() {
     return (
       <React.Fragment>
@@ -98,9 +100,11 @@ export class BestillingNy extends Bestilling {
           <ListGroup.Item className="list-group-item">
             <Row>
               <Col>
+                <Button onClick={this.sokLedigeSykler}>Sykler</Button>
+
                 <Form.Label>Type sykkel:</Form.Label>
 
-                <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+                <Form.Control as="select" onInput={this.sokLedigeSykler} onChange={e => (this.type = e.target.value)}>
                   <option value="" disabled selected hidden>
                     Velg type her
                   </option>
@@ -185,5 +189,17 @@ export class BestillingNy extends Bestilling {
   }
   nyBestilling() {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
+  }
+  sokLedigeSykler() {
+    s_sok.LedigeSykler(this.fra, this.til, sykler => {
+      this.sykler = sykler;
+    });
+    setTimeout(() => {}, 250);
+  }
+  sokLedigeSyklerType() {
+    s_sok.LedigeSykler(this.fra, this.til, this.type, sykler => {
+      this.sykler = sykler;
+    });
+    setTimeout(() => {}, 250);
   }
 }
