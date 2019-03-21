@@ -1,14 +1,10 @@
 import * as React from 'react';
 import { s_ny, s_sok, s_typer, s_hent } from './../../services';
-import { Row, Col, Button, Form, FormControl, ListGroup, Table } from 'react-bootstrap';
+import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup } from 'react-bootstrap';
 
 import { Bestilling } from './nav';
 
 export class BestillingNy extends Bestilling {
-  navn = '';
-  email = '';
-  mobilnummer = '';
-
   til = '';
   fra = '';
 
@@ -104,7 +100,11 @@ export class BestillingNy extends Bestilling {
 
                 <Form.Label>Type sykkel:</Form.Label>
 
-                <Form.Control as="select" onChange={this.sokLedigeSykler} onInput={e => (this.type = e.target.value)}>
+                <Form.Control
+                  as="select"
+                  onChange={this.sokLedigeSyklerType}
+                  onInput={e => (this.type = e.target.value)}
+                >
                   <option value="" disabled selected hidden>
                     Velg type her
                   </option>
@@ -117,8 +117,14 @@ export class BestillingNy extends Bestilling {
                 </Form.Control>
               </Col>
               <Col>
+                <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
+
                 <Form.Label>Type utstyr:</Form.Label>
-                <Form.Control as="select" onChange={this.sokLedigeUtstyr} onInput={e => (this.type = e.target.value)}>
+                <Form.Control
+                  as="select"
+                  onChange={this.sokLedigeUtstyrType}
+                  onInput={e => (this.type = e.target.value)}
+                >
                   <option value="" disabled selected hidden>
                     Velg type her
                   </option>
@@ -143,6 +149,7 @@ export class BestillingNy extends Bestilling {
               <th>Storrelse på hjul</th>
               <th>Status</th>
               <th>Pris</th>
+              <th>Velg</th>
             </tr>
           </thead>
           <tbody>
@@ -155,6 +162,29 @@ export class BestillingNy extends Bestilling {
                 <td>{sykkel.størrelse_hjul}</td>
                 <td>{sykkel.status}</td>
                 <td>{sykkel.pris}</td>
+                <Form.Check type="checkbox" />
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Pris</th>
+              <th>Velg</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.utstyr.map(utstyr => (
+              <tr key={utstyr.v_id}>
+                <td>{utstyr.v_id}</td>
+                <td>{utstyr.type}</td>
+                <td>{utstyr.status}</td>
+                <td>{utstyr.pris}</td>
+                <Form.Check type="checkbox" />
               </tr>
             ))}
           </tbody>
@@ -214,9 +244,21 @@ export class BestillingNy extends Bestilling {
     });
     setTimeout(() => {}, 250);
   }
-  sokLedigeSykler() {
-    s_sok.LedigeSyklerTyper(this.fra, this.til, this.type, sykler => {
+  sokLedigeSyklerType() {
+    s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
       this.sykler = sykler;
+    });
+    setTimeout(() => {}, 250);
+  }
+  sokLedigeUtstyr() {
+    s_sok.LedigeUtstyr(this.fra, this.til, utstyr => {
+      this.utstyr = utstyr;
+    });
+    setTimeout(() => {}, 250);
+  }
+  sokLedigeUtstyrType() {
+    s_sok.LedigeUtstyrType(this.fra, this.til, this.type, utstyr => {
+      this.utstyr = utstyr;
     });
     setTimeout(() => {}, 250);
   }

@@ -6,7 +6,7 @@ export class Home extends Component {
   render() {
     return (
       <Card>
-        Til SUSU v5!
+        Til SUSU v5.2!
         <br />
         Dette er verdens beste informasjonssystem for utleie av sykler og utstyr.
       </Card>

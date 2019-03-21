@@ -171,8 +171,8 @@ class s_Sok {
   }
   LedigeSykler(fra, til, success) {
     connection.query(
-      'SELECT * FROM tilgjengelige_sykler',
-      [fra, til, fra, til],
+      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)',
+      [fra, til],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -180,10 +180,32 @@ class s_Sok {
       }
     );
   }
-  LedigeSyklerTyper(fra, til, type, success) {
+  LedigeSyklerType(fra, til, type, success) {
     connection.query(
-      'SELECT * FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
-      [fra, til, fra, til, type],
+      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
+      [fra, til, type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  LedigeUtstyr(fra, til, success) {
+    connection.query(
+      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)',
+      [fra, til],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  LedigeUtstyrType(fra, til, type, success) {
+    connection.query(
+      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
+      [fra, til, type],
       (error, results) => {
         if (error) return console.error(error);
 
