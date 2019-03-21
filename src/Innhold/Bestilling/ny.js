@@ -5,10 +5,6 @@ import { Row, Col, Button, Form, FormControl, ListGroup, Table } from 'react-boo
 import { Bestilling } from './nav';
 
 export class BestillingNy extends Bestilling {
-  navn = '';
-  email = '';
-  mobilnummer = '';
-
   til = '';
   fra = '';
 
@@ -17,7 +13,10 @@ export class BestillingNy extends Bestilling {
   typerUtstyr = [];
   kunde = [];
   sykler = [];
+  utstyr = [];
   kundeListe = [];
+
+  sykkelliste = [];
 
   render() {
     return (
@@ -98,9 +97,15 @@ export class BestillingNy extends Bestilling {
           <ListGroup.Item className="list-group-item">
             <Row>
               <Col>
+                <Button onClick={this.sokLedigeSykler}>Sykler</Button>
+
                 <Form.Label>Type sykkel:</Form.Label>
 
-                <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+                <Form.Control
+                  as="select"
+                  onChange={this.sokLedigeSyklerType}
+                  onInput={e => (this.type = e.target.value)}
+                >
                   <option value="" disabled selected hidden>
                     Velg type her
                   </option>
@@ -113,8 +118,14 @@ export class BestillingNy extends Bestilling {
                 </Form.Control>
               </Col>
               <Col>
+                <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
+
                 <Form.Label>Type utstyr:</Form.Label>
-                <Form.Control as="select" onChange={e => (this.type = e.target.value)}>
+                <Form.Control
+                  as="select"
+                  onChange={this.sokLedigeUtstyrType}
+                  onInput={e => (this.type = e.target.value)}
+                >
                   <option value="" disabled selected hidden>
                     Velg type her
                   </option>
@@ -157,6 +168,28 @@ export class BestillingNy extends Bestilling {
             ))}
           </tbody>
         </Table>
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Befinner seg</th>
+              <th>Status</th>
+              <th>Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.utstyr.map(utstyr => (
+              <tr key={utstyr.v_id}>
+                <td>{utstyr.v_id}</td>
+                <td>{utstyr.type}</td>
+                <td>{utstyr.lokasjon}</td>
+                <td>{utstyr.status}</td>
+                <td>{utstyr.pris}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </React.Fragment>
     );
   }
@@ -185,5 +218,29 @@ export class BestillingNy extends Bestilling {
   }
   nyBestilling() {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
+  }
+  sokLedigeSykler() {
+    s_sok.LedigeSykler(this.fra, this.til, sykler => {
+      this.sykler = sykler;
+    });
+    setTimeout(() => {}, 250);
+  }
+  sokLedigeSyklerType() {
+    s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
+      this.sykler = sykler;
+    });
+    setTimeout(() => {}, 250);
+  }
+  sokLedigeUtstyr() {
+    s_sok.LedigeUtstyr(this.fra, this.til, utstyr => {
+      this.utstyr = utstyr;
+    });
+    setTimeout(() => {}, 250);
+  }
+  sokLedigeUtstyrType() {
+    s_sok.LedigeUtstyrType(this.fra, this.til, this.type, utstyr => {
+      this.utstyr = utstyr;
+    });
+    setTimeout(() => {}, 250);
   }
 }

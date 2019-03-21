@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { s_typer, s_ny } from './../../services';
-import { ListGroup, Row, Col, Form } from 'react-bootstrap';
+import { ListGroup, Row, Col, Form, Button } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
@@ -34,6 +34,7 @@ export class NyRestriksjon extends Ny {
               </Form.Control>
             </Col>
           </Row>
+          <Button onClick={this.nyRestriksjon}>Legg til ny restriksjon</Button>
         </ListGroup.Item>
       </React.Fragment>
     ];
