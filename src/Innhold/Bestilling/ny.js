@@ -32,7 +32,6 @@ export class BestillingNy extends Bestilling {
                   onInput={e => (this.mobilnummer = e.target.value)}
                   onChange={this.sokKunde}
                 />
-                <br />
               </Col>
               <Col>
                 <Form.Label> Navn: </Form.Label>
@@ -114,8 +113,8 @@ export class BestillingNy extends Bestilling {
                       {typeSykkel.type}
                     </option>
                   ))}
-                  <br />
                 </Form.Control>
+                <br />
               </Col>
               <Col>
                 <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
@@ -134,8 +133,8 @@ export class BestillingNy extends Bestilling {
                       {typerUtstyr.type}
                     </option>
                   ))}
-                  <br />
                 </Form.Control>
+                <br />
               </Col>
             </Row>
           </ListGroup.Item>
@@ -143,27 +142,27 @@ export class BestillingNy extends Bestilling {
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
-              <th>Vare ID</th>
+              <th className="text-center">Vare ID</th>
               <th>Type</th>
               <th>Ramme</th>
-              <th>Girsystem</th>
-              <th>Storrelse på hjul</th>
+              <th className="text-center">Girsystem</th>
+              <th className="text-center">Storrelse på hjul</th>
               <th>Status</th>
-              <th>Pris</th>
-              <th>Velg</th>
+              <th className="text-center">Pris</th>
+              <th className="text-center">Velg</th>
             </tr>
           </thead>
           <tbody>
             {this.sykler.map(sykkel => (
               <tr key={sykkel.v_id}>
-                <td>{sykkel.v_id}</td>
+                <td className="text-center">{sykkel.v_id}</td>
                 <td>{sykkel.type}</td>
                 <td>{sykkel.ramme}</td>
-                <td>{sykkel.girsystem}</td>
-                <td>{sykkel.størrelse_hjul}</td>
+                <td className="text-center">{sykkel.girsystem}</td>
+                <td className="text-center">{sykkel.størrelse_hjul}</td>
                 <td>{sykkel.status}</td>
-                <td>{sykkel.pris}</td>
-                <Form.Check type="checkbox" />
+                <td className="text-center">{sykkel.pris}</td>
+                <Form.Check className="text-center" type="checkbox" onClick={this.test} />
               </tr>
             ))}
           </tbody>
@@ -171,21 +170,21 @@ export class BestillingNy extends Bestilling {
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
-              <th>Vare ID</th>
+              <th className="text-center">Vare ID</th>
               <th>Type</th>
               <th>Status</th>
-              <th>Pris</th>
-              <th>Velg</th>
+              <th className="text-center">Pris</th>
+              <th className="text-center">Velg</th>
             </tr>
           </thead>
           <tbody>
             {this.utstyr.map(utstyr => (
               <tr key={utstyr.v_id}>
-                <td>{utstyr.v_id}</td>
+                <td className="text-center">{utstyr.v_id}</td>
                 <td>{utstyr.type}</td>
                 <td>{utstyr.status}</td>
-                <td>{utstyr.pris}</td>
-                <Form.Check type="checkbox" />
+                <td className="text-center">{utstyr.pris}</td>
+                <Form.Check className="text-center" type="checkbox" onClick={this.test} />
               </tr>
             ))}
           </tbody>
@@ -193,6 +192,7 @@ export class BestillingNy extends Bestilling {
       </React.Fragment>
     );
   }
+  test() {}
   mounted() {
     s_hent.Steder(steder => {
       this.steder = steder;
