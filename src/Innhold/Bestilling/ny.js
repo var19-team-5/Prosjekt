@@ -16,7 +16,6 @@ export class BestillingNy extends Bestilling {
   utstyr = [];
   kundeListe = [];
 
-  sykkelliste = [];
 
   render() {
     return (
@@ -190,8 +189,28 @@ export class BestillingNy extends Bestilling {
             ))}
           </tbody>
         </Table>
-      </React.Fragment>
-    );
+        <Table striped bordered hover size="sm">
+          <thead>
+            <tr>
+              <th>Vare ID</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Pris</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.utstyr.map(utstyr => (
+              <tr key={utstyr.v_id}>
+                <td>{utstyr.v_id}</td>
+                <td>{utstyr.type}</td>
+                <td>{utstyr.status}</td>
+                <td>{utstyr.pris}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+  </React.Fragment>
+);
   }
   mounted() {
     s_hent.Steder(steder => {
@@ -219,9 +238,9 @@ export class BestillingNy extends Bestilling {
   nyBestilling() {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
   }
-  sokLedigeSykler() {
-    s_sok.LedigeSykler(this.fra, this.til, sykler => {
-      this.sykler = sykler;
+  sokLedigeUtstyr() {
+    s_sok.LedigeUtstyrTyper(this.fra, this.til, utstyr => {
+      this.utstyr = utstyr;
     });
     setTimeout(() => {}, 250);
   }
