@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { s_ny, s_sok, s_typer, s_hent } from './../../services';
-import { Row, Col, Button, Form, FormControl, ListGroup, Table } from 'react-bootstrap';
+import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup } from 'react-bootstrap';
 
 import { Bestilling } from './nav';
 
@@ -148,9 +148,9 @@ export class BestillingNy extends Bestilling {
               <th>Ramme</th>
               <th>Girsystem</th>
               <th>Storrelse på hjul</th>
-              <th>Befinner seg</th>
               <th>Status</th>
               <th>Pris</th>
+              <th>Velg</th>
             </tr>
           </thead>
           <tbody>
@@ -161,9 +161,9 @@ export class BestillingNy extends Bestilling {
                 <td>{sykkel.ramme}</td>
                 <td>{sykkel.girsystem}</td>
                 <td>{sykkel.størrelse_hjul}</td>
-                <td>{sykkel.lokasjon}</td>
                 <td>{sykkel.status}</td>
                 <td>{sykkel.pris}</td>
+                <Form.Check type="checkbox" />
               </tr>
             ))}
           </tbody>
@@ -173,9 +173,9 @@ export class BestillingNy extends Bestilling {
             <tr>
               <th>Vare ID</th>
               <th>Type</th>
-              <th>Befinner seg</th>
               <th>Status</th>
               <th>Pris</th>
+              <th>Velg</th>
             </tr>
           </thead>
           <tbody>
@@ -183,9 +183,9 @@ export class BestillingNy extends Bestilling {
               <tr key={utstyr.v_id}>
                 <td>{utstyr.v_id}</td>
                 <td>{utstyr.type}</td>
-                <td>{utstyr.lokasjon}</td>
                 <td>{utstyr.status}</td>
                 <td>{utstyr.pris}</td>
+                <Form.Check type="checkbox" />
               </tr>
             ))}
           </tbody>
