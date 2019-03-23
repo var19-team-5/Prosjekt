@@ -18,6 +18,8 @@ export class BestillingNy extends Bestilling {
 
   sykkelliste = [];
 
+  v_id = '';
+
   render() {
     return (
       <React.Fragment>
@@ -162,7 +164,12 @@ export class BestillingNy extends Bestilling {
                     <td className="text-center">{sykkel.størrelse_hjul}</td>
                     <td>{sykkel.status}</td>
                     <td className="text-center">{sykkel.pris}</td>
-                    <Form.Check className="text-center" type="checkbox" onClick={this.test} />
+                    <Form.Check
+                      value={sykkel.v_id}
+                      onClick={e => (this.v_id = e.target.value)}
+                      className="text-center"
+                      onChange={this.test}
+                    />
                   </tr>
                 ))}
               </tbody>
@@ -179,12 +186,12 @@ export class BestillingNy extends Bestilling {
               </thead>
               <tbody>
                 {this.utstyr.map(utstyr => (
-                  <tr key={utstyr.v_id}>
+                  <tr key={utstyr.v_id} onClick={this.test}>
                     <td className="text-center">{utstyr.v_id}</td>
                     <td>{utstyr.type}</td>
                     <td>{utstyr.status}</td>
                     <td className="text-center">{utstyr.pris}</td>
-                    <Form.Check className="text-center" type="checkbox" onClick={this.test} />
+                    <Form.Check className="text-center" type="checkbox" onClick={this.v_id.test} />
                   </tr>
                 ))}
               </tbody>
@@ -194,7 +201,9 @@ export class BestillingNy extends Bestilling {
       </React.Fragment>
     );
   }
-  test() {}
+  test() {
+    console.log(this.v_id);
+  }
   mounted() {
     s_hent.Steder(steder => {
       this.steder = steder;
