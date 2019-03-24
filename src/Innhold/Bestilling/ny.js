@@ -5,6 +5,14 @@ import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup } fro
 import { Bestilling } from './nav';
 
 export class BestillingNy extends Bestilling {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      valgt: []
+    };
+  }
+
   til = '';
   fra = '';
 
@@ -21,6 +29,7 @@ export class BestillingNy extends Bestilling {
   v_id = '';
 
   render() {
+    const { valgt } = this.state;
     return (
       <React.Fragment>
         <Row>
@@ -35,8 +44,7 @@ export class BestillingNy extends Bestilling {
                     onInput={e => (this.mobilnummer = e.target.value)}
                     onChange={this.sokKunde}
                   />
-                </Col>
-                <Col>
+
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
                     required
@@ -45,8 +53,7 @@ export class BestillingNy extends Bestilling {
                     value={this.navn}
                     onChange={e => (this.navn = e.target.value)}
                   />
-                </Col>
-                <Col>
+
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
                     required
@@ -57,6 +64,7 @@ export class BestillingNy extends Bestilling {
                   />
                 </Col>
               </Row>
+              <br />
               <Button onClick={this.nyKunde}>Ny kunde</Button>
             </ListGroup.Item>
 
@@ -149,12 +157,11 @@ export class BestillingNy extends Bestilling {
                   <th>Ramme</th>
                   <th className="text-center">Girsystem</th>
                   <th className="text-center">Storrelse på hjul</th>
-                  <th>Status</th>
                   <th className="text-center">Pris</th>
                   <th className="text-center">Velg</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody scrollable>
                 {this.sykler.map(sykkel => (
                   <tr key={sykkel.v_id}>
                     <td className="text-center">{sykkel.v_id}</td>
@@ -162,13 +169,14 @@ export class BestillingNy extends Bestilling {
                     <td>{sykkel.ramme}</td>
                     <td className="text-center">{sykkel.girsystem}</td>
                     <td className="text-center">{sykkel.størrelse_hjul}</td>
-                    <td>{sykkel.status}</td>
                     <td className="text-center">{sykkel.pris}</td>
                     <Form.Check
                       value={sykkel.v_id}
                       onClick={e => (this.v_id = e.target.value)}
                       className="text-center"
-                      onChange={this.test}
+                      onChange={e => {
+                        this.test(e);
+                      }}
                     />
                   </tr>
                 ))}
@@ -179,7 +187,6 @@ export class BestillingNy extends Bestilling {
                 <tr>
                   <th className="text-center">Vare ID</th>
                   <th>Type</th>
-                  <th>Status</th>
                   <th className="text-center">Pris</th>
                   <th className="text-center">Velg</th>
                 </tr>
@@ -189,21 +196,38 @@ export class BestillingNy extends Bestilling {
                   <tr key={utstyr.v_id} onClick={this.test}>
                     <td className="text-center">{utstyr.v_id}</td>
                     <td>{utstyr.type}</td>
-                    <td>{utstyr.status}</td>
                     <td className="text-center">{utstyr.pris}</td>
-                    <Form.Check className="text-center" type="checkbox" onClick={this.v_id.test} />
+                    <Form.Check
+                      value={utstyr.v_id}
+                      onClick={e => (this.v_id = e.target.value)}
+                      className="text-center"
+                      onChange={e => {
+                        this.test(e);
+                      }}
+                    />
                   </tr>
                 ))}
               </tbody>
             </Table>
           </Col>
+          <Col>
+            <div id="valg" />
+          </Col>
         </Row>
       </React.Fragment>
     );
   }
-  test() {
-    console.log(this.v_id);
+  test(e) {
+    const { valgt } = this.state;
+    console.log(valgt);
+
+    this.setState({
+      valgt: [...this.state.valgt, this.v_id]
+    });
+    console.log(valgt);
+    document.getElementById('valg').innerHTML = valgt;
   }
+
   mounted() {
     s_hent.Steder(steder => {
       this.steder = steder;
