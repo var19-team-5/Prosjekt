@@ -11,11 +11,14 @@ export class BestillingNy extends Bestilling {
     this.state = {
       valgt: []
     };
+    this.summer = {
+      prisListe: []
+    };
   }
 
   til = '';
   fra = '';
-
+  valgt = [];
   steder = [];
   typerSykler = [];
   typerUtstyr = [];
@@ -24,11 +27,11 @@ export class BestillingNy extends Bestilling {
   utstyr = [];
   kundeListe = [];
 
-
-  v_id = '';
+  v_id = []
 
   render() {
     const { valgt } = this.state;
+    const { prisListe } = this.summer;
     return (
       <React.Fragment>
         <Row>
@@ -170,11 +173,13 @@ export class BestillingNy extends Bestilling {
                     <td className="text-center">{sykkel.størrelse_hjul}</td>
                     <td className="text-center">{sykkel.pris}</td>
                     <Form.Check
-                      value={sykkel.v_id}
-                      onClick={e => (this.v_id = e.target.value)}
+                      id={sykkel.pris}
+                      value={sykkel.type}
+                      onClick={e => (this.type = e.target.value) && (this.pris = e.target.id)}
                       className="text-center"
                       onChange={e => {
-                        this.test(e);
+                        this.test(e)
+                        this.sum(e);
                       }}
                     />
                   </tr>
@@ -192,16 +197,18 @@ export class BestillingNy extends Bestilling {
               </thead>
               <tbody>
                 {this.utstyr.map(utstyr => (
-                  <tr key={utstyr.v_id} onClick={this.test}>
+                  <tr key={utstyr.v_id}>
                     <td className="text-center">{utstyr.v_id}</td>
                     <td>{utstyr.type}</td>
                     <td className="text-center">{utstyr.pris}</td>
                     <Form.Check
-                      value={utstyr.v_id}
-                      onClick={e => (this.v_id = e.target.value)}
+                     id={sykkel.pris}
+                      value={utstyr.type}
+                      onClick={e => (this.type = e.target.value) && (this.pris = e.target.id)}
                       className="text-center"
                       onChange={e => {
                         this.test(e);
+                        this.sum(e);
                       }}
                     />
                   </tr>
@@ -211,20 +218,27 @@ export class BestillingNy extends Bestilling {
           </Col>
           <Col>
             <div id="valg" />
+            <div id="pris" />
           </Col>
         </Row>
       </React.Fragment>
     );
   }
+  sum(e) {
+    const { prisListe } = this.summer;
+      prisListe.push(this.pris);
+
+    document.getElementById('pris').innerHTML = prisListe;
+    console.log(prisListe);
+
+  }
   test(e) {
     const { valgt } = this.state;
+      valgt.push(this.type);
+
+    document.getElementById('valg').innerHTML = valgt;
     console.log(valgt);
 
-    this.setState({
-      valgt: [...this.state.valgt, this.v_id]
-    });
-    console.log(valgt);
-    document.getElementById('valg').innerHTML = valgt;
   }
 
   mounted() {
