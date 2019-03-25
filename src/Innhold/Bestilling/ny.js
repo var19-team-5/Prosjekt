@@ -5,6 +5,14 @@ import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup } fro
 import { Bestilling } from './nav';
 
 export class BestillingNy extends Bestilling {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      valgt: []
+    };
+  }
+
   til = '';
   fra = '';
 
@@ -17,201 +25,208 @@ export class BestillingNy extends Bestilling {
   kundeListe = [];
 
 
+  v_id = '';
+
   render() {
+    const { valgt } = this.state;
     return (
       <React.Fragment>
-        <Form.Group>
-          <ListGroup.Item className="list-group-item">
-            <Row>
-              <Col>
-                <Form.Label> Mobilnummer: </Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  onInput={e => (this.mobilnummer = e.target.value)}
-                  onChange={this.sokKunde}
-                />
-                <br />
-              </Col>
-              <Col>
-                <Form.Label> Navn: </Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  id="navnfelt"
-                  value={this.navn}
-                  onChange={e => (this.navn = e.target.value)}
-                />
-              </Col>
-              <Col>
-                <Form.Label> Email: </Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  id="emailfelt"
-                  value={this.email}
-                  onChange={e => (this.email = e.target.value)}
-                />
-              </Col>
-            </Row>
-            <Button onClick={this.nyKunde}>Ny kunde</Button>
-          </ListGroup.Item>
+        <Row>
+          <Col>
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col>
+                  <Form.Label> Mobilnummer: </Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    onInput={e => (this.mobilnummer = e.target.value)}
+                    onChange={this.sokKunde}
+                  />
 
-          <ListGroup.Item className="list-group-item">
-            <Row>
-              <Col>
-                <Form.Label> Fra: </Form.Label>
-                <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
-              </Col>
-              <Col>
-                <Form.Label> Til: </Form.Label>
-                <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
-              </Col>
-            </Row>
-          </ListGroup.Item>
+                  <Form.Label> Navn: </Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    id="navnfelt"
+                    value={this.navn}
+                    onChange={e => (this.navn = e.target.value)}
+                  />
 
-          <ListGroup.Item className="list-group-item">
-            <Row>
-              <Col>
-                <Form.Label>Hentested:</Form.Label>
-                <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
-                  {this.steder.map(sted => (
-                    <option key={sted.l_id}>{sted.lokasjon}</option>
-                  ))}
-                </Form.Control>
-              </Col>
-              <Col>
-                <Form.Label>Leveringsted:</Form.Label>
-                <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
-                  {this.steder.map(sted => (
-                    <option key={sted.l_id}>{sted.lokasjon}</option>
-                  ))}
-                </Form.Control>
-                <br />
-              </Col>
-            </Row>
-            <Button onClick={this.nyBestilling}>Ny bestilling</Button>
-          </ListGroup.Item>
+                  <Form.Label> Email: </Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    id="emailfelt"
+                    value={this.email}
+                    onChange={e => (this.email = e.target.value)}
+                  />
+                </Col>
+              </Row>
+              <br />
+              <Button onClick={this.nyKunde}>Ny kunde</Button>
+            </ListGroup.Item>
 
-          <ListGroup.Item className="list-group-item">
-            <Row>
-              <Col>
-                <Button onClick={this.sokLedigeSykler}>Sykler</Button>
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col>
+                  <Form.Label> Fra: </Form.Label>
+                  <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+                </Col>
+                <Col>
+                  <Form.Label> Til: </Form.Label>
+                  <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+                </Col>
+              </Row>
+            </ListGroup.Item>
 
-                <Form.Label>Type sykkel:</Form.Label>
-
-                <Form.Control
-                  as="select"
-                  onChange={this.sokLedigeSyklerType}
-                  onInput={e => (this.type = e.target.value)}
-                >
-                  <option value="" disabled selected hidden>
-                    Velg type her
-                  </option>
-                  {this.typerSykler.map(typeSykkel => (
-                    <option key={typeSykkel.type} value={typeSykkel.type}>
-                      {typeSykkel.type}
-                    </option>
-                  ))}
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col>
+                  <Form.Label>Hentested:</Form.Label>
+                  <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
+                    {this.steder.map(sted => (
+                      <option key={sted.l_id}>{sted.lokasjon}</option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col>
+                  <Form.Label>Leveringsted:</Form.Label>
+                  <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
+                    {this.steder.map(sted => (
+                      <option key={sted.l_id}>{sted.lokasjon}</option>
+                    ))}
+                  </Form.Control>
                   <br />
-                </Form.Control>
-              </Col>
-              <Col>
-                <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
+                </Col>
+              </Row>
+              <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+            </ListGroup.Item>
+          </Col>
+          <Col>
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col>
+                  <Button onClick={this.sokLedigeSykler}>Sykler</Button>
 
-                <Form.Label>Type utstyr:</Form.Label>
-                <Form.Control
-                  as="select"
-                  onChange={this.sokLedigeUtstyrType}
-                  onInput={e => (this.type = e.target.value)}
-                >
-                  <option value="" disabled selected hidden>
-                    Velg type her
-                  </option>
-                  {this.typerUtstyr.map(typerUtstyr => (
-                    <option key={typerUtstyr.type} value={typerUtstyr.type}>
-                      {typerUtstyr.type}
+                  <Form.Label>Type sykkel:</Form.Label>
+
+                  <Form.Control
+                    as="select"
+                    onChange={this.sokLedigeSyklerType}
+                    onInput={e => (this.type = e.target.value)}
+                  >
+                    <option value="" disabled selected hidden>
+                      Velg type her
                     </option>
-                  ))}
+                    {this.typerSykler.map(typeSykkel => (
+                      <option key={typeSykkel.type} value={typeSykkel.type}>
+                        {typeSykkel.type}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col>
+                  <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
+
+                  <Form.Label>Type utstyr:</Form.Label>
+                  <Form.Control
+                    as="select"
+                    onChange={this.sokLedigeUtstyrType}
+                    onInput={e => (this.type = e.target.value)}
+                  >
+                    <option value="" disabled selected hidden>
+                      Velg type her
+                    </option>
+                    {this.typerUtstyr.map(typerUtstyr => (
+                      <option key={typerUtstyr.type} value={typerUtstyr.type}>
+                        {typerUtstyr.type}
+                      </option>
+                    ))}
+                  </Form.Control>
                   <br />
-                </Form.Control>
-              </Col>
-            </Row>
-          </ListGroup.Item>
-        </Form.Group>
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th>Vare ID</th>
-              <th>Type</th>
-              <th>Ramme</th>
-              <th>Girsystem</th>
-              <th>Storrelse på hjul</th>
-              <th>Status</th>
-              <th>Pris</th>
-              <th>Velg</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.sykler.map(sykkel => (
-              <tr key={sykkel.v_id}>
-                <td>{sykkel.v_id}</td>
-                <td>{sykkel.type}</td>
-                <td>{sykkel.ramme}</td>
-                <td>{sykkel.girsystem}</td>
-                <td>{sykkel.størrelse_hjul}</td>
-                <td>{sykkel.status}</td>
-                <td>{sykkel.pris}</td>
-                <Form.Check type="checkbox" />
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th>Vare ID</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Pris</th>
-              <th>Velg</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.utstyr.map(utstyr => (
-              <tr key={utstyr.v_id}>
-                <td>{utstyr.v_id}</td>
-                <td>{utstyr.type}</td>
-                <td>{utstyr.status}</td>
-                <td>{utstyr.pris}</td>
-                <Form.Check type="checkbox" />
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-        <Table striped bordered hover size="sm">
-          <thead>
-            <tr>
-              <th>Vare ID</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Pris</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.utstyr.map(utstyr => (
-              <tr key={utstyr.v_id}>
-                <td>{utstyr.v_id}</td>
-                <td>{utstyr.type}</td>
-                <td>{utstyr.status}</td>
-                <td>{utstyr.pris}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-  </React.Fragment>
-);
+                </Col>
+              </Row>
+            </ListGroup.Item>
+            <Table striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th className="text-center">Vare ID</th>
+                  <th>Type</th>
+                  <th>Ramme</th>
+                  <th className="text-center">Girsystem</th>
+                  <th className="text-center">Storrelse på hjul</th>
+                  <th className="text-center">Pris</th>
+                  <th className="text-center">Velg</th>
+                </tr>
+              </thead>
+              <tbody scrollable>
+                {this.sykler.map(sykkel => (
+                  <tr key={sykkel.v_id}>
+                    <td className="text-center">{sykkel.v_id}</td>
+                    <td>{sykkel.type}</td>
+                    <td>{sykkel.ramme}</td>
+                    <td className="text-center">{sykkel.girsystem}</td>
+                    <td className="text-center">{sykkel.størrelse_hjul}</td>
+                    <td className="text-center">{sykkel.pris}</td>
+                    <Form.Check
+                      value={sykkel.v_id}
+                      onClick={e => (this.v_id = e.target.value)}
+                      className="text-center"
+                      onChange={e => {
+                        this.test(e);
+                      }}
+                    />
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+            <Table striped bordered hover size="sm">
+              <thead>
+                <tr>
+                  <th className="text-center">Vare ID</th>
+                  <th>Type</th>
+                  <th className="text-center">Pris</th>
+                  <th className="text-center">Velg</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.utstyr.map(utstyr => (
+                  <tr key={utstyr.v_id} onClick={this.test}>
+                    <td className="text-center">{utstyr.v_id}</td>
+                    <td>{utstyr.type}</td>
+                    <td className="text-center">{utstyr.pris}</td>
+                    <Form.Check
+                      value={utstyr.v_id}
+                      onClick={e => (this.v_id = e.target.value)}
+                      className="text-center"
+                      onChange={e => {
+                        this.test(e);
+                      }}
+                    />
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Col>
+          <Col>
+            <div id="valg" />
+          </Col>
+        </Row>
+      </React.Fragment>
+    );
   }
+  test(e) {
+    const { valgt } = this.state;
+    console.log(valgt);
+
+    this.setState({
+      valgt: [...this.state.valgt, this.v_id]
+    });
+    console.log(valgt);
+    document.getElementById('valg').innerHTML = valgt;
+  }
+
   mounted() {
     s_hent.Steder(steder => {
       this.steder = steder;
