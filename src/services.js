@@ -213,6 +213,20 @@ class s_Sok {
       }
     );
   }
+  antallBestillinger(success) {
+    connection.query('SELECT COUNT(b_id) AS salg FROM bestilling', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  antallKunder(success) {
+    connection.query('SELECT COUNT(k_id) AS kunder FROM kunde', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 class s_Typer {

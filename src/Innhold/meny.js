@@ -11,6 +11,7 @@ export class Menu extends Component {
           <Nav.Link href="#bestilling/ny">Bestilling</Nav.Link>
           <Nav.Link href="#status/alle">Status</Nav.Link>
           <Nav.Link href="#ny/sykkel">Ny</Nav.Link>
+          <Nav.Link href="#oversikt/soversikt">Oversikt</Nav.Link>
         </Nav>
       </Navbar>
     );
