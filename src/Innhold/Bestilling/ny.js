@@ -175,7 +175,7 @@ export class BestillingNy extends Bestilling {
                     <Form.Check
                       id={sykkel.pris}
                       value={sykkel.type}
-                      onClick={e => (this.type = e.target.value) && (this.pris = e.target.id)}
+                      onClick={e => (this.type = e.target.value) && (this.pris = parseInt(e.target.id))}
                       className="text-center"
                       onChange={e => {
                         this.test(e)
@@ -202,9 +202,9 @@ export class BestillingNy extends Bestilling {
                     <td>{utstyr.type}</td>
                     <td className="text-center">{utstyr.pris}</td>
                     <Form.Check
-                     id={sykkel.pris}
+                     id={utstyr.pris}
                       value={utstyr.type}
-                      onClick={e => (this.type = e.target.value) && (this.pris = e.target.id)}
+                      onClick={e => (this.type = e.target.value) && (this.pris = parseInt(e.target.id))}
                       className="text-center"
                       onChange={e => {
                         this.test(e);
@@ -226,9 +226,16 @@ export class BestillingNy extends Bestilling {
   }
   sum(e) {
     const { prisListe } = this.summer;
+    console.log(this.summer);
+
+    var totalSum = 0;
       prisListe.push(this.pris);
 
-    document.getElementById('pris').innerHTML = prisListe;
+      for (var i = 0; i < prisListe.length; i++) {
+        totalSum += prisListe[i];
+      }
+
+    document.getElementById('pris').innerHTML = totalSum + '<br>' + prisListe ;
     console.log(prisListe);
 
   }

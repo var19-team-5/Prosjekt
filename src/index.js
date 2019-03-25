@@ -26,6 +26,10 @@ import { NyUtstyr } from './Innhold/Ny/utstyr';
 import { NyLokasjon } from './Innhold/Ny/lokasjon';
 import { NyRestriksjon } from './Innhold/Ny/restriksjon';
 
+import { Oversikt } from './Innhold/Oversikt/nav';
+import { SalgsOversikt } from './Innhold/Oversikt/soversikt';
+
+
 ReactDOM.render(
   <HashRouter>
     <div>
@@ -53,6 +57,9 @@ ReactDOM.render(
       <Route exact path="/ny/utstyr" component={NyUtstyr} />
       <Route exact path="/ny/lokasjon" component={NyLokasjon} />
       <Route exact path="/ny/restriksjon" component={NyRestriksjon} />
+
+      <Route path="/oversikt" component={Oversikt} />
+      <Route exact path="/oversikt/soversikt" component={SalgsOversikt} />
     </div>
   </HashRouter>,
   document.getElementById('root')
