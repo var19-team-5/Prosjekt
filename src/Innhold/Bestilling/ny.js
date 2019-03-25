@@ -8,17 +8,35 @@ export class BestillingNy extends Bestilling {
   constructor(props) {
     super(props);
 
-    this.state = {
-      valgt: []
+    this.valgt = {
+      typeListe: []
     };
     this.summer = {
       prisListe: []
     };
+    this.state = {
+      Sykkel: true,
+      Utstyr: false
+    };
+  }
+
+  operationS() {
+    this.setState({
+      Sykkel: true,
+      Utstyr: false
+    });
+  }
+
+  operationU() {
+    this.setState({
+      Sykkel: false,
+      Utstyr: true
+    });
   }
 
   til = '';
   fra = '';
-  valgt = [];
+  typeListe = [];
   steder = [];
   typerSykler = [];
   typerUtstyr = [];
@@ -27,7 +45,9 @@ export class BestillingNy extends Bestilling {
   utstyr = [];
   kundeListe = [];
 
-  v_id = []
+  v_id = [];
+
+  prisListe = [];
 
   render() {
     const { valgt } = this.state;
@@ -110,12 +130,9 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
-                  <Button onClick={this.sokLedigeSykler}>Sykler</Button>
-
-                  <Form.Label>Type sykkel:</Form.Label>
-
                   <Form.Control
                     as="select"
+                    onClick={() => this.operationS()}
                     onChange={this.sokLedigeSyklerType}
                     onInput={e => (this.type = e.target.value)}
                   >
@@ -130,11 +147,9 @@ export class BestillingNy extends Bestilling {
                   </Form.Control>
                 </Col>
                 <Col>
-                  <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
-
-                  <Form.Label>Type utstyr:</Form.Label>
                   <Form.Control
                     as="select"
+                    onClick={() => this.operationU()}
                     onChange={this.sokLedigeUtstyrType}
                     onInput={e => (this.type = e.target.value)}
                   >
@@ -151,73 +166,93 @@ export class BestillingNy extends Bestilling {
                 </Col>
               </Row>
             </ListGroup.Item>
-            <Table striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th className="text-center">Vare ID</th>
-                  <th>Type</th>
-                  <th>Ramme</th>
-                  <th className="text-center">Girsystem</th>
-                  <th className="text-center">Storrelse på hjul</th>
-                  <th className="text-center">Pris</th>
-                  <th className="text-center">Velg</th>
-                </tr>
-              </thead>
-              <tbody scrollable>
-                {this.sykler.map(sykkel => (
-                  <tr key={sykkel.v_id}>
-                    <td className="text-center">{sykkel.v_id}</td>
-                    <td>{sykkel.type}</td>
-                    <td>{sykkel.ramme}</td>
-                    <td className="text-center">{sykkel.girsystem}</td>
-                    <td className="text-center">{sykkel.størrelse_hjul}</td>
-                    <td className="text-center">{sykkel.pris}</td>
-                    <Form.Check
-                      id={sykkel.pris}
-                      value={sykkel.type}
-                      onClick={e => (this.type = e.target.value) && (this.pris = e.target.id)}
-                      className="text-center"
-                      onChange={e => {
-                        this.test(e)
-                        this.sum(e);
-                      }}
-                    />
+            {this.state.Sykkel ? (
+              <Table striped bordered hover size="sm">
+                <thead>
+                  <tr>
+                    <th className="text-center">Vare ID</th>
+                    <th>Type</th>
+                    <th>Ramme</th>
+                    <th className="text-center">Girsystem</th>
+                    <th className="text-center">Storrelse på hjul</th>
+                    <th className="text-center">Pris</th>
+                    <th className="text-center">Velg</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody scrollable>
+                  {this.sykler.map(sykkel => (
+                    <tr key={sykkel.v_id}>
+                      <td className="text-center">{sykkel.v_id}</td>
+                      <td>{sykkel.type}</td>
+                      <td>{sykkel.ramme}</td>
+                      <td className="text-center">{sykkel.girsystem}</td>
+                      <td className="text-center">{sykkel.størrelse_hjul}</td>
+                      <td className="text-center">{sykkel.pris}</td>
+                      <Form.Check
+                        id={sykkel.pris}
+                        value={sykkel.type}
+                        onClick={e => (this.type = e.target.value) && (this.pris = parseInt(e.target.id))}
+                        className="text-center"
+                        onChange={e => {
+                          this.test(e);
+                          this.sum(e);
+                        }}
+                      />
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : null}
+            {this.state.Utstyr ? (
+              <Table striped bordered hover size="sm">
+                <thead>
+                  <tr>
+                    <th className="text-center">Vare ID</th>
+                    <th>Type</th>
+                    <th className="text-center">Pris</th>
+                    <th className="text-center">Velg</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.utstyr.map(utstyr => (
+                    <tr key={utstyr.v_id}>
+                      <td className="text-center">{utstyr.v_id}</td>
+                      <td>{utstyr.type}</td>
+                      <td className="text-center">{utstyr.pris}</td>
+                      <Form.Check
+                        id={utstyr.pris}
+                        value={utstyr.type}
+                        onClick={e => (this.type = e.target.value) && (this.pris = parseInt(e.target.id))}
+                        className="text-center"
+                        onChange={e => {
+                          this.test(e);
+                          this.sum(e);
+                        }}
+                      />
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            ) : null}
+          </Col>
+          <Col>
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
-                  <th className="text-center">Vare ID</th>
                   <th>Type</th>
                   <th className="text-center">Pris</th>
-                  <th className="text-center">Velg</th>
                 </tr>
               </thead>
               <tbody>
-                {this.utstyr.map(utstyr => (
-                  <tr key={utstyr.v_id}>
-                    <td className="text-center">{utstyr.v_id}</td>
-                    <td>{utstyr.type}</td>
-                    <td className="text-center">{utstyr.pris}</td>
-                    <Form.Check
-                     id={sykkel.pris}
-                      value={utstyr.type}
-                      onClick={e => (this.type = e.target.value) && (this.pris = e.target.id)}
-                      className="text-center"
-                      onChange={e => {
-                        this.test(e);
-                        this.sum(e);
-                      }}
-                    />
+                {this.typeListe.map(valg => (
+                  <tr>
+                    <td>{valg}</td>
+                    <td className="text-center">{valg}</td>
                   </tr>
                 ))}
               </tbody>
             </Table>
-          </Col>
-          <Col>
-            <div id="valg" />
+            <h5>Den totale summen blir kroner:</h5>
             <div id="pris" />
           </Col>
         </Row>
@@ -226,19 +261,23 @@ export class BestillingNy extends Bestilling {
   }
   sum(e) {
     const { prisListe } = this.summer;
-      prisListe.push(this.pris);
 
-    document.getElementById('pris').innerHTML = prisListe;
-    console.log(prisListe);
+    var totalSum = 0;
+    prisListe.push(this.pris);
 
+    for (var i = 0; i < prisListe.length; i++) {
+      totalSum += prisListe[i];
+    }
+    this.prisListe = prisListe;
+
+    document.getElementById('pris').innerHTML = totalSum;
   }
+
   test(e) {
-    const { valgt } = this.state;
-      valgt.push(this.type);
+    const { typeListe } = this.valgt;
+    typeListe.push(this.type);
 
-    document.getElementById('valg').innerHTML = valgt;
-    console.log(valgt);
-
+    this.typeListe = typeListe;
   }
 
   mounted() {
