@@ -170,104 +170,81 @@ export class BestillingNy extends Bestilling {
               </Row>
             </ListGroup.Item>
             {this.state.vSykkel ? (
-              <Table striped bordered hover size="sm" xs={6}>
-                <thead>
-                  <tr>
-                    <th className="text-center">ID</th>
-                    <th>Type</th>
-                    <th>Ramme</th>
-                    <th className="text-center">Gir</th>
-                    <th className="text-center">Hjul</th>
-                    <th className="text-center">Pris</th>
-                    <th className="text-center">Velg</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.sykler.map(sykkel => (
-                    <tr key={sykkel.v_id}>
-                      <td className="text-center">{sykkel.v_id}</td>
-                      <td>{sykkel.type}</td>
-                      <td>{sykkel.ramme}</td>
-                      <td className="text-center">{sykkel.girsystem}</td>
-                      <td className="text-center">{sykkel.størrelse_hjul}</td>
-                      <td className="text-center">{sykkel.pris}</td>
-                      <Form.Check
-                        id={sykkel.pris}
-                        value={sykkel.v_id}
-                        onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
-                        className="text-center"
-                        onChange={e => {
-                          this.test(e);
-                          this.sum(e);
-                        }}
-                      />
+              <div class="table">
+                <Table striped bordered hover size="sm" xs={6}>
+                  <thead>
+                    <tr>
+                      <th className="text-center">ID</th>
+                      <th>Type</th>
+                      <th>Ramme</th>
+                      <th className="text-center">Gir</th>
+                      <th className="text-center">Hjul</th>
+                      <th className="text-center">Pris</th>
+                      <th className="text-center">Velg</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {this.sykler.map(sykkel => (
+                      <tr key={sykkel.v_id}>
+                        <td className="text-center">{sykkel.v_id}</td>
+                        <td>{sykkel.type}</td>
+                        <td>{sykkel.ramme}</td>
+                        <td className="text-center">{sykkel.girsystem}</td>
+                        <td className="text-center">{sykkel.størrelse_hjul}</td>
+                        <td className="text-center">{sykkel.pris}</td>
+                        <Form.Check
+                          id={sykkel.pris}
+                          value={sykkel.v_id}
+                          onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
+                          className="text-center"
+                          onChange={e => {
+                            this.test(e);
+                            this.sum(e);
+                          }}
+                        />
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
             ) : null}
             {this.state.vUtstyr ? (
-              <Table striped bordered hover size="sm" xs={6}>
-                <thead>
-                  <tr>
-                    <th className="text-center">ID</th>
-                    <th>Type</th>
-                    <th className="text-center">Pris</th>
-                    <th className="text-center">Velg</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.utstyr.map(utstyr => (
-                    <tr key={utstyr.v_id}>
-                      <td className="text-center">{utstyr.v_id}</td>
-                      <td>{utstyr.type}</td>
-                      <td className="text-center">{utstyr.pris}</td>
-                      <Form.Check
-                        id={utstyr.pris}
-                        value={utstyr.v_id}
-                        onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
-                        className="text-center"
-                        onChange={e => {
-                          this.test(e);
-                          this.sum(e);
-                        }}
-                      />
+              <div class="table">
+                <Table striped bordered hover size="sm" xs={6}>
+                  <thead>
+                    <tr>
+                      <th className="text-center">ID</th>
+                      <th>Type</th>
+                      <th className="text-center">Pris</th>
+                      <th className="text-center">Velg</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
+                  </thead>
+                  <tbody>
+                    {this.utstyr.map(utstyr => (
+                      <tr key={utstyr.v_id}>
+                        <td className="text-center">{utstyr.v_id}</td>
+                        <td>{utstyr.type}</td>
+                        <td className="text-center">{utstyr.pris}</td>
+                        <Form.Check
+                          id={utstyr.pris}
+                          value={utstyr.v_id}
+                          onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
+                          className="text-center"
+                          onChange={e => {
+                            this.test(e);
+                            this.sum(e);
+                          }}
+                        />
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
             ) : null}
           </Col>
           <Col>
-            <ListGroup.Item className="list-group-item">
-              <Row>
-                <Col>
-                  <Table striped bordered hover size="sm">
-                    <thead>
-                      <tr>
-                        <th>Type</th>
-                        <th className="text-center">Pris</th>
-                        <th className="text-center">Fjern</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.vareListe.map(vare => (
-                        <tr key={vare.v_id}>
-                          <td>{vare.type}</td>
-                          <td className="text-center">{vare.pris}</td>
-                          <div className="text-center">
-                            <Button>Fjern</Button>
-                          </div>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                  <h5>Den totale summen i kr:</h5>
-                  <div id="pris" />
-                  <Button onClick={this.nyBestilling}>Ny bestilling</Button>
-                </Col>
-              </Row>
-            </ListGroup.Item>
+            <h5>Den totale summen i kr:</h5>
+            <div id="pris" />
           </Col>
         </Row>
         <div id="ut" />

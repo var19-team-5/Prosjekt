@@ -218,6 +218,20 @@ class s_Sok {
       success(results);
     });
   }
+  antallSykler(success) {
+    connection.query('SELECT COUNT(v_id) AS sykler FROM sykkel', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  antallSyklerRep(success) {
+    connection.query('SELECT COUNT(sykkel.v_id) AS srep FROM sykkel INNER JOIN vare ON sykkel.v_id = vare.v_id WHERE status = "reparasjon"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
   infoVarer(v_id, success) {
     connection.query('SELECT type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);

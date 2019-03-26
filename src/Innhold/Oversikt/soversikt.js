@@ -6,6 +6,8 @@ import { Oversikt } from './nav';
 export class SalgsOversikt extends Oversikt {
 salg = [];
 kunder = [];
+sykler = [];
+srep = [];
   render() {
     return [
       <React.Fragment>
@@ -23,15 +25,15 @@ kunder = [];
         ))}
       </Col>
       <Col className="text-center" xs={2}>
-      <Form.Label>Antall bestillinger:</Form.Label>
-        {this.salg.map(salg => (
-          <div key={salg.salg}>{salg.salg}</div>
+      <Form.Label>Antall Sykler:</Form.Label>
+        {this.sykler.map(sykler => (
+          <div key={sykler.sykler}>{sykler.sykler}</div>
         ))}
       </Col>
       <Col className="text-center" xs={2}>
-      <Form.Label>Antall bestillinger:</Form.Label>
-        {this.salg.map(salg => (
-          <div key={salg.salg}>{salg.salg}</div>
+      <Form.Label>Sykler på reparasjon:</Form.Label>
+        {this.srep.map(srep => (
+          <div key={srep.srep}>{srep.srep}</div>
         ))}
       </Col>
       </Row>
@@ -48,6 +50,14 @@ kunder = [];
     s_sok.antallKunder(kunder => {
       this.kunder = kunder;
       console.log(kunder)
+    });
+    s_sok.antallSykler(sykler => {
+      this.sykler = sykler;
+      console.log(sykler)
+    });
+    s_sok.antallSyklerRep(srep => {
+      this.srep = srep;
+      console.log(srep)
     });
   }
 }
