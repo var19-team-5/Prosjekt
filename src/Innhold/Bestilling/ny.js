@@ -55,6 +55,8 @@ export class BestillingNy extends Bestilling {
 
   varer = [];
 
+  totalSum = '';
+
   render() {
     const { valgt } = this.state;
     const { prisListe } = this.summer;
@@ -131,7 +133,6 @@ export class BestillingNy extends Bestilling {
                   <br />
                 </Col>
               </Row>
-              <Button onClick={this.nyBestilling}>Ny bestilling</Button>
             </ListGroup.Item>
           </Col>
           <Col xs={6}>
@@ -242,28 +243,43 @@ export class BestillingNy extends Bestilling {
             ) : null}
           </Col>
           <Col>
-          <div class='table'>
-            <Table striped bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th className="text-center">Pris</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.vareListe.map(vare => (
-                  <tr>
-                    <td>{vare.type}</td>
-                    <td className="text-center">{vare.pris}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            </div>
-            <h5>Den totale summen i kr:</h5>
-            <div id="pris" />
+
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col>
+                <div class='table'>
+                  <Table striped bordered hover size="sm">
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th className="text-center">Pris</th>
+                        <th className="text-center">Fjern</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.vareListe.map(vare => (
+                        <tr key={vare.v_id}>
+                          <td>{vare.type}</td>
+                          <td className="text-center">{vare.pris}</td>
+                          <div className="text-center">
+                            <Button>Fjern</Button>
+                          </div>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                  </div>
+                  <h5>Den totale summen i kr:</h5>
+                  <div id="pris" />
+                  <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+                </Col>
+              </Row>
+              </Col>
+            </ListGroup.Item>
+
           </Col>
         </Row>
+        <div id="ut" />
       </React.Fragment>
     );
   }
@@ -279,6 +295,7 @@ export class BestillingNy extends Bestilling {
     this.prisListe = prisListe;
 
     document.getElementById('pris').innerHTML = totalSum;
+    this.totalSum = totalSum;
   }
 
   test(e) {
@@ -293,7 +310,7 @@ export class BestillingNy extends Bestilling {
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
       for (var i = 0; i < typeListe.length; i++) {
-        vareListe.push({ type: this.varer[i].type, pris: this.varer[i].pris });
+        vareListe.push({ v_id: this.varer[i].v_id, type: this.varer[i].type, pris: this.varer[i].pris });
       }
     });
     setTimeout(() => {}, 250);
@@ -323,7 +340,11 @@ export class BestillingNy extends Bestilling {
     }, 250);
   }
   nyBestilling() {
-    s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
+    s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.totalSum);
+
+    for (var i = 0; i < this.typeListe.length; i++) {
+      s_ny.Vareliste(this.typeListe[i]);
+    }
   }
 
   sokLedigeSyklerType() {
