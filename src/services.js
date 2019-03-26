@@ -226,14 +226,17 @@ class s_Sok {
     });
   }
   antallSyklerRep(success) {
-    connection.query('SELECT COUNT(sykkel.v_id) AS srep FROM sykkel INNER JOIN vare ON sykkel.v_id = vare.v_id WHERE status = "reparasjon"', (error, results) => {
-      if (error) return console.error(error);
+    connection.query(
+      'SELECT COUNT(sykkel.v_id) AS srep FROM sykkel INNER JOIN vare ON sykkel.v_id = vare.v_id WHERE status = "reparasjon"',
+      (error, results) => {
+        if (error) return console.error(error);
 
-      success(results);
-    });
+        success(results);
+      }
+    );
   }
   infoVarer(v_id, success) {
-    connection.query('SELECT type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
+    connection.query('SELECT type, pris, v_id FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);

@@ -55,7 +55,7 @@ export class BestillingNy extends Bestilling {
 
   varer = [];
 
-  totalSum = '';
+  totalSum = [];
 
   render() {
     const { valgt } = this.state;
@@ -141,10 +141,11 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Control
                     as="select"
-                    onClick={() => this.operationS()}
-                    onChange={this.sokLedigeSyklerType}
+                    onChange={() => this.operationS()}
+                    onClick={this.sokLedigeSyklerType}
                     onInput={e => (this.type = e.target.value)}
                   >
+                    <option hidden>Velg sykkeltype</option>
                     {this.typerSykler.map(typeSykkel => (
                       <option key={typeSykkel.type} value={typeSykkel.type}>
                         {typeSykkel.type}
@@ -155,10 +156,11 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Control
                     as="select"
-                    onClick={() => this.operationU()}
-                    onChange={this.sokLedigeUtstyrType}
+                    onChange={() => this.operationU()}
+                    onClick={this.sokLedigeUtstyrType}
                     onInput={e => (this.type = e.target.value)}
                   >
+                    <option hidden>Velg utstyrstype</option>
                     {this.typerUtstyr.map(typerUtstyr => (
                       <option key={typerUtstyr.type} value={typerUtstyr.type}>
                         {typerUtstyr.type}
@@ -243,27 +245,81 @@ export class BestillingNy extends Bestilling {
             ) : null}
           </Col>
           <Col>
-            <h5>Den totale summen i kr:</h5>
-            <div id="pris" />
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col>
+                  <div class="table">
+                    <Table striped bordered hover size="sm" xs={3}>
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th className="text-center">Pris</th>
+                          <th className="text-center">Fjern</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.vareListe.map(vare => (
+                          <tr key={vare.v_id}>
+                            <td>{vare.type}</td>
+                            <td className="text-center">{vare.pris}</td>
+                            <div className="text-center">
+                              <Button
+                                value={vare.v_id}
+                                id={vare.pris}
+                                onClick={e =>
+                                  (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id)) && this.fjern(e)
+                                }
+                              >
+                                Fjern
+                              </Button>
+                            </div>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
+                  <h5>Rabatt:</h5>
+                  <div id="rabatt" />
+                  <h5>Pris:</h5>
+                  <div id="pris" />
+                  <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+                </Col>
+              </Row>
+            </ListGroup.Item>
           </Col>
         </Row>
-        <div id="ut" />
       </React.Fragment>
     );
   }
+  fjern(e) {
+    const { vareListe } = this.hei;
+
+    vareListe.pop(this.v_id);
+  }
+
   sum(e) {
     const { prisListe } = this.summer;
 
     var totalSum = 0;
+    var rabatt = 0;
+
     prisListe.push(this.pris);
 
     for (var i = 0; i < prisListe.length; i++) {
       totalSum += prisListe[i];
     }
+
+    if (this.typeListe.length >= 10) {
+      rabatt = totalSum * 0.1;
+      totalSum = totalSum - rabatt;
+    }
+
+    this.rabatt = rabatt;
+    this.totalSum = totalSum;
     this.prisListe = prisListe;
 
     document.getElementById('pris').innerHTML = totalSum;
-    this.totalSum = totalSum;
+    document.getElementById('rabatt').innerHTML = rabatt;
   }
 
   test(e) {
@@ -308,11 +364,11 @@ export class BestillingNy extends Bestilling {
     }, 250);
   }
   nyBestilling() {
-    s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.totalSum);
-
-    for (var i = 0; i < this.typeListe.length; i++) {
-      s_ny.Vareliste(this.typeListe[i]);
-    }
+    // s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.totalSum);
+    //
+    // for (var i = 0; i < this.typeListe.length; i++) {
+    //   s_ny.Vareliste(this.typeListe[i]);
+    // }
   }
 
   sokLedigeSyklerType() {
