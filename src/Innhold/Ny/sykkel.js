@@ -31,15 +31,15 @@ export class NySykkel extends Ny {
         </ListGroup.Item>
 
         <ListGroup.Item className="list-group-item">
-          <h4>Ligger ikke typen inne? Legg til ny her!</h4>
+          <h5>Ligger ikke typen inne? Legg til ny her!</h5>
           <Row>
             <Col>
               <Form.Label>Ny type:</Form.Label>
-              <Form.Control onChange={e => (this.nytype = e.target.value)} />
+              <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder='navn' />
             </Col>
             <Col>
               <Form.Label>Pris:</Form.Label>
-              <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} />
+              <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} placeholder='00,00'/>
               <br />
             </Col>
           </Row>
@@ -50,7 +50,7 @@ export class NySykkel extends Ny {
           <ListGroup.Item className="list-group-item">
             <Row>
               <Col>
-                <Form.Label>tilhører:</Form.Label>
+                <Form.Label>Tilhører:</Form.Label>
                 <Form.Control as="select" onChange={e => (this.tilhører = e.target.value)}>
                   {this.steder.map(sted => (
                     <option key={sted.lokasjon} value={sted.tilhører}>
@@ -63,15 +63,15 @@ export class NySykkel extends Ny {
 
               <Col>
                 <Form.Label>Ramme:</Form.Label>
-                <Form.Control onChange={e => (this.ramme = e.target.value)} />
+                <Form.Control onChange={e => (this.ramme = e.target.value)} placeholder='navn'/>
               </Col>
               <Col>
                 <Form.Label>Girsystem:</Form.Label>
-                <Form.Control type="number" onChange={e => (this.girsystem = e.target.value)} />
+                <Form.Control type="number" onChange={e => (this.girsystem = e.target.value)} placeholder='00'/>
               </Col>
               <Col>
                 <Form.Label>Storrese hjul:</Form.Label>
-                <Form.Control type="number" onChange={e => (this.størrelse_hjul = e.target.value)} />
+                <Form.Control type="number" onChange={e => (this.størrelse_hjul = e.target.value)} placeholder='00'/>
                 <br />
               </Col>
             </Row>

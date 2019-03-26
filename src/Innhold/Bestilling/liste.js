@@ -9,6 +9,7 @@ export class BestillingListe extends Bestilling {
 
   render() {
     return (
+      <div class='table'>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -53,6 +54,7 @@ export class BestillingListe extends Bestilling {
           ))}
         </tbody>
       </Table>
+      </div>
     );
   }
   mounted() {

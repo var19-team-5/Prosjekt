@@ -9,34 +9,36 @@ export class StatusSyklerType extends StatusSykler {
 
   render() {
     return [
+      <div class='table'>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
-            <th>Vare ID</th>
+            <th className="text-center">Vare ID</th>
             <th>Type</th>
             <th>Ramme</th>
-            <th>Girsystem</th>
-            <th>Storrelse på hjul</th>
+            <th className="text-center">Girsystem</th>
+            <th className="text-center">Storrelse på hjul</th>
             <th>Befinner seg</th>
             <th>Status</th>
-            <th>Pris</th>
+            <th className="text-center">Pris</th>
           </tr>
         </thead>
         <tbody>
           {this.sykler.map(sykkel => (
             <tr key={sykkel.v_id}>
-              <td>{sykkel.v_id}</td>
+              <td className="text-center">{sykkel.v_id}</td>
               <td>{sykkel.type}</td>
               <td>{sykkel.ramme}</td>
-              <td>{sykkel.girsystem}</td>
-              <td>{sykkel.størrelse_hjul}</td>
+              <td className="text-center">{sykkel.girsystem}</td>
+              <td className="text-center">{sykkel.størrelse_hjul}</td>
               <td>{sykkel.lokasjon}</td>
               <td>{sykkel.status}</td>
-              <td>{sykkel.pris}</td>
+              <td className="text-center">{sykkel.pris}</td>
             </tr>
           ))}
         </tbody>
       </Table>
+      </div>
     ];
   }
   mounted() {

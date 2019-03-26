@@ -169,6 +169,7 @@ export class BestillingNy extends Bestilling {
               </Row>
             </ListGroup.Item>
             {this.state.Sykkel ? (
+              <div class='table'>
               <Table striped bordered hover size="sm" xs={6}>
                 <thead>
                   <tr>
@@ -204,8 +205,10 @@ export class BestillingNy extends Bestilling {
                   ))}
                 </tbody>
               </Table>
+              </div>
             ) : null}
             {this.state.Utstyr ? (
+              <div class='table'>
               <Table striped bordered hover size="sm" xs={6}>
                 <thead>
                   <tr>
@@ -235,9 +238,11 @@ export class BestillingNy extends Bestilling {
                   ))}
                 </tbody>
               </Table>
+              </div>
             ) : null}
           </Col>
           <Col>
+          <div class='table'>
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
@@ -254,6 +259,7 @@ export class BestillingNy extends Bestilling {
                 ))}
               </tbody>
             </Table>
+            </div>
             <h5>Den totale summen i kr:</h5>
             <div id="pris" />
           </Col>
@@ -323,6 +329,7 @@ export class BestillingNy extends Bestilling {
   sokLedigeSyklerType() {
     s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
       this.sykler = sykler;
+
     });
     setTimeout(() => {}, 250);
   }
