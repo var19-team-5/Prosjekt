@@ -49,10 +49,10 @@ class s_Ny {
       }
     );
   }
-  Bestilling(fra, til, henting, levering, mobilnummer, success) {
+  Bestilling(fra, til, henting, levering, mobilnummer, totalSum, success) {
     connection.query(
-      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),"35","bestilt")',
-      [fra, til, henting, levering, mobilnummer],
+      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),?,"bestilt")',
+      [fra, til, henting, levering, mobilnummer, totalSum],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -86,6 +86,17 @@ class s_Ny {
     connection.query(
       'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"utstyr")',
       [nytype, nypris],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  Vareliste(v_id) {
+    connection.query(
+      'INSERT INTO utleieliste (v_id, b_id) VALUES (?,(SELECT MAX(b_id) FROM bestilling))',
+      [v_id],
       (error, results) => {
         if (error) return console.error(error);
 
