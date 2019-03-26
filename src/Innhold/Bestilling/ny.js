@@ -134,9 +134,9 @@ export class BestillingNy extends Bestilling {
               <Button onClick={this.nyBestilling}>Ny bestilling</Button>
             </ListGroup.Item>
           </Col>
-          <Col>
+          <Col xs={6}>
             <ListGroup.Item className="list-group-item">
-              <Row>
+              <Row xs={6}>
                 <Col>
                   <Form.Control
                     as="select"
@@ -169,14 +169,14 @@ export class BestillingNy extends Bestilling {
               </Row>
             </ListGroup.Item>
             {this.state.Sykkel ? (
-              <Table striped bordered hover size="sm">
+              <Table striped bordered hover size="sm" xs={6}>
                 <thead>
                   <tr>
-                    <th className="text-center">Vare ID</th>
+                    <th className="text-center">ID</th>
                     <th>Type</th>
                     <th>Ramme</th>
-                    <th className="text-center">Girsystem</th>
-                    <th className="text-center">Storrelse på hjul</th>
+                    <th className="text-center">Gir</th>
+                    <th className="text-center">Hjul</th>
                     <th className="text-center">Pris</th>
                     <th className="text-center">Velg</th>
                   </tr>
@@ -206,10 +206,10 @@ export class BestillingNy extends Bestilling {
               </Table>
             ) : null}
             {this.state.Utstyr ? (
-              <Table striped bordered hover size="sm">
+              <Table striped bordered hover size="sm" xs={6}>
                 <thead>
                   <tr>
-                    <th className="text-center">Vare ID</th>
+                    <th className="text-center">ID</th>
                     <th>Type</th>
                     <th className="text-center">Pris</th>
                     <th className="text-center">Velg</th>
@@ -254,7 +254,7 @@ export class BestillingNy extends Bestilling {
                 ))}
               </tbody>
             </Table>
-            <h5>Den totale summen blir kroner:</h5>
+            <h5>Den totale summen i kr:</h5>
             <div id="pris" />
           </Col>
         </Row>
