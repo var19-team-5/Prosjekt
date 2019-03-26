@@ -169,17 +169,7 @@ class s_Sok {
       success(results);
     });
   }
-  LedigeSykler(fra, til, success) {
-    connection.query(
-      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)',
-      [fra, til],
-      (error, results) => {
-        if (error) return console.error(error);
 
-        success(results);
-      }
-    );
-  }
   LedigeSyklerType(fra, til, type, success) {
     connection.query(
       'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
@@ -191,17 +181,7 @@ class s_Sok {
       }
     );
   }
-  LedigeUtstyr(fra, til, success) {
-    connection.query(
-      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)',
-      [fra, til],
-      (error, results) => {
-        if (error) return console.error(error);
 
-        success(results);
-      }
-    );
-  }
   LedigeUtstyrType(fra, til, type, success) {
     connection.query(
       'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
@@ -222,6 +202,13 @@ class s_Sok {
   }
   antallKunder(success) {
     connection.query('SELECT COUNT(k_id) AS kunder FROM kunde', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  infoVarer(v_id, success) {
+    connection.query('SELECT type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);

@@ -14,6 +14,9 @@ export class BestillingNy extends Bestilling {
     this.summer = {
       prisListe: []
     };
+    this.hei = {
+      vareListe: []
+    };
     this.state = {
       Sykkel: true,
       Utstyr: false
@@ -48,10 +51,15 @@ export class BestillingNy extends Bestilling {
   v_id = [];
 
   prisListe = [];
+  vareListe = [];
+
+  varer = [];
 
   render() {
     const { valgt } = this.state;
     const { prisListe } = this.summer;
+    const { vareliste } = this.hei;
+
     return (
       <React.Fragment>
         <Row>
@@ -136,9 +144,6 @@ export class BestillingNy extends Bestilling {
                     onChange={this.sokLedigeSyklerType}
                     onInput={e => (this.type = e.target.value)}
                   >
-                    <option value="" disabled selected hidden>
-                      Velg type her
-                    </option>
                     {this.typerSykler.map(typeSykkel => (
                       <option key={typeSykkel.type} value={typeSykkel.type}>
                         {typeSykkel.type}
@@ -153,9 +158,6 @@ export class BestillingNy extends Bestilling {
                     onChange={this.sokLedigeUtstyrType}
                     onInput={e => (this.type = e.target.value)}
                   >
-                    <option value="" disabled selected hidden>
-                      Velg type her
-                    </option>
                     {this.typerUtstyr.map(typerUtstyr => (
                       <option key={typerUtstyr.type} value={typerUtstyr.type}>
                         {typerUtstyr.type}
@@ -190,8 +192,8 @@ export class BestillingNy extends Bestilling {
                       <td className="text-center">{sykkel.pris}</td>
                       <Form.Check
                         id={sykkel.pris}
-                        value={sykkel.type}
-                        onClick={e => (this.type = e.target.value) && (this.pris = parseInt(e.target.id))}
+                        value={sykkel.v_id}
+                        onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
                         className="text-center"
                         onChange={e => {
                           this.test(e);
@@ -221,8 +223,8 @@ export class BestillingNy extends Bestilling {
                       <td className="text-center">{utstyr.pris}</td>
                       <Form.Check
                         id={utstyr.pris}
-                        value={utstyr.type}
-                        onClick={e => (this.type = e.target.value) && (this.pris = parseInt(e.target.id))}
+                        value={utstyr.v_id}
+                        onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
                         className="text-center"
                         onChange={e => {
                           this.test(e);
@@ -244,10 +246,10 @@ export class BestillingNy extends Bestilling {
                 </tr>
               </thead>
               <tbody>
-                {this.typeListe.map(valg => (
+                {this.vareListe.map(vare => (
                   <tr>
-                    <td>{valg}</td>
-                    <td className="text-center">{valg}</td>
+                    <td>{vare.type}</td>
+                    <td className="text-center">{vare.pris}</td>
                   </tr>
                 ))}
               </tbody>
@@ -275,9 +277,21 @@ export class BestillingNy extends Bestilling {
 
   test(e) {
     const { typeListe } = this.valgt;
-    typeListe.push(this.type);
+    const { vareliste } = this.hei;
 
     this.typeListe = typeListe;
+    this.vareListe = vareListe;
+
+    typeListe.push(this.v_id);
+
+    s_sok.infoVarer(this.v_id, varer => {
+      this.varer = varer;
+      console.log(this.varer);
+    });
+
+    vareListe.push(varer);
+
+    setTimeout(() => {}, 250);
   }
 
   mounted() {
@@ -306,13 +320,14 @@ export class BestillingNy extends Bestilling {
   nyBestilling() {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer);
   }
+
   sokLedigeSyklerType() {
     s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
       this.sykler = sykler;
-      console.log(this.fra);
     });
     setTimeout(() => {}, 250);
   }
+
   sokLedigeUtstyrType() {
     s_sok.LedigeUtstyrType(this.fra, this.til, this.type, utstyr => {
       this.utstyr = utstyr;
