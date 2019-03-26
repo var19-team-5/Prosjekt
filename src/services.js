@@ -51,7 +51,7 @@ class s_Ny {
   }
   Bestilling(fra, til, henting, levering, mobilnummer, totalSum, success) {
     connection.query(
-      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),?,"bestilt")',
+      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status, pris) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),"0","bestilt",?)',
       [fra, til, henting, levering, mobilnummer, totalSum],
       (error, results) => {
         if (error) return console.error(error);
@@ -183,7 +183,7 @@ class s_Sok {
 
   LedigeSyklerType(fra, til, type, success) {
     connection.query(
-      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
+      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE (NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)) AND type = ? ORDER BY v_id ASC',
       [fra, til, type],
       (error, results) => {
         if (error) return console.error(error);
@@ -195,7 +195,7 @@ class s_Sok {
 
   LedigeUtstyrType(fra, til, type, success) {
     connection.query(
-      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
+      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE (NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)) AND type = ? ORDER BY v_id ASC',
       [fra, til, type],
       (error, results) => {
         if (error) return console.error(error);

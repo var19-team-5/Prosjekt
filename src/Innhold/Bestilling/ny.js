@@ -18,22 +18,22 @@ export class BestillingNy extends Bestilling {
       vareListe: []
     };
     this.state = {
-      Sykkel: true,
-      Utstyr: false
+      vSykkel: true,
+      vUtstyr: false
     };
   }
 
   operationS() {
     this.setState({
-      Sykkel: true,
-      Utstyr: false
+      vSykkel: true,
+      vUtstyr: false
     });
   }
 
   operationU() {
     this.setState({
-      Sykkel: false,
-      Utstyr: true
+      vSykkel: false,
+      vUtstyr: true
     });
   }
 
@@ -169,7 +169,7 @@ export class BestillingNy extends Bestilling {
                 </Col>
               </Row>
             </ListGroup.Item>
-            {this.state.Sykkel ? (
+            {this.state.vSykkel ? (
               <Table striped bordered hover size="sm" xs={6}>
                 <thead>
                   <tr>
@@ -206,7 +206,7 @@ export class BestillingNy extends Bestilling {
                 </tbody>
               </Table>
             ) : null}
-            {this.state.Utstyr ? (
+            {this.state.vUtstyr ? (
               <Table striped bordered hover size="sm" xs={6}>
                 <thead>
                   <tr>
