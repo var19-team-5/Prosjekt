@@ -58,7 +58,7 @@ export class BestillingNy extends Bestilling {
   render() {
     const { valgt } = this.state;
     const { prisListe } = this.summer;
-    const { vareliste } = this.hei;
+    const { vareListe } = this.hei;
 
     return (
       <React.Fragment>
@@ -181,7 +181,7 @@ export class BestillingNy extends Bestilling {
                     <th className="text-center">Velg</th>
                   </tr>
                 </thead>
-                <tbody scrollable>
+                <tbody>
                   {this.sykler.map(sykkel => (
                     <tr key={sykkel.v_id}>
                       <td className="text-center">{sykkel.v_id}</td>
@@ -277,7 +277,7 @@ export class BestillingNy extends Bestilling {
 
   test(e) {
     const { typeListe } = this.valgt;
-    const { vareliste } = this.hei;
+    const { vareListe } = this.hei;
 
     this.typeListe = typeListe;
     this.vareListe = vareListe;
@@ -286,11 +286,10 @@ export class BestillingNy extends Bestilling {
 
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
-      console.log(this.varer);
+      for (var i = 0; i < typeListe.length; i++) {
+        vareListe.push({ type: this.varer[i].type, pris: this.varer[i].pris });
+      }
     });
-
-    vareListe.push(varer);
-
     setTimeout(() => {}, 250);
   }
 
