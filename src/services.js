@@ -49,10 +49,10 @@ class s_Ny {
       }
     );
   }
-  Bestilling(fra, til, henting, levering, mobilnummer, totalSum, success) {
+  Bestilling(fra, til, henting, levering, mobilnummer, rabatt, totalSum, success) {
     connection.query(
-      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),?,"bestilt")',
-      [fra, til, henting, levering, mobilnummer, totalSum],
+      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status,rabatt, pris) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),?,"bestilt",?)',
+      [fra, til, henting, levering, mobilnummer, rabatt, totalSum],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -183,7 +183,7 @@ class s_Sok {
 
   LedigeSyklerType(fra, til, type, success) {
     connection.query(
-      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
+      'SELECT DISTINCT v_id, type, ramme, girsystem, størrelse_hjul, status, pris FROM tilgjengelige_sykler WHERE (NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)) AND type = ? ORDER BY v_id ASC',
       [fra, til, type],
       (error, results) => {
         if (error) return console.error(error);
@@ -195,7 +195,7 @@ class s_Sok {
 
   LedigeUtstyrType(fra, til, type, success) {
     connection.query(
-      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
+      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE (NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL)) AND type = ? ORDER BY v_id ASC',
       [fra, til, type],
       (error, results) => {
         if (error) return console.error(error);
@@ -226,14 +226,24 @@ class s_Sok {
     });
   }
   antallSyklerRep(success) {
-    connection.query('SELECT COUNT(sykkel.v_id) AS srep FROM sykkel INNER JOIN vare ON sykkel.v_id = vare.v_id WHERE status = "reparasjon"', (error, results) => {
+    connection.query(
+      'SELECT COUNT(sykkel.v_id) AS srep FROM sykkel INNER JOIN vare ON sykkel.v_id = vare.v_id WHERE status = "reparasjon"',
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  infoVarer(v_id, success) {
+    connection.query('SELECT type, pris, v_id FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-  infoVarer(v_id, success) {
-    connection.query('SELECT type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
+  sumBestillinger(success) {
+    connection.query('SELECT SUM(pris) AS sum FROM bestilling', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
