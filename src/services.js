@@ -49,10 +49,10 @@ class s_Ny {
       }
     );
   }
-  Bestilling(fra, til, henting, levering, mobilnummer, totalSum, success) {
+  Bestilling(fra, til, henting, levering, mobilnummer, rabatt, totalSum, success) {
     connection.query(
-      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status, pris) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),"0","bestilt",?)',
-      [fra, til, henting, levering, mobilnummer, totalSum],
+      'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status,rabatt, pris) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),?,"bestilt",?)',
+      [fra, til, henting, levering, mobilnummer, rabatt, totalSum],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -237,6 +237,13 @@ class s_Sok {
   }
   infoVarer(v_id, success) {
     connection.query('SELECT type, pris, v_id FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  sumBestillinger(success) {
+    connection.query('SELECT SUM(pris) AS sum FROM bestilling', (error, results) => {
       if (error) return console.error(error);
 
       success(results);

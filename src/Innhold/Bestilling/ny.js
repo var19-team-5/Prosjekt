@@ -364,11 +364,11 @@ export class BestillingNy extends Bestilling {
     }, 250);
   }
   nyBestilling() {
-    // s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.totalSum);
-    //
-    // for (var i = 0; i < this.typeListe.length; i++) {
-    //   s_ny.Vareliste(this.typeListe[i]);
-    // }
+    s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.rabatt, this.totalSum);
+
+    for (var i = 0; i < this.typeListe.length; i++) {
+      s_ny.Vareliste(this.typeListe[i]);
+    }
   }
 
   sokLedigeSyklerType() {
