@@ -354,7 +354,7 @@ export class BestillingNy extends Bestilling {
     );
   }
   fjern(e) {
-    const { vareListe } = this.varer;
+    const { vareListe } = this.varerx;
 
     vareListe.pop(this.v_id);
   }
