@@ -9,7 +9,7 @@ export class BestillingListe extends Bestilling {
 
   render() {
     return (
-      <div class="table">
+      <div class="status">
         <Table striped bordered hover size="sm">
           <thead>
             <tr>

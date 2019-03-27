@@ -10,6 +10,8 @@ export class BestillingNy extends Bestilling {
 
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleShow2 = this.handleShow2.bind(this);
+    this.handleClose2 = this.handleClose2.bind(this);
 
     this.valgt = {
       idListe: []
@@ -23,7 +25,8 @@ export class BestillingNy extends Bestilling {
     this.state = {
       vSykkel: true,
       vUtstyr: false,
-      show: false
+      show: false,
+      show2: false
     };
   }
 
@@ -33,6 +36,13 @@ export class BestillingNy extends Bestilling {
 
   handleShow() {
     this.setState({ show: true });
+  }
+  handleClose2() {
+    this.setState({ show2: false });
+  }
+
+  handleShow2() {
+    this.setState({ show2: true });
   }
 
   operationS() {
@@ -260,7 +270,7 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
-                  <div class="table">
+                  <div class="valgtvarer">
                     <Table striped bordered hover size="sm" xs={3}>
                       <thead>
                         <tr>
@@ -290,11 +300,26 @@ export class BestillingNy extends Bestilling {
                       </tbody>
                     </Table>
                   </div>
-                  <h5>Rabatt:</h5>
+                  <ListGroup.Item>
+                  <Row>
+                  <Col>
+                  <div>Rabatt:</div>
+                  </Col>
+                  <Col>
                   <div id="rabatt" />
-                  <h5>Pris:</h5>
+                  </Col>
+                  </Row>
+                  <Row>
+                  <Col>
+                  <div>Pris:</div>
+                  </Col>
+                  <Col>
                   <div id="pris" />
+                  </Col>
+                  </Row>
+                  <br/>
                   <Button onClick={this.handleShow}>Ny bestilling</Button>
+                  </ListGroup.Item>
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -320,7 +345,7 @@ export class BestillingNy extends Bestilling {
                 </div>
               </Col>
               <Col>
-                <div>
+                <div className='bekreftelse'>
                   <Table striped bordered hover size="sm" xs={2}>
                     <thead>
                       <tr>
@@ -352,6 +377,27 @@ export class BestillingNy extends Bestilling {
         </Modal>
       </React.Fragment>
     );
+
+
+    <Modal show={this.state.show2} onHide={this.handleClose2}>
+      <Modal.Header closeButton>
+        <Modal.Title>Bekreftelse:</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Row>
+          <Col>
+            <div className="align-center">
+              Kunden er lagt til!
+            </div>
+          </Col>
+        </Row>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={this.handleClose2}>
+          Lukk
+        </Button>
+      </Modal.Footer>
+    </Modal>
   }
   fjern(e) {
     const { vareListe } = this.varerx;
@@ -417,7 +463,7 @@ export class BestillingNy extends Bestilling {
 
     idListe.push(this.v_id);
 
-    console.log(typeListe);
+    console.log(idListe);
 
 
     s_sok.infoVarer(this.v_id, varer => {
@@ -442,6 +488,7 @@ export class BestillingNy extends Bestilling {
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
+    this.handleShow2();
   }
   sokKunde() {
     s_sok.Kunde(this.mobilnummer, kunde => {
