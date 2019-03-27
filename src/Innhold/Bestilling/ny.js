@@ -8,10 +8,14 @@ export class BestillingNy extends Bestilling {
   constructor(props, context) {
     super(props, context);
 
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleShow2 = this.handleShow2.bind(this);
-    this.handleClose2 = this.handleClose2.bind(this);
+    this.visBestillingPop = this.visBestillingPop.bind(this);
+    this.skjulBestillingPop = this.skjulBestillingPop.bind(this);
+
+    this.visKundePop = this.visKundePop.bind(this);
+    this.skjulKundePop = this.skjulKundePop.bind(this);
+
+    this.visFullførtPop = this.visFullførtPop.bind(this);
+    this.skjulFullførtPop = this.skjulFullførtPop.bind(this);
 
     this.valgt = {
       idListe: []
@@ -25,17 +29,34 @@ export class BestillingNy extends Bestilling {
     this.state = {
       vSykkel: true,
       vUtstyr: false,
-      show: false,
-      show2: false
+      bestillingPop: false,
+      kundePop: false,
+      fullførtPop: false
     };
   }
 
-  handleClose() {
-    this.setState({ show: false });
+  skjulBestillingPop() {
+    this.setState({ bestillingPop: false });
   }
 
-  handleShow() {
-    this.setState({ show: true });
+  visBestillingPop() {
+    this.setState({ bestillingPop: true });
+  }
+
+  skjulKundePop() {
+    this.setState({ kundePop: false });
+  }
+
+  visKundePop() {
+    this.setState({ kundePop: true });
+  }
+
+  skjulFullførtPop() {
+    this.setState({ fullførtPop: false });
+  }
+
+  visFullførtPop() {
+    this.setState({ fullførtPop: true });
   }
   handleClose2() {
     this.setState({ show2: false });
@@ -93,6 +114,7 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
+                    placeholder="Søk på eksisterende kunde her!"
                     required
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
@@ -194,7 +216,7 @@ export class BestillingNy extends Bestilling {
               </Row>
             </ListGroup.Item>
             {this.state.vSykkel ? (
-              <div class="table">
+              <div className="table">
                 <Table striped bordered hover size="sm" xs={6}>
                   <thead>
                     <tr>
@@ -233,7 +255,7 @@ export class BestillingNy extends Bestilling {
               </div>
             ) : null}
             {this.state.vUtstyr ? (
-              <div class="table">
+              <div className="table">
                 <Table striped bordered hover size="sm" xs={6}>
                   <thead>
                     <tr>
@@ -318,14 +340,14 @@ export class BestillingNy extends Bestilling {
                   </Col>
                   </Row>
                   <br/>
-                  <Button onClick={this.handleShow}>Ny bestilling</Button>
+                  <Button onClick={this.visBestillingPop}>Ny bestilling</Button>
                   </ListGroup.Item>
                 </Col>
               </Row>
             </ListGroup.Item>
           </Col>
         </Row>
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.state.bestillingPop} onHide={this.skjulBestillingPop}>
           <Modal.Header closeButton>
             <Modal.Title>Bestilling</Modal.Title>
           </Modal.Header>
@@ -367,37 +389,47 @@ export class BestillingNy extends Bestilling {
             </Row>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
+            <Button variant="secondary" onClick={this.skjulBestillingPop}>
               Gå tilbake
             </Button>
-            <Button variant="primary" onClick={this.handleClose && this.nyBestilling}>
+            <Button variant="primary" onClick={this.nyBestilling}>
               Fullfør Bestillingen
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={this.state.kundePop} onHide={this.skjulKundePop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Kunde</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Navn: {this.navn} <br />
+            Email: {this.email} <br />
+            Mobilnummer: {this.mobilnummer} <br />
+            <br />
+            Er lagt til i systemet!
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulKundePop}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={this.state.fullførtPop} onHide={this.skjulFullførtPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Bestilling</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Bestillingen er lagt til i systemet!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulFullførtPop}>
+              OK
             </Button>
           </Modal.Footer>
         </Modal>
       </React.Fragment>
     );
 
-
-    <Modal show={this.state.show2} onHide={this.handleClose2}>
-      <Modal.Header closeButton>
-        <Modal.Title>Bekreftelse:</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Row>
-          <Col>
-            <div className="align-center">
-              Kunden er lagt til!
-            </div>
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={this.handleClose2}>
-          Lukk
-        </Button>
-      </Modal.Footer>
-    </Modal>
   }
   fjern(e) {
     const { vareListe } = this.varerx;
@@ -411,7 +443,6 @@ export class BestillingNy extends Bestilling {
     var totalSum = 0;
     var rabatt = 0;
 
-
     for (var i = 0; i < oppdaterPris.length; i++) {
       totalSum += oppdaterPris[i];
     }
@@ -423,10 +454,8 @@ export class BestillingNy extends Bestilling {
     this.rabatt = rabatt;
     this.totalSum = totalSum;
 
-
     document.getElementById('pris').innerHTML = totalSum;
     document.getElementById('rabatt').innerHTML = rabatt;
-
   }
 
   sum(e) {
@@ -463,13 +492,15 @@ export class BestillingNy extends Bestilling {
 
     idListe.push(this.v_id);
 
-    console.log(idListe);
-
-
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
       for (var i = 0; i < idListe.length; i++) {
-        vareListe.push({ v_id: this.varer[i].v_id, type: this.varer[i].type, pris: this.varer[i].pris });
+        console.log(this.v_id);
+        console.log(this.varer[i].type);
+        console.log(this.varer[i].pris);
+
+        vareListe.push({ v_id: this.v_id, type: this.varer[i].type, pris: this.varer[i].pris });
+        console.log(vareListe);
       }
     });
     setTimeout(() => {}, 250);
@@ -488,7 +519,7 @@ export class BestillingNy extends Bestilling {
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
-    this.handleShow2();
+    this.visKundePop();
   }
   sokKunde() {
     s_sok.Kunde(this.mobilnummer, kunde => {
@@ -505,6 +536,8 @@ export class BestillingNy extends Bestilling {
     for (var i = 0; i < this.idListe.length; i++) {
       s_ny.Vareliste(this.idListe[i]);
     }
+    this.skjulBestillingPop();
+    this.visFullførtPop();
   }
 
   sokLedigeSyklerType() {

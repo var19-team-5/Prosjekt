@@ -159,6 +159,13 @@ class s_Sok {
       success(results);
     });
   }
+  Bestilling(navn, success) {
+    connection.query('SELECT * FROM alle_bestillinger WHERE navn LIKE ?', ['%' + navn + '%'], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
   SyklerType(type, success) {
     connection.query('SELECT * FROM alle_sykler WHERE alle_sykler.type=?', [type], (error, results) => {
       if (error) return console.error(error);
@@ -236,7 +243,7 @@ class s_Sok {
     );
   }
   infoVarer(v_id, success) {
-    connection.query('SELECT type, pris, v_id FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
+    connection.query('SELECT v_id, type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
