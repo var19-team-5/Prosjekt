@@ -8,8 +8,14 @@ export class BestillingNy extends Bestilling {
   constructor(props, context) {
     super(props, context);
 
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.visBestillingPop = this.visBestillingPop.bind(this);
+    this.skjulBestillingPop = this.skjulBestillingPop.bind(this);
+
+    this.visKundePop = this.visKundePop.bind(this);
+    this.skjulKundePop = this.skjulKundePop.bind(this);
+
+    this.visFullførtPop = this.visFullførtPop.bind(this);
+    this.skjulFullførtPop = this.skjulFullførtPop.bind(this);
 
     this.valgt = {
       idListe: []
@@ -23,16 +29,34 @@ export class BestillingNy extends Bestilling {
     this.state = {
       vSykkel: true,
       vUtstyr: false,
-      show: false
+      bestillingPop: false,
+      kundePop: false,
+      fullførtPop: false
     };
   }
 
-  handleClose() {
-    this.setState({ show: false });
+  skjulBestillingPop() {
+    this.setState({ bestillingPop: false });
   }
 
-  handleShow() {
-    this.setState({ show: true });
+  visBestillingPop() {
+    this.setState({ bestillingPop: true });
+  }
+
+  skjulKundePop() {
+    this.setState({ kundePop: false });
+  }
+
+  visKundePop() {
+    this.setState({ kundePop: true });
+  }
+
+  skjulFullførtPop() {
+    this.setState({ fullførtPop: false });
+  }
+
+  visFullførtPop() {
+    this.setState({ fullførtPop: true });
   }
 
   operationS() {
@@ -83,6 +107,7 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
+                    placeholder="Søk på eksisterende kunde her!"
                     required
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
@@ -184,7 +209,7 @@ export class BestillingNy extends Bestilling {
               </Row>
             </ListGroup.Item>
             {this.state.vSykkel ? (
-              <div class="table">
+              <div className="table">
                 <Table striped bordered hover size="sm" xs={6}>
                   <thead>
                     <tr>
@@ -223,7 +248,7 @@ export class BestillingNy extends Bestilling {
               </div>
             ) : null}
             {this.state.vUtstyr ? (
-              <div class="table">
+              <div className="table">
                 <Table striped bordered hover size="sm" xs={6}>
                   <thead>
                     <tr>
@@ -260,7 +285,7 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
-                  <div class="table">
+                  <div className="table">
                     <Table striped bordered hover size="sm" xs={3}>
                       <thead>
                         <tr>
@@ -290,17 +315,20 @@ export class BestillingNy extends Bestilling {
                       </tbody>
                     </Table>
                   </div>
-                  <h5>Rabatt:</h5>
-                  <div id="rabatt" />
-                  <h5>Pris:</h5>
-                  <div id="pris" />
-                  <Button onClick={this.handleShow}>Ny bestilling</Button>
+                  <ListGroup.Item className="list-group-item">
+                    <h5>Rabatt:</h5>
+                    <div id="rabatt" />
+                    <h5>Pris:</h5>
+                    <div id="pris" />
+                    <br />
+                    <Button onClick={this.visBestillingPop}>Ny bestilling</Button>
+                  </ListGroup.Item>
                 </Col>
               </Row>
             </ListGroup.Item>
           </Col>
         </Row>
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={this.state.bestillingPop} onHide={this.skjulBestillingPop}>
           <Modal.Header closeButton>
             <Modal.Title>Bestilling</Modal.Title>
           </Modal.Header>
@@ -342,11 +370,41 @@ export class BestillingNy extends Bestilling {
             </Row>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleClose}>
+            <Button variant="secondary" onClick={this.skjulBestillingPop}>
               Gå tilbake
             </Button>
-            <Button variant="primary" onClick={this.handleClose && this.nyBestilling}>
+            <Button variant="primary" onClick={this.nyBestilling}>
               Fullfør Bestillingen
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={this.state.kundePop} onHide={this.skjulKundePop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Kunde</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Navn: {this.navn} <br />
+            Email: {this.email} <br />
+            Mobilnummer: {this.mobilnummer} <br />
+            <br />
+            Er lagt til i systemet!
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulKundePop}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={this.state.fullførtPop} onHide={this.skjulFullførtPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Bestilling</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Bestillingen er lagt til i systemet!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulFullførtPop}>
+              OK
             </Button>
           </Modal.Footer>
         </Modal>
@@ -414,12 +472,15 @@ export class BestillingNy extends Bestilling {
 
     idListe.push(this.v_id);
 
-    console.log(typeListe);
-
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
       for (var i = 0; i < idListe.length; i++) {
-        vareListe.push({ v_id: this.varer[i].v_id, type: this.varer[i].type, pris: this.varer[i].pris });
+        console.log(this.v_id);
+        console.log(this.varer[i].type);
+        console.log(this.varer[i].pris);
+
+        vareListe.push({ v_id: this.v_id, type: this.varer[i].type, pris: this.varer[i].pris });
+        console.log(vareListe);
       }
     });
     setTimeout(() => {}, 250);
@@ -438,6 +499,7 @@ export class BestillingNy extends Bestilling {
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
+    this.visKundePop();
   }
   sokKunde() {
     s_sok.Kunde(this.mobilnummer, kunde => {
@@ -454,6 +516,8 @@ export class BestillingNy extends Bestilling {
     for (var i = 0; i < this.idListe.length; i++) {
       s_ny.Vareliste(this.idListe[i]);
     }
+    this.skjulBestillingPop();
+    this.visFullførtPop();
   }
 
   sokLedigeSyklerType() {
