@@ -13,6 +13,10 @@ export class Menu extends Component {
           <Nav.Link href="#ny/sykkel">Ny</Nav.Link>
           <Nav.Link href="#oversikt/soversikt">Oversikt</Nav.Link>
         </Nav>
+        <Nav>
+          <Nav.Link href="#hjelp">Hjelp</Nav.Link>
+          <Nav.Link href="#info">Info</Nav.Link>
+        </Nav>
       </Navbar>
     );
   }
