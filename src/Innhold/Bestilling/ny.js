@@ -355,8 +355,29 @@ export class BestillingNy extends Bestilling {
   }
   fjern(e) {
     const { vareListe } = this.varerx;
-
+    var oppdaterPris = this.prisListe;
     vareListe.pop(this.v_id);
+    oppdaterPris.pop(this.pris);
+
+    console.log(vareListe);
+    console.log(oppdaterPris);
+
+    var totalSum = 0;
+    var rabatt = 0;
+
+    for (var i = 0; i < oppdaterPris.length; i++) {
+      totalSum += oppdaterPris[i];
+    }
+    if (oppdaterPris.length >= 10) {
+      rabatt = totalSum * 0.1;
+      totalSum = totalSum - rabatt;
+    }
+
+    this.rabatt = rabatt;
+    this.totalSum = totalSum;
+
+    document.getElementById('pris').innerHTML = totalSum;
+    document.getElementById('rabatt').innerHTML = rabatt;
   }
 
   sum(e) {
@@ -392,6 +413,8 @@ export class BestillingNy extends Bestilling {
     this.vareListe = vareListe;
 
     idListe.push(this.v_id);
+
+    console.log(typeListe);
 
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
