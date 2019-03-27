@@ -1,26 +1,38 @@
 import * as React from 'react';
 import { s_ny, s_sok, s_typer, s_hent } from './../../services';
-import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup } from 'react-bootstrap';
+import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Modal } from 'react-bootstrap';
 
 import { Bestilling } from './nav';
 
 export class BestillingNy extends Bestilling {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
     this.valgt = {
-      typeListe: []
+      idListe: []
     };
     this.summer = {
       prisListe: []
     };
-    this.hei = {
+    this.varerx = {
       vareListe: []
     };
     this.state = {
       vSykkel: true,
-      vUtstyr: false
+      vUtstyr: false,
+      show: false
     };
+  }
+
+  handleClose() {
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
   }
 
   operationS() {
@@ -39,7 +51,7 @@ export class BestillingNy extends Bestilling {
 
   til = '';
   fra = '';
-  typeListe = [];
+  idListe = [];
   steder = [];
   typerSykler = [];
   typerUtstyr = [];
@@ -60,7 +72,7 @@ export class BestillingNy extends Bestilling {
   render() {
     const { valgt } = this.state;
     const { prisListe } = this.summer;
-    const { vareListe } = this.hei;
+    const { vareListe } = this.varerx;
 
     return (
       <React.Fragment>
@@ -83,7 +95,7 @@ export class BestillingNy extends Bestilling {
                     type="text"
                     id="navnfelt"
                     value={this.navn}
-                    onChange={e => (this.navn = e.target.value)}
+                    onInput={e => (this.navn = e.target.value)}
                   />
 
                   <Form.Label> Email: </Form.Label>
@@ -92,7 +104,7 @@ export class BestillingNy extends Bestilling {
                     type="text"
                     id="emailfelt"
                     value={this.email}
-                    onChange={e => (this.email = e.target.value)}
+                    onInput={e => (this.email = e.target.value)}
                   />
                 </Col>
               </Row>
@@ -200,7 +212,7 @@ export class BestillingNy extends Bestilling {
                           onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
                           className="text-center"
                           onChange={e => {
-                            this.test(e);
+                            this.leggTil(e);
                             this.sum(e);
                           }}
                         />
@@ -233,7 +245,7 @@ export class BestillingNy extends Bestilling {
                           onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
                           className="text-center"
                           onChange={e => {
-                            this.test(e);
+                            this.leggTil(e);
                             this.sum(e);
                           }}
                         />
@@ -282,17 +294,67 @@ export class BestillingNy extends Bestilling {
                   <div id="rabatt" />
                   <h5>Pris:</h5>
                   <div id="pris" />
-                  <Button onClick={this.nyBestilling}>Ny bestilling</Button>
+                  <Button onClick={this.handleShow}>Ny bestilling</Button>
                 </Col>
               </Row>
             </ListGroup.Item>
           </Col>
         </Row>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Bestilling</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Row>
+              <Col>
+                <div className="align-center">
+                  Mobilnummer: {this.mobilnummer} <br />
+                  <br />
+                  Fra: {this.fra} <br />
+                  Til: {this.til} <br />
+                  Hentested: {this.henting} <br />
+                  Leveringssted: {this.levering} <br />
+                  <br />
+                  Rabatt: {this.rabatt} kroner <br />
+                  Total sum: {this.totalSum} kroner
+                </div>
+              </Col>
+              <Col>
+                <div>
+                  <Table striped bordered hover size="sm" xs={2}>
+                    <thead>
+                      <tr>
+                        <th>Type</th>
+                        <th className="text-center">Pris</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.vareListe.map(vare => (
+                        <tr key={vare.v_id}>
+                          <td>{vare.type}</td>
+                          <td className="text-center">{vare.pris}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Gå tilbake
+            </Button>
+            <Button variant="primary" onClick={this.handleClose && this.nyBestilling}>
+              Fullfør Bestillingen
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </React.Fragment>
     );
   }
   fjern(e) {
-    const { vareListe } = this.hei;
+    const { vareListe } = this.varerx;
     var oppdaterPris = this.prisListe;
     vareListe.pop(this.v_id);
     oppdaterPris.pop(this.pris);
@@ -333,7 +395,7 @@ export class BestillingNy extends Bestilling {
       totalSum += prisListe[i];
     }
 
-    if (this.typeListe.length >= 10) {
+    if (this.idListe.length >= 10) {
       rabatt = totalSum * 0.1;
       totalSum = totalSum - rabatt;
     }
@@ -346,21 +408,21 @@ export class BestillingNy extends Bestilling {
     document.getElementById('rabatt').innerHTML = rabatt;
   }
 
-  test(e) {
-    const { typeListe } = this.valgt;
-    const { vareListe } = this.hei;
+  leggTil(e) {
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
 
-    this.typeListe = typeListe;
+    this.idListe = idListe;
     this.vareListe = vareListe;
 
-    typeListe.push(this.v_id);
+    idListe.push(this.v_id);
 
     console.log(typeListe);
 
 
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
-      for (var i = 0; i < typeListe.length; i++) {
+      for (var i = 0; i < idListe.length; i++) {
         vareListe.push({ v_id: this.varer[i].v_id, type: this.varer[i].type, pris: this.varer[i].pris });
       }
     });
@@ -393,8 +455,8 @@ export class BestillingNy extends Bestilling {
   nyBestilling() {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.rabatt, this.totalSum);
 
-    for (var i = 0; i < this.typeListe.length; i++) {
-      s_ny.Vareliste(this.typeListe[i]);
+    for (var i = 0; i < this.idListe.length; i++) {
+      s_ny.Vareliste(this.idListe[i]);
     }
   }
 
