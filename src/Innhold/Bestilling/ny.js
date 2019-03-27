@@ -17,7 +17,7 @@ export class BestillingNy extends Bestilling {
     this.summer = {
       prisListe: []
     };
-    this.varer = {
+    this.varerx = {
       vareListe: []
     };
     this.state = {
@@ -72,7 +72,7 @@ export class BestillingNy extends Bestilling {
   render() {
     const { valgt } = this.state;
     const { prisListe } = this.summer;
-    const { vareListe } = this.varer;
+    const { vareListe } = this.varerx;
 
     return (
       <React.Fragment>
@@ -307,7 +307,7 @@ export class BestillingNy extends Bestilling {
           <Modal.Body>
             <Row>
               <Col>
-                <div>
+                <div className="align-center">
                   Mobilnummer: {this.mobilnummer} <br />
                   <br />
                   Fra: {this.fra} <br />
@@ -386,7 +386,7 @@ export class BestillingNy extends Bestilling {
 
   leggTil(e) {
     const { idListe } = this.valgt;
-    const { vareListe } = this.varer;
+    const { vareListe } = this.varerx;
 
     this.idListe = idListe;
     this.vareListe = vareListe;
@@ -426,11 +426,11 @@ export class BestillingNy extends Bestilling {
     }, 250);
   }
   nyBestilling() {
-    // s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.rabatt, this.totalSum);
-    //
-    // for (var i = 0; i < this.idListe.length; i++) {
-    //   s_ny.Vareliste(this.idListe[i]);
-    // }
+    s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.rabatt, this.totalSum);
+
+    for (var i = 0; i < this.idListe.length; i++) {
+      s_ny.Vareliste(this.idListe[i]);
+    }
   }
 
   sokLedigeSyklerType() {
