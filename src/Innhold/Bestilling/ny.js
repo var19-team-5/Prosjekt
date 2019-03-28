@@ -114,7 +114,7 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
-                    placeholder="Søk på eksisterende kunde her!"
+                    placeholder="Søk eksisterende mob.nr."
                     required
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
@@ -292,7 +292,7 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
-                  <div class="valgtvarer">
+                  <div className="valgtvarer">
                     <Table striped bordered hover size="sm" xs={3}>
                       <thead>
                         <tr>
