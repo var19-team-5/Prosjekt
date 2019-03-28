@@ -58,6 +58,13 @@ export class BestillingNy extends Bestilling {
   visFullførtPop() {
     this.setState({ fullførtPop: true });
   }
+  handleClose2() {
+    this.setState({ show2: false });
+  }
+
+  handleShow2() {
+    this.setState({ show2: true });
+  }
 
   operationS() {
     this.setState({
@@ -286,7 +293,7 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
-                  <div className="table">
+                  <div class="valgtvarer">
                     <Table striped bordered hover size="sm" xs={3}>
                       <thead>
                         <tr>
@@ -316,13 +323,25 @@ export class BestillingNy extends Bestilling {
                       </tbody>
                     </Table>
                   </div>
-                  <ListGroup.Item className="list-group-item">
-                    <h5>Rabatt:</h5>
-                    <div id="rabatt" />
-                    <h5>Pris:</h5>
-                    <div id="pris" />
-                    <br />
-                    <Button onClick={this.visBestillingPop}>Ny bestilling</Button>
+                  <ListGroup.Item>
+                  <Row>
+                  <Col>
+                  <div>Rabatt:</div>
+                  </Col>
+                  <Col>
+                  <div id="rabatt" />
+                  </Col>
+                  </Row>
+                  <Row>
+                  <Col>
+                  <div>Pris:</div>
+                  </Col>
+                  <Col>
+                  <div id="pris" />
+                  </Col>
+                  </Row>
+                  <br/>
+                  <Button onClick={this.visBestillingPop}>Ny bestilling</Button>
                   </ListGroup.Item>
                 </Col>
               </Row>
@@ -349,7 +368,7 @@ export class BestillingNy extends Bestilling {
                 </div>
               </Col>
               <Col>
-                <div>
+                <div className='bekreftelse'>
                   <Table striped bordered hover size="sm" xs={2}>
                     <thead>
                       <tr>
@@ -411,6 +430,7 @@ export class BestillingNy extends Bestilling {
         </Modal>
       </React.Fragment>
     );
+
   }
   fjern(e) {
     const { vareListe } = this.varerx;

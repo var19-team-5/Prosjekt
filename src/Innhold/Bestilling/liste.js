@@ -22,7 +22,7 @@ export class BestillingListe extends Bestilling {
             />
           </InputGroup>
         </ListGroup.Item>
-        <div class="table">
+        <div class="status">
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
