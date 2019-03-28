@@ -176,12 +176,7 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row xs={6}>
                 <Col>
-                  <Form.Control
-                    as="select"
-                    onChange={() => this.operationS()}
-                    onClick={this.sokLedigeSyklerType}
-                    onInput={e => (this.type = e.target.value)}
-                  >
+                  <Form.Control as="select" onClick={e => (this.type = e.target.value) && this.sokLedigeSyklerType(e)}>
                     <option hidden>Velg sykkeltype</option>
                     {this.typerSykler.map(typeSykkel => (
                       <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -191,12 +186,7 @@ export class BestillingNy extends Bestilling {
                   </Form.Control>
                 </Col>
                 <Col>
-                  <Form.Control
-                    as="select"
-                    onChange={() => this.operationU()}
-                    onClick={this.sokLedigeUtstyrType}
-                    onInput={e => (this.type = e.target.value)}
-                  >
+                  <Form.Control as="select" onClick={e => (this.type = e.target.value) && this.sokLedigeUtstyrType(e)}>
                     <option hidden>Velg utstyrstype</option>
                     {this.typerUtstyr.map(typerUtstyr => (
                       <option key={typerUtstyr.type} value={typerUtstyr.type}>
@@ -523,6 +513,7 @@ export class BestillingNy extends Bestilling {
       this.sykler = sykler;
     });
     setTimeout(() => {}, 250);
+    this.operationS();
   }
 
   sokLedigeUtstyrType() {
@@ -530,5 +521,6 @@ export class BestillingNy extends Bestilling {
       this.utstyr = utstyr;
     });
     setTimeout(() => {}, 250);
+    this.operationU();
   }
 }
