@@ -107,8 +107,8 @@ export class BestillingNy extends Bestilling {
 
     return (
       <React.Fragment>
-        <Row>
-          <Col>
+        <Row xs={3}>
+          <Col xs={3}>
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
@@ -246,7 +246,6 @@ export class BestillingNy extends Bestilling {
                           className="text-center"
                           onChange={e => {
                             this.leggTil(e);
-                            this.sum(e);
                           }}
                         />
                       </tr>
@@ -279,7 +278,6 @@ export class BestillingNy extends Bestilling {
                           className="text-center"
                           onChange={e => {
                             this.leggTil(e);
-                            this.sum(e);
                           }}
                         />
                       </tr>
@@ -434,44 +432,31 @@ export class BestillingNy extends Bestilling {
   }
   fjern(e) {
     const { vareListe } = this.varerx;
-    var oppdaterPris = this.prisListe;
+    const { prisListe } = this.summer;
+    const { idListe } = this.valgt;
+
     vareListe.pop(this.v_id);
-    oppdaterPris.pop(this.pris);
+    prisListe.pop(this.pris);
+    idListe.pop(this.v_id);
 
-    var totalSum = 0;
-    var rabatt = 0;
-
-    for (var i = 0; i < oppdaterPris.length; i++) {
-      totalSum += oppdaterPris[i];
-    }
-    if (oppdaterPris.length >= 10) {
-      rabatt = totalSum * 0.1;
-      totalSum = totalSum - rabatt;
-    }
-
-    this.rabatt = rabatt;
-    this.totalSum = totalSum;
-
-    document.getElementById('pris').innerHTML = totalSum;
-    document.getElementById('rabatt').innerHTML = rabatt;
+    console.log(this.vareListe);
+    console.log(this.prisListe);
+    console.log(this.idListe);
 
     document.getElementById(this.v_id).disabled = false;
     document.getElementById(this.v_id).checked = false;
+    this.prisOgRabatt();
   }
-
-  sum(e) {
+  prisOgRabatt() {
     const { prisListe } = this.summer;
-
     var totalSum = 0;
     var rabatt = 0;
-
-    prisListe.push(this.pris);
 
     for (var i = 0; i < prisListe.length; i++) {
       totalSum += prisListe[i];
     }
 
-    if (this.idListe.length >= 10) {
+    if (this.prisListe.length >= 10) {
       rabatt = totalSum * 0.1;
       totalSum = totalSum - rabatt;
     }
@@ -487,11 +472,14 @@ export class BestillingNy extends Bestilling {
   leggTil(e) {
     const { idListe } = this.valgt;
     const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
 
     this.idListe = idListe;
     this.vareListe = vareListe;
+    this.prisListe = prisListe
 
     idListe.push(this.v_id);
+    prisListe.push(this.pris);
 
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
@@ -502,6 +490,8 @@ export class BestillingNy extends Bestilling {
     setTimeout(() => {}, 250);
 
     document.getElementById(this.v_id).disabled = true;
+
+    this.prisOgRabatt();
   }
   mounted() {
     s_hent.Steder(steder => {
