@@ -107,8 +107,8 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
-                    placeholder="Søk eksisterende mob.nr."
                     required
+                    placeholder="Søk eksisterende mob.nr."
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
                     onChange={this.sokKunde}
@@ -329,7 +329,7 @@ export class BestillingNy extends Bestilling {
             </ListGroup.Item>
           </Col>
         </Row>
-        <Modal show={this.state.bestillingPop} onHide={this.skjulBestillingPop}>
+        <Modal centered size="lg" show={this.state.bestillingPop} onHide={this.skjulBestillingPop}>
           <Modal.Header closeButton>
             <Modal.Title>Bestilling</Modal.Title>
           </Modal.Header>
@@ -380,7 +380,7 @@ export class BestillingNy extends Bestilling {
           </Modal.Footer>
         </Modal>
 
-        <Modal show={this.state.kundePop} onHide={this.skjulKundePop}>
+        <Modal size="sm" centered show={this.state.kundePop} onHide={this.skjulKundePop}>
           <Modal.Header closeButton>
             <Modal.Title>Kunde</Modal.Title>
           </Modal.Header>
@@ -398,7 +398,7 @@ export class BestillingNy extends Bestilling {
           </Modal.Footer>
         </Modal>
 
-        <Modal show={this.state.fullførtPop} onHide={this.skjulFullførtPop}>
+        <Modal size="sm" show={this.state.fullførtPop} onHide={this.skjulFullførtPop}>
           <Modal.Header closeButton>
             <Modal.Title>Bestilling</Modal.Title>
           </Modal.Header>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_hent, s_sok, s_endre } from './../../services';
+import { s_hent, s_sok, s_endre, s_slett } from './../../services';
 import {
   Table,
   ListGroup,
@@ -21,19 +21,31 @@ export class BestillingListe extends Bestilling {
     super(props, context);
 
     this.visInfoPop = this.visInfoPop.bind(this);
-    this.SkjulInfoPop = this.SkjulInfoPop.bind(this);
+    this.skjulInfoPop = this.skjulInfoPop.bind(this);
+
+    this.visSlettPop = this.visSlettPop.bind(this);
+    this.skjulslettPop = this.skjulSlettPop.bind(this);
 
     this.state = {
-      infoPop: false
+      infoPop: false,
+      slettPop: false
     };
   }
 
-  SkjulInfoPop() {
+  skjulInfoPop() {
     this.setState({ infoPop: false });
   }
 
   visInfoPop() {
     this.setState({ infoPop: true });
+  }
+
+  skjulSlettPop() {
+    this.setState({ slettPop: false });
+  }
+
+  visSlettPop() {
+    this.setState({ slettPop: true });
   }
 
   bestillinger = [];
@@ -101,7 +113,7 @@ export class BestillingListe extends Bestilling {
                   <td>{bestilling.status}</td>
                   <div className="text-center">
                     <Button value={bestilling.b_id} onClick={e => (this.b_id = e.target.value) && this.hent(e)}>
-                      Vis
+                      vis
                     </Button>
                   </div>
                 </tr>
@@ -109,15 +121,15 @@ export class BestillingListe extends Bestilling {
             </tbody>
           </Table>
         </div>
-        <Modal show={this.state.infoPop} onHide={this.SkjulInfoPop}>
+        <Modal centered size="lg" show={this.state.infoPop} onHide={this.skjulInfoPop}>
           <Modal.Header closeButton>
             <Modal.Title>Bestilling {this.b_id}</Modal.Title>
           </Modal.Header>
-          <Row>
-            <Col>
-              <div>
-                {this.valgt.map(valgt => (
-                  <Modal.Body>
+          {this.valgt.map(valgt => (
+            <Modal.Body>
+              <Row>
+                <Col>
+                  <div>
                     Kunde: {valgt.navn} <br />
                     <br />
                     Fra:{' '}
@@ -136,7 +148,7 @@ export class BestillingListe extends Bestilling {
                       day: '2-digit',
                       hour: '2-digit',
                       minute: '2-digit'
-                    }).format(valgt.leggTil)}
+                    }).format(valgt.til)}
                     <br />
                     <br />
                     Hentested: {valgt.hentested}
@@ -150,42 +162,61 @@ export class BestillingListe extends Bestilling {
                     <br />
                     <br />
                     Status: {valgt.status}
-                  </Modal.Body>
-                ))}
-                <ButtonGroup>
-                  <DropdownButton as={ButtonGroup} title="Endre status" id="bg-nested-dropdown">
-                    <Dropdown.Item onClick={this.bestilt}>Bestilt</Dropdown.Item>
-                    <Dropdown.Item onClick={this.utlevert}>Utlevert</Dropdown.Item>
-                    <Dropdown.Item onClick={this.ferdig}>Ferdig</Dropdown.Item>
-                  </DropdownButton>
-                </ButtonGroup>
-              </div>
-            </Col>
-            <Col>
-              <div className="bekreftelse">
-                <Table striped bordered hover size="sm" xs={2}>
-                  <thead>
-                    <tr>
-                      <th className="text-center">ID</th>
-                      <th>Type</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.varer.map(vare => (
-                      <tr key={vare.v_id}>
-                        <td className="text-center">{vare.v_id}</td>
-                        <td>{vare.type}</td>
-                        <td>{vare.status}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            </Col>
-          </Row>
+                    <br />
+                    <ButtonGroup>
+                      <DropdownButton as={ButtonGroup} title="Endre status" id="bg-nested-dropdown">
+                        <Dropdown.Item onClick={this.bestilt}>Bestilt</Dropdown.Item>
+                        <Dropdown.Item onClick={this.utlevert}>Utlevert</Dropdown.Item>
+                        <Dropdown.Item onClick={this.transport}>Under transport</Dropdown.Item>
+                        <Dropdown.Item onClick={this.ferdig}>Levert tilbake</Dropdown.Item>
+                      </DropdownButton>
+                    </ButtonGroup>
+                    <br />
+                    <br />
+                    <Button variant="danger" onClick={this.slett}>
+                      Slett bestilling
+                    </Button>
+                  </div>
+                </Col>
+                <Col>
+                  <div className="bekreftelse">
+                    <Table striped bordered hover size="sm" xs={2}>
+                      <thead>
+                        <tr>
+                          <th className="text-center">ID</th>
+                          <th>Type</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.varer.map(vare => (
+                          <tr key={vare.v_id}>
+                            <td className="text-center">{vare.v_id}</td>
+                            <td>{vare.type}</td>
+                            <td>{vare.status}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
+                </Col>
+              </Row>
+            </Modal.Body>
+          ))}
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.SkjulInfoPop}>
+            <Button variant="secondary" onClick={this.skjulInfoPop}>
+              Gå tilbake
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal size="sm" show={this.state.slettPop} onHide={this.skjulSlettPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Slettet!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Bestillingen er slettet</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulSlettPop}>
               OK
             </Button>
           </Modal.Footer>
@@ -235,5 +266,22 @@ export class BestillingListe extends Bestilling {
     s_endre.FerdigBest(this.b_id);
     this.mounted();
     this.hent();
+  }
+  transport() {
+    for (var i = 0; i < this.varer.length; i++) {
+      s_endre.TransportVare(this.varer[i].v_id);
+    }
+    s_endre.TransportBest(this.b_id);
+    this.mounted();
+    this.hent();
+  }
+  slett() {
+    s_slett.BestillingVarer(this.b_id);
+
+    s_slett.Bestilling(this.b_id);
+    this.mounted();
+    this.hent();
+    this.skjulInfoPop();
+    this.visSlettPop();
   }
 }

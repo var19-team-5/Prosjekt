@@ -108,7 +108,7 @@ class s_Ny {
 
 class s_Hent {
   Steder(success) {
-    connection.query('select * from lokasjon', (error, results) => {
+    connection.query('select * from lokasjon WHERE NOT lokasjon = "Ukjent"', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -334,6 +334,14 @@ class s_Endre {
       success(results);
     });
   }
+  TransportVare(v_id, success) {
+    connection.query('update vare set status ="transporteres" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
   BestiltBest(b_id, success) {
     connection.query('update bestilling set status ="bestilt" where b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
@@ -355,6 +363,30 @@ class s_Endre {
       success(results);
     });
   }
+  TransportBest(b_id, success) {
+    connection.query('update bestilling set status ="under transport" where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+}
+
+class s_Slett {
+  BestillingVarer(b_id, success) {
+    connection.query('delete from utleieliste where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  Bestilling(b_id, success) {
+    connection.query('delete from bestilling where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 export let s_ny = new s_Ny();
@@ -362,3 +394,4 @@ export let s_hent = new s_Hent();
 export let s_typer = new s_Typer();
 export let s_sok = new s_Sok();
 export let s_endre = new s_Endre();
+export let s_slett = new s_Slett();
