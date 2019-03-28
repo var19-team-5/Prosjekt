@@ -13,7 +13,7 @@ export class BestillingListe extends Bestilling {
         <ListGroup.Item className="list-group-item">
           <InputGroup className="mb-3">
             <FormControl
-              placeholder="Søk på et navn"
+              placeholder="Søk på et navn!"
               aria-describedby="basic-addon2"
               type="text"
               value={this.navn}
@@ -32,8 +32,8 @@ export class BestillingListe extends Bestilling {
                 <th>Kunde</th>
                 <th>Hentested</th>
                 <th>Leveringssted</th>
-                <th>Pris</th>
-                <th>Rabatt</th>
+                <th className="text-center">Pris</th>
+                <th className="text-center">Rabatt</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -62,8 +62,8 @@ export class BestillingListe extends Bestilling {
                   <td>{bestilling.navn}</td>
                   <td>{bestilling.hentested}</td>
                   <td>{bestilling.leveringssted}</td>
-                  <td>{bestilling.pris}</td>
-                  <td>{bestilling.rabatt}</td>
+                  <td className="text-center">{bestilling.pris}</td>
+                  <td className="text-center">{bestilling.rabatt}</td>
                   <td>{bestilling.status}</td>
                 </tr>
               ))}
@@ -81,9 +81,6 @@ export class BestillingListe extends Bestilling {
   sok() {
     s_sok.Bestilling(this.navn, bestillinger => {
       this.bestillinger = bestillinger;
-      console.log(this.navn);
-      console.log(this.Bestillinger);
     });
-    setTimeout(() => {}, 250);
   }
 }
