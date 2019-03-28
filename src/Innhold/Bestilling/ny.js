@@ -134,7 +134,9 @@ export class BestillingNy extends Bestilling {
                 </Col>
               </Row>
               <br />
-              <Button onClick={this.nyKunde}>Ny kunde</Button>
+              <Button id="nyKunde" onClick={this.nyKunde}>
+                Ny kunde
+              </Button>
             </ListGroup.Item>
 
             <ListGroup.Item className="list-group-item">
@@ -495,6 +497,7 @@ export class BestillingNy extends Bestilling {
     setTimeout(() => {
       document.getElementById('navnfelt').value = this.kundeliste[0].navn;
       document.getElementById('emailfelt').value = this.kundeliste[0].email;
+      document.getElementById('nyKunde').disabled = true;
     }, 250);
   }
   nyBestilling() {
