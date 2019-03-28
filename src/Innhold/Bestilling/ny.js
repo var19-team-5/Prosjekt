@@ -232,9 +232,10 @@ export class BestillingNy extends Bestilling {
                         <td className="text-center">{sykkel.størrelse_hjul}</td>
                         <td className="text-center">{sykkel.pris}</td>
                         <Form.Check
-                          id={sykkel.pris}
-                          value={sykkel.v_id}
-                          onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
+                          tagName="box"
+                          id={sykkel.v_id}
+                          value={sykkel.pris}
+                          onClick={e => (this.v_id = e.target.id) && (this.pris = parseInt(e.target.value))}
                           className="text-center"
                           onChange={e => {
                             this.leggTil(e);
@@ -265,9 +266,9 @@ export class BestillingNy extends Bestilling {
                         <td>{utstyr.type}</td>
                         <td className="text-center">{utstyr.pris}</td>
                         <Form.Check
-                          id={utstyr.pris}
-                          value={utstyr.v_id}
-                          onClick={e => (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id))}
+                          id={utstyr.v_id}
+                          value={utstyr.pris}
+                          onClick={e => (this.v_id = e.target.id) && (this.pris = parseInt(e.target.value))}
                           className="text-center"
                           onChange={e => {
                             this.leggTil(e);
@@ -417,9 +418,6 @@ export class BestillingNy extends Bestilling {
     vareListe.pop(this.v_id);
     oppdaterPris.pop(this.pris);
 
-    console.log(vareListe);
-    console.log(oppdaterPris);
-
     var totalSum = 0;
     var rabatt = 0;
 
@@ -436,6 +434,9 @@ export class BestillingNy extends Bestilling {
 
     document.getElementById('pris').innerHTML = totalSum;
     document.getElementById('rabatt').innerHTML = rabatt;
+
+    document.getElementById(this.v_id).disabled = false;
+    document.getElementById(this.v_id).checked = false;
   }
 
   sum(e) {
@@ -475,17 +476,13 @@ export class BestillingNy extends Bestilling {
     s_sok.infoVarer(this.v_id, varer => {
       this.varer = varer;
       for (var i = 0; i < idListe.length; i++) {
-        console.log(this.v_id);
-        console.log(this.varer[i].type);
-        console.log(this.varer[i].pris);
-
         vareListe.push({ v_id: this.v_id, type: this.varer[i].type, pris: this.varer[i].pris });
-        console.log(vareListe);
       }
     });
     setTimeout(() => {}, 250);
-  }
 
+    document.getElementById(this.v_id).disabled = true;
+  }
   mounted() {
     s_hent.Steder(steder => {
       this.steder = steder;
