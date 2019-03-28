@@ -421,11 +421,10 @@ export class BestillingNy extends Bestilling {
     prisListe.pop(this.pris);
     idListe.pop(this.v_id);
 
-    document.getElementById('pris').innerHTML = totalSum;
-    document.getElementById('rabatt').innerHTML = rabatt;
-
     document.getElementById(this.v_id).disabled = false;
     document.getElementById(this.v_id).checked = false;
+
+    console.log(this.v_id);
     this.prisOgRabatt();
   }
   prisOgRabatt() {
