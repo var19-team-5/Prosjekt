@@ -55,7 +55,7 @@ export class BestillingListe extends Bestilling {
             />
           </InputGroup>
         </ListGroup.Item>
-        <div class="status">
+        <div className="status">
           <Table striped bordered hover size="sm">
             <thead>
               <tr>

@@ -9,7 +9,7 @@ export class StatusUtstyrType extends StatusUtstyr {
 
   render() {
     return [
-      <div class='status'>
+      <div className='status'>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
