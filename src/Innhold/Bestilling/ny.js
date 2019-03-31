@@ -107,7 +107,7 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
-                    required
+                    id="mobilnummer"
                     placeholder="Søk eksisterende mob.nr."
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
@@ -116,20 +116,20 @@ export class BestillingNy extends Bestilling {
 
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
-                    required
                     type="text"
-                    id="navnfelt"
+                    id="navn"
                     value={this.navn}
                     onInput={e => (this.navn = e.target.value)}
+                    onChange={this.tomKunde}
                   />
 
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
-                    required
                     type="text"
-                    id="emailfelt"
+                    id="email"
                     value={this.email}
                     onInput={e => (this.email = e.target.value)}
+                    onChange={this.tomKunde}
                   />
                 </Col>
               </Row>
@@ -227,7 +227,7 @@ export class BestillingNy extends Bestilling {
                           tagName="box"
                           id={sykkel.v_id}
                           value={sykkel.pris}
-                          onClick={e => (this.v_id = e.target.id) && (this.pris = parseInt(e.target.value))}
+                          onClick={e => (this.v_id = parseInt(e.target.id)) && (this.pris = parseInt(e.target.value))}
                           className="text-center"
                           onChange={e => {
                             this.leggTil(e);
@@ -414,19 +414,45 @@ export class BestillingNy extends Bestilling {
       </React.Fragment>
     );
   }
+
+  tomKunde() {
+    let mobilnummer = document.getElementById('mobilnummer').value;
+    let navn = document.getElementById('navn').value;
+    let email = document.getElementById('email').value;
+
+    if ((mobilnummer = '' || navn == '' || email == '')) {
+      document.getElementById('nyKunde').disabled = true;
+    } else {
+      document.getElementById('nyKunde').disabled = false;
+    }
+  }
   fjern(e) {
+    const { idListe } = this.valgt;
     const { vareListe } = this.varerx;
     const { prisListe } = this.summer;
-    const { idListe } = this.valgt;
 
-    vareListe.pop(this.v_id);
-    prisListe.pop(this.pris);
-    idListe.pop(this.v_id);
+    for (var i = 0; i < this.idListe.length; i++) {
+      if (this.idListe[i] == this.v_id) {
+        this.idListe.splice(i, 1);
+        this.vareListe.splice(i, 1);
+        this.prisListe.splice(i, 1);
+      }
+    }
 
-    document.getElementById(this.v_id).disabled = false;
-    document.getElementById(this.v_id).checked = false;
+    for (var j = 0; j < this.utstyr.length; j++) {
+      if (this.utstyr[j].v_id == this.v_id) {
+        document.getElementById(this.v_id).disabled = false;
+        document.getElementById(this.v_id).checked = false;
+      }
+    }
 
-    console.log(this.v_id);
+    for (var k = 0; k < this.sykler.length; k++) {
+      if (this.sykler[k].v_id == this.v_id) {
+        document.getElementById(this.v_id).disabled = false;
+        document.getElementById(this.v_id).checked = false;
+      }
+    }
+
     this.prisOgRabatt();
   }
   prisOgRabatt() {
@@ -470,7 +496,7 @@ export class BestillingNy extends Bestilling {
       }
     });
     setTimeout(() => {}, 250);
-
+    console.log(vareListe);
     document.getElementById(this.v_id).disabled = true;
 
     this.prisOgRabatt();
@@ -485,18 +511,20 @@ export class BestillingNy extends Bestilling {
     s_typer.UtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
     });
+    document.getElementById('nyKunde').disabled = true;
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
     this.visKundePop();
+    document.getElementById('nyKunde').disabled = true;
   }
   sokKunde() {
     s_sok.Kunde(this.mobilnummer, kunde => {
       this.kundeliste = kunde;
     });
     setTimeout(() => {
-      document.getElementById('navnfelt').value = this.kundeliste[0].navn;
-      document.getElementById('emailfelt').value = this.kundeliste[0].email;
+      document.getElementById('navn').value = this.kundeliste[0].navn;
+      document.getElementById('email').value = this.kundeliste[0].email;
       document.getElementById('nyKunde').disabled = true;
     }, 250);
   }
@@ -513,6 +541,7 @@ export class BestillingNy extends Bestilling {
   sokLedigeSyklerType() {
     s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
       this.sykler = sykler;
+      this.sjekks();
     });
     setTimeout(() => {}, 250);
     this.operationS();
@@ -521,8 +550,30 @@ export class BestillingNy extends Bestilling {
   sokLedigeUtstyrType() {
     s_sok.LedigeUtstyrType(this.fra, this.til, this.type, utstyr => {
       this.utstyr = utstyr;
+      this.sjekku();
     });
     setTimeout(() => {}, 250);
     this.operationU();
+  }
+  sjekks() {
+    for (var i = 0; i < this.sykler.length; i++) {
+      for (var y = 0; y < this.idListe.length; y++) {
+        if (this.sykler[i].v_id == this.idListe[y]) {
+          document.getElementById(this.idListe[y]).disabled = true;
+          document.getElementById(this.idListe[y]).checked = true;
+        }
+      }
+    }
+  }
+
+  sjekku() {
+    for (var i = 0; i < this.utstyr.length; i++) {
+      for (var y = 0; y < this.idListe.length; y++) {
+        if (this.utstyr[i].v_id == this.idListe[y]) {
+          document.getElementById(this.idListe[y]).disabled = true;
+          document.getElementById(this.idListe[y]).checked = true;
+        }
+      }
+    }
   }
 }
