@@ -211,6 +211,9 @@ export class BestillingNy extends Bestilling {
                   </Form.Control>
                   <br />
                 </Col>
+                <Col sm="2">
+                  <Form.Check label="Restriksjoner" />
+                </Col>
               </Row>
             </ListGroup.Item>
             {this.state.vSykkel ? (
