@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { s_ny, s_sok, s_typer, s_hent } from './../../services';
 import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Modal } from 'react-bootstrap';
+import ReactDOM from 'react-dom';
 
 import { Bestilling } from './nav';
 
@@ -17,6 +18,9 @@ export class BestillingNy extends Bestilling {
     this.visFullførtPop = this.visFullførtPop.bind(this);
     this.skjulFullførtPop = this.skjulFullførtPop.bind(this);
 
+    this.visTomPop = this.visTomPop.bind(this);
+    this.skjulTomPop = this.skjulTomPop.bind(this);
+
     this.valgt = {
       idListe: []
     };
@@ -31,7 +35,8 @@ export class BestillingNy extends Bestilling {
       vUtstyr: false,
       bestillingPop: false,
       kundePop: false,
-      fullførtPop: false
+      fullførtPop: false,
+      tomPop: false
     };
   }
 
@@ -41,6 +46,14 @@ export class BestillingNy extends Bestilling {
 
   visBestillingPop() {
     this.setState({ bestillingPop: true });
+  }
+
+  skjulTomPop() {
+    this.setState({ tomPop: false });
+  }
+
+  visTomPop() {
+    this.setState({ tomPop: true });
   }
 
   skjulKundePop() {
@@ -94,7 +107,7 @@ export class BestillingNy extends Bestilling {
   totalSum = [];
 
   render() {
-    const { valgt } = this.state;
+    const { idListe } = this.valgt;
     const { prisListe } = this.summer;
     const { vareListe } = this.varerx;
 
@@ -107,7 +120,7 @@ export class BestillingNy extends Bestilling {
                 <Col>
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
-                    required
+                    id="mobilnummer"
                     placeholder="Søk eksisterende mob.nr."
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
@@ -116,36 +129,38 @@ export class BestillingNy extends Bestilling {
 
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
-                    required
                     type="text"
-                    id="navnfelt"
+                    id="navn"
                     value={this.navn}
                     onInput={e => (this.navn = e.target.value)}
+                    onChange={this.tomKunde}
                   />
 
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
-                    required
                     type="text"
-                    id="emailfelt"
+                    id="email"
                     value={this.email}
                     onInput={e => (this.email = e.target.value)}
+                    onChange={this.tomKunde}
                   />
                 </Col>
               </Row>
               <br />
-              <Button onClick={this.nyKunde}>Ny kunde</Button>
+              <Button id="nyKunde" onClick={this.nyKunde}>
+                Ny kunde
+              </Button>
             </ListGroup.Item>
 
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
                   <Form.Label> Fra: </Form.Label>
-                  <Form.Control required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+                  <Form.Control id="fra" required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
                 </Col>
                 <Col>
                   <Form.Label> Til: </Form.Label>
-                  <Form.Control required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+                  <Form.Control id="til" required type="datetime-local" onChange={e => (this.til = e.target.value)} />
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -154,7 +169,7 @@ export class BestillingNy extends Bestilling {
               <Row>
                 <Col>
                   <Form.Label>Hentested:</Form.Label>
-                  <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
+                  <Form.Control id="henting" as="select" onChange={e => (this.henting = e.target.value)}>
                     {this.steder.map(sted => (
                       <option key={sted.l_id}>{sted.lokasjon}</option>
                     ))}
@@ -162,7 +177,7 @@ export class BestillingNy extends Bestilling {
                 </Col>
                 <Col>
                   <Form.Label>Leveringsted:</Form.Label>
-                  <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
+                  <Form.Control id="levering" as="select" onChange={e => (this.levering = e.target.value)}>
                     {this.steder.map(sted => (
                       <option key={sted.l_id}>{sted.lokasjon}</option>
                     ))}
@@ -225,7 +240,7 @@ export class BestillingNy extends Bestilling {
                           tagName="box"
                           id={sykkel.v_id}
                           value={sykkel.pris}
-                          onClick={e => (this.v_id = e.target.id) && (this.pris = parseInt(e.target.value))}
+                          onClick={e => (this.v_id = parseInt(e.target.id)) && (this.pris = parseInt(e.target.value))}
                           className="text-center"
                           onChange={e => {
                             this.leggTil(e);
@@ -322,7 +337,9 @@ export class BestillingNy extends Bestilling {
                       </Col>
                     </Row>
                     <br />
-                    <Button onClick={this.visBestillingPop}>Ny bestilling</Button>
+                    <Button id="nyBestilling" onClick={this.sjekkBestilling}>
+                      Ny bestilling
+                    </Button>
                   </ListGroup.Item>
                 </Col>
               </Row>
@@ -337,6 +354,8 @@ export class BestillingNy extends Bestilling {
             <Row>
               <Col>
                 <div className="align-center">
+                  Navn: {this.navn} <br />
+                  Epost: {this.epost} <br />
                   Mobilnummer: {this.mobilnummer} <br />
                   <br />
                   Fra: {this.fra} <br />
@@ -379,7 +398,6 @@ export class BestillingNy extends Bestilling {
             </Button>
           </Modal.Footer>
         </Modal>
-
         <Modal size="sm" centered show={this.state.kundePop} onHide={this.skjulKundePop}>
           <Modal.Header closeButton>
             <Modal.Title>Kunde</Modal.Title>
@@ -409,23 +427,83 @@ export class BestillingNy extends Bestilling {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Modal size="sm" show={this.state.tomPop} onHide={this.skjulTomPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Feil!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Denne bestillingen har mangler!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulTomPop}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </React.Fragment>
     );
   }
-  fjern(e) {
-    const { vareListe } = this.varerx;
-    const { prisListe } = this.summer;
+
+  sjekkBestilling() {
+    let mobilnummer = document.getElementById('mobilnummer').value;
+    let navn = document.getElementById('navn').value;
+    let email = document.getElementById('email').value;
+    let fra = document.getElementById('fra').value;
+    let til = document.getElementById('til').value;
+
     const { idListe } = this.valgt;
 
-    vareListe.pop(this.v_id);
-    prisListe.pop(this.pris);
-    idListe.pop(this.v_id);
+    if (this.idListe.length === 0 || mobilnummer == '' || navn == '' || email == '' || fra == '' || til == '') {
+      this.visTomPop();
+    } else {
+      this.visBestillingPop();
+    }
+  }
 
-    document.getElementById('pris').innerHTML = totalSum;
-    document.getElementById('rabatt').innerHTML = rabatt;
+  tomKunde() {
+    let mobilnummer = document.getElementById('mobilnummer').value;
+    let navn = document.getElementById('navn').value;
+    let email = document.getElementById('email').value;
 
+    if (mobilnummer == '' || navn == '' || email == '') {
+      document.getElementById('nyKunde').disabled = true;
+    } else {
+      document.getElementById('nyKunde').disabled = false;
+    }
+  }
+  fjern(e) {
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
+
+    for (var i = 0; i < this.idListe.length; i++) {
+      if (this.idListe[i] == this.v_id) {
+        this.idListe.splice(i, 1);
+        this.vareListe.splice(i, 1);
+        this.prisListe.splice(i, 1);
+      }
+    }
+
+    for (var j = 0; j < this.utstyr.length; j++) {
+      if (this.utstyr[j].v_id == this.v_id) {
+        document.getElementById(this.v_id).disabled = false;
+        document.getElementById(this.v_id).checked = false;
+      }
+    }
+
+<<<<<<< HEAD
     document.getElementById(this.v_id).disabled = false;
     document.getElementById(this.v_id).checked = false;
+
+    console.log(this.v_id);
+=======
+    for (var k = 0; k < this.sykler.length; k++) {
+      if (this.sykler[k].v_id == this.v_id) {
+        document.getElementById(this.v_id).disabled = false;
+        document.getElementById(this.v_id).checked = false;
+      }
+    }
+
+>>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
     this.prisOgRabatt();
   }
   prisOgRabatt() {
@@ -469,7 +547,6 @@ export class BestillingNy extends Bestilling {
       }
     });
     setTimeout(() => {}, 250);
-
     document.getElementById(this.v_id).disabled = true;
 
     this.prisOgRabatt();
@@ -477,6 +554,8 @@ export class BestillingNy extends Bestilling {
   mounted() {
     s_hent.Steder(steder => {
       this.steder = steder;
+      this.henting = this.steder[0].lokasjon;
+      this.levering = this.steder[0].lokasjon;
     });
     s_typer.SyklerTyper(typerSykler => {
       this.typerSykler = typerSykler;
@@ -484,18 +563,30 @@ export class BestillingNy extends Bestilling {
     s_typer.UtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
     });
+    document.getElementById('nyKunde').disabled = true;
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
     this.visKundePop();
+    document.getElementById('nyKunde').disabled = true;
   }
   sokKunde() {
     s_sok.Kunde(this.mobilnummer, kunde => {
       this.kundeliste = kunde;
     });
     setTimeout(() => {
+<<<<<<< HEAD
       document.getElementById('navnfelt').value = this.kundeliste[0].navn;
       document.getElementById('emailfelt').value = this.kundeliste[0].email;
+=======
+      document.getElementById('navn').value = this.kundeliste[0].navn;
+      document.getElementById('email').value = this.kundeliste[0].email;
+
+      this.navn = this.kundeliste[0].navn;
+      this.epost = this.kundeliste[0].email;
+
+>>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
+      document.getElementById('nyKunde').disabled = true;
     }, 250);
   }
   nyBestilling() {
@@ -511,6 +602,7 @@ export class BestillingNy extends Bestilling {
   sokLedigeSyklerType() {
     s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
       this.sykler = sykler;
+      this.sjekks();
     });
     setTimeout(() => {}, 250);
     this.operationS();
@@ -519,8 +611,30 @@ export class BestillingNy extends Bestilling {
   sokLedigeUtstyrType() {
     s_sok.LedigeUtstyrType(this.fra, this.til, this.type, utstyr => {
       this.utstyr = utstyr;
+      this.sjekku();
     });
     setTimeout(() => {}, 250);
     this.operationU();
+  }
+  sjekks() {
+    for (var i = 0; i < this.sykler.length; i++) {
+      for (var y = 0; y < this.idListe.length; y++) {
+        if (this.sykler[i].v_id == this.idListe[y]) {
+          document.getElementById(this.idListe[y]).disabled = true;
+          document.getElementById(this.idListe[y]).checked = true;
+        }
+      }
+    }
+  }
+
+  sjekku() {
+    for (var i = 0; i < this.utstyr.length; i++) {
+      for (var y = 0; y < this.idListe.length; y++) {
+        if (this.utstyr[i].v_id == this.idListe[y]) {
+          document.getElementById(this.idListe[y]).disabled = true;
+          document.getElementById(this.idListe[y]).checked = true;
+        }
+      }
+    }
   }
 }

@@ -23,11 +23,15 @@ export class BestillingListe extends Bestilling {
     this.visInfoPop = this.visInfoPop.bind(this);
     this.skjulInfoPop = this.skjulInfoPop.bind(this);
 
+    this.visSikkerPop = this.visSikkerPop.bind(this);
+    this.skjulSikkerPop = this.skjulSikkerPop.bind(this);
+
     this.visSlettPop = this.visSlettPop.bind(this);
-    this.skjulslettPop = this.skjulSlettPop.bind(this);
+    this.skjulSlettPop = this.skjulSlettPop.bind(this);
 
     this.state = {
       infoPop: false,
+      sikkerPop: false,
       slettPop: false
     };
   }
@@ -38,6 +42,14 @@ export class BestillingListe extends Bestilling {
 
   visInfoPop() {
     this.setState({ infoPop: true });
+  }
+
+  skjulSikkerPop() {
+    this.setState({ sikkerPop: false });
+  }
+
+  visSikkerPop() {
+    this.setState({ sikkerPop: true });
   }
 
   skjulSlettPop() {
@@ -173,9 +185,6 @@ export class BestillingListe extends Bestilling {
                     </ButtonGroup>
                     <br />
                     <br />
-                    <Button variant="danger" onClick={this.slett}>
-                      Slett bestilling
-                    </Button>
                   </div>
                 </Col>
                 <Col>
@@ -204,8 +213,26 @@ export class BestillingListe extends Bestilling {
             </Modal.Body>
           ))}
           <Modal.Footer>
+            <Button variant="danger" onClick={this.sikker}>
+              Slett bestilling
+            </Button>
             <Button variant="secondary" onClick={this.skjulInfoPop}>
               Gå tilbake
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal size="sm" show={this.state.sikkerPop} onHide={this.skjulSikkerPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Sikker?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Er du sikker på at du ønsker å slette denne bestillingen?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulSikkerPop}>
+              Gå tilbake
+            </Button>
+            <Button variant="danger" onClick={this.slett}>
+              Slett
             </Button>
           </Modal.Footer>
         </Modal>
@@ -275,13 +302,18 @@ export class BestillingListe extends Bestilling {
     this.mounted();
     this.hent();
   }
+  sikker() {
+    this.visSikkerPop();
+  }
   slett() {
     s_slett.BestillingVarer(this.b_id);
-
     s_slett.Bestilling(this.b_id);
+
     this.mounted();
     this.hent();
+
     this.skjulInfoPop();
+    this.skjulSikkerPop();
     this.visSlettPop();
   }
 }

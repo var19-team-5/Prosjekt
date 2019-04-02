@@ -82,6 +82,7 @@ class s_Ny {
       }
     );
   }
+
   TypeUtstyr(nytype, nypris, success) {
     connection.query(
       'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"utstyr")',
@@ -136,6 +137,7 @@ class s_Hent {
       success(results);
     });
   }
+
   Utstyr(success) {
     connection.query('SELECT * FROM alt_utstyr', (error, results) => {
       if (error) return console.error(error);
@@ -143,6 +145,22 @@ class s_Hent {
       success(results);
     });
   }
+  typeSykkel(success) {
+    connection.query('SELECT * FROM prisliste WHERE kategori="sykkel"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  typeUtstyr( success) {
+    connection.query('SELECT * FROM prisliste WHERE kategori="utstyr"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+
 }
 
 class s_Sok {
@@ -363,12 +381,52 @@ class s_Endre {
       success(results);
     });
   }
+
   TransportBest(b_id, success) {
     connection.query('update bestilling set status ="under transport" where b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
+  }
+<<<<<<< HEAD
+  PrisSykkel(type, pris, success) {
+    connection.query('update prisliste set pris=? where type=?', [type, pris], (error, results) => {
+        if (error) return console.error(error);
+
+     success(results);
+      }
+    );
+  }
+  PrisUtstyr(type, pris, success) {
+    connection.query('update prisliste set pris=? where type=?', [type, pris], (error, results) => {
+        if (error) return console.error(error);
+
+     success(results);
+      }
+    );
+=======
+  Lager(v_id, success) {
+    connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  trengerRep(v_id, success) {
+    connection.query('update vare set status ="trenger reperasjon" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  Rep(v_id, success) {
+    connection.query('update vare set status ="er på reperasjon" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+>>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
   }
 }
 

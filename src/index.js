@@ -28,6 +28,7 @@ import { NySykkel } from './Innhold/Ny/sykkel';
 import { NyUtstyr } from './Innhold/Ny/utstyr';
 import { NyLokasjon } from './Innhold/Ny/lokasjon';
 import { NyRestriksjon } from './Innhold/Ny/restriksjon';
+import { NyPris } from './Innhold/Ny/nypris';
 
 import { Oversikt } from './Innhold/Oversikt/nav';
 import { SalgsOversikt } from './Innhold/Oversikt/soversikt';
@@ -59,6 +60,7 @@ ReactDOM.render(
       <Route exact path="/ny/utstyr" component={NyUtstyr} />
       <Route exact path="/ny/lokasjon" component={NyLokasjon} />
       <Route exact path="/ny/restriksjon" component={NyRestriksjon} />
+      <Route exact path="/ny/nypris" component={NyPris} />
 
       <Route path="/oversikt" component={Oversikt} />
       <Route exact path="/oversikt/soversikt" component={SalgsOversikt} />
