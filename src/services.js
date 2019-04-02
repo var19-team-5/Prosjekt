@@ -405,7 +405,6 @@ class s_Endre {
      success(results);
       }
     );
-=======
   Lager(v_id, success) {
     connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
