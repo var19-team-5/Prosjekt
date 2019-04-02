@@ -425,7 +425,7 @@ class s_Endre {
 
       success(results);
     });
->>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
+
   }
 }
 

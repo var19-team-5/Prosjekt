@@ -112,7 +112,7 @@ typerUtstyr = [];
 
          s_hent.typeUtstyr(typerUtstyr => {
             this.typerUtstyr = typerUtstyr;
-            
+
 
 
             });

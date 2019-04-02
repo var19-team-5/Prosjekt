@@ -61,11 +61,11 @@ export class NySykkel extends Ny {
           </Form.Control>
           <br />
           <Button onClick={this.visNyType}>NY TYPE</Button>
-=======
+
           </Form.Control>
           <br />
           <Button onClick={this.visNyType}>NY TYPE</Button>
->>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
+
         </ListGroup.Item>
 
         <Form.Group>
