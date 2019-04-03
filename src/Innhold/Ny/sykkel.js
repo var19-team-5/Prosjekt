@@ -61,11 +61,6 @@ export class NySykkel extends Ny {
           </Form.Control>
           <br />
           <Button onClick={this.visNyType}>NY TYPE</Button>
-
-          </Form.Control>
-          <br />
-          <Button onClick={this.visNyType}>NY TYPE</Button>
-
         </ListGroup.Item>
 
         <Form.Group>
@@ -171,5 +166,4 @@ export class NySykkel extends Ny {
     this.visBek();
     this.mounted();
   }
-
 }

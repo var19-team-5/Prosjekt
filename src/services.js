@@ -1,8 +1,8 @@
 import { connection } from './mysql_connection';
 
 class s_Ny {
-  Restriksjon(s_type, u_type) {
-    connection.query('insert into lokasjon (s_type, u_type) values (?,?)', [s_type, u_type], (error, results) => {
+  Restriksjon(s_type, u_type, success) {
+    connection.query('insert into restriksjoner (s_type, u_type) values (?,?)', [s_type, u_type], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -152,7 +152,7 @@ class s_Hent {
       success(results);
     });
   }
-  typeUtstyr( success) {
+  typeUtstyr(success) {
     connection.query('SELECT * FROM prisliste WHERE kategori="utstyr"', (error, results) => {
       if (error) return console.error(error);
 
@@ -160,7 +160,13 @@ class s_Hent {
     });
   }
 
+  restriksjonerTyper(type, success) {
+    connection.query('SELECT u_type AS type FROM restriksjoner WHERE s_type=?', [type], (error, results) => {
+      if (error) return console.error(error);
 
+      success(results);
+    });
+  }
 }
 
 class s_Sok {
@@ -389,22 +395,20 @@ class s_Endre {
       success(results);
     });
   }
-<<<<<<< HEAD
   PrisSykkel(type, pris, success) {
     connection.query('update prisliste set pris=? where type=?', [type, pris], (error, results) => {
-        if (error) return console.error(error);
+      if (error) return console.error(error);
 
-     success(results);
-      }
-    );
+      success(results);
+    });
   }
   PrisUtstyr(type, pris, success) {
     connection.query('update prisliste set pris=? where type=?', [type, pris], (error, results) => {
-        if (error) return console.error(error);
+      if (error) return console.error(error);
 
-     success(results);
-      }
-    );
+      success(results);
+    });
+  }
   Lager(v_id, success) {
     connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
@@ -425,7 +429,6 @@ class s_Endre {
 
       success(results);
     });
-
   }
 }
 
