@@ -493,13 +493,13 @@ export class BestillingNy extends Bestilling {
       }
     }
 
-    for (var k = 0; k < this.sykler.length; k++) {
-      if (this.sykler[k].v_id == this.v_id) {
-        document.getElementById(this.v_id).disabled = false;
-        document.getElementById(this.v_id).checked = false;
-      }
-    }
+<<<<<<< HEAD
+    document.getElementById(this.v_id).disabled = false;
+    document.getElementById(this.v_id).checked = false;
 
+    console.log(this.v_id);
+=======
+>>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
     this.prisOgRabatt();
   }
   prisOgRabatt() {
@@ -571,12 +571,16 @@ export class BestillingNy extends Bestilling {
       this.kundeliste = kunde;
     });
     setTimeout(() => {
+<<<<<<< HEAD
+      document.getElementById('navnfelt').value = this.kundeliste[0].navn;
+      document.getElementById('emailfelt').value = this.kundeliste[0].email;
       document.getElementById('navn').value = this.kundeliste[0].navn;
       document.getElementById('email').value = this.kundeliste[0].email;
 
       this.navn = this.kundeliste[0].navn;
       this.epost = this.kundeliste[0].email;
 
+>>>>>>> 80dd1100f13996870cb4a3180d75c6f122723d49
       document.getElementById('nyKunde').disabled = true;
     }, 250);
   }
