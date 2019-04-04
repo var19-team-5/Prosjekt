@@ -389,7 +389,7 @@ class s_Endre {
   }
 
   TransportBest(b_id, success) {
-    connection.query('update bestilling set status ="under transport" where b_id=?', [b_id], (error, results) => {
+    connection.query('update bestilling set status ="transporteres" where b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -424,7 +424,7 @@ class s_Endre {
     });
   }
   Rep(v_id, success) {
-    connection.query('update vare set status ="er på reperasjon" where v_id=?', [v_id], (error, results) => {
+    connection.query('update vare set status ="på reperasjon" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -445,6 +445,15 @@ class s_Slett {
       if (error) return console.error(error);
 
       success(results);
+    });
+  }
+  Vare(v_id, success) {
+    connection.query('delete from sykkel where v_id=?', [v_id], (error, results) => {
+      connection.query('delete from vare where v_id=?', [v_id], (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      });
     });
   }
 }

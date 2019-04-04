@@ -94,9 +94,18 @@ export class NySykkel extends Ny {
               <Col>
                 <Form.Label>Størrese hjul:</Form.Label>
                 <Form.Control
-                  if="størrelse_hjul"
+                  id="størrelse_hjul"
                   type="number"
                   onChange={e => (this.størrelse_hjul = e.target.value)}
+                  placeholder="00"
+                />
+              </Col>
+              <Col>
+                <Form.Label>Antall:</Form.Label>
+                <Form.Control
+                  id="antall"
+                  type="number"
+                  onChange={e => (this.antall = e.target.value)}
                   placeholder="00"
                 />
               </Col>

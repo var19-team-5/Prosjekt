@@ -503,6 +503,7 @@ export class BestillingNy extends Bestilling {
     console.log(this.v_id);
 
     this.prisOgRabatt();
+    this.Restriksjoner();
   }
   prisOgRabatt() {
     const { prisListe } = this.summer;
@@ -548,6 +549,7 @@ export class BestillingNy extends Bestilling {
     document.getElementById(this.v_id).disabled = true;
 
     this.prisOgRabatt();
+    this.Restriksjoner();
   }
   mounted() {
     s_hent.Steder(steder => {
@@ -562,6 +564,7 @@ export class BestillingNy extends Bestilling {
       this.typerUtstyr = typerUtstyr;
     });
     document.getElementById('nyKunde').disabled = true;
+    document.getElementById('restriksjoner').checked = false;
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
@@ -633,13 +636,16 @@ export class BestillingNy extends Bestilling {
     }
   }
   Restriksjoner() {
-    if ((document.getElementById('restriksjoner').checked = true)) {
+    var restriksjoner = document.getElementById('restriksjoner').checked;
+
+    if ((restriksjoner = false)) {
       for (var i = 0; i < this.vareListe.length; i++) {
         s_hent.restriksjonerTyper(this.vareListe[i].type, typerUtstyr => {
           this.typerUtstyr = typerUtstyr;
         });
+        this.typerUtstyr.push(this.typerUtstyr);
       }
-    } else {
+    } else if ((restriksjoner = true)) {
       s_typer.UtstyrTyper(typerUtstyr => {
         this.typerUtstyr = typerUtstyr;
       });
