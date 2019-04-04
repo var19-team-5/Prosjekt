@@ -34,6 +34,7 @@ export class NyRestriksjon extends Ny {
               </Form.Control>
             </Col>
           </Row>
+          <br />
           <Button onClick={this.nyRestriksjon}>Legg til ny restriksjon</Button>
         </ListGroup.Item>
       </React.Fragment>

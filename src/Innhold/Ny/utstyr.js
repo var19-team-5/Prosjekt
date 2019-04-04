@@ -11,12 +11,20 @@ export class NyUtstyr extends Ny {
     this.visNyType = this.visNyType.bind(this);
     this.skjulNyType = this.skjulNyType.bind(this);
 
+    this.visBekNY = this.visBekNY.bind(this);
+    this.skjulBekNY = this.skjulBekNY.bind(this);
+
     this.visBek = this.visBek.bind(this);
     this.skjulBek = this.skjulBek.bind(this);
 
+    this.visSam = this.visSam.bind(this);
+    this.skjulSam = this.skjulSam.bind(this);
+
     this.state = {
       nytypepop: false,
-      bekpop: false
+      bekpopNY: false,
+      bekpop: false,
+      sampop: false
     };
   }
 
@@ -28,12 +36,28 @@ export class NyUtstyr extends Ny {
     this.setState({ nytypepop: true });
   }
 
+  skjulBekNY() {
+    this.setState({ bekpopNY: false });
+  }
+
+  visBekNY() {
+    this.setState({ bekpopNY: true });
+  }
+
   skjulBek() {
     this.setState({ bekpop: false });
   }
 
   visBek() {
     this.setState({ bekpop: true });
+  }
+
+  skjulSam() {
+    this.setState({ sampop: false });
+  }
+
+  visSam() {
+    this.setState({ sampop: true });
   }
 
   steder = [];
@@ -83,7 +107,7 @@ export class NyUtstyr extends Ny {
               </Col>
             </Row>
             <br />
-            <Button onClick={this.nyUtstyr}>Legg til nytt utstyr</Button>
+            <Button onClick={this.visSam}>Legg til nytt utstyr</Button>
           </ListGroup.Item>
         </Form.Group>
 
@@ -108,15 +132,45 @@ export class NyUtstyr extends Ny {
             <Button variant="secondary" onClick={this.skjulNyType}>
               Gå tilbake
             </Button>
-            <Button onClick={this.nyTypeSykkel}>Legg til ny type</Button>
+            <Button onClick={this.nyTypeUtstyr}>Legg til ny type</Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal size="sm" centered show={this.state.bekpopNY} onHide={this.skjulBekNY}>
+          <Modal.Header closeButton>
+            <Modal.Title>Ny type</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Ny type er lagt til!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulBekNY}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal size="sm" centered show={this.state.sampop} onHide={this.skjulSam}>
+          <Modal.Header closeButton>
+            <Modal.Title>Ny type</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Type: {this.type} <br />
+            Tilhører: {this.tilhører} <br />
+            <br />
+            Antall: {this.antall}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulSam}>
+              Gå tilbake
+            </Button>
+            <Button onClick={this.nyUtstyr}>Legg til</Button>
           </Modal.Footer>
         </Modal>
 
         <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Nye utstyr!</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ny type er lagt til!</Modal.Body>
+          <Modal.Body>Nye utstyr er lagt til!</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.skjulBek}>
               OK
@@ -137,13 +191,19 @@ export class NyUtstyr extends Ny {
       this.tilhører = steder[0].lokasjon;
     });
   }
-  nySykkel() {
-    s_ny.Sykkel(this.tilhører, this.type);
+
+  nyUtstyr() {
+    for (var i = 0; i < this.antall; i++) {
+      s_ny.UtstyrVare(this.tilhører, this.type);
+      s_ny.Utstyr(this.type);
+      this.skjulSam();
+      this.visBek();
+    }
   }
-  nyTypeSykkel() {
+  nyTypeUtstyr() {
     s_ny.TypeUtstyr(this.nytype, this.nypris);
     this.skjulNyType();
-    this.visBek();
+    this.visBekNY();
     this.mounted();
   }
 }

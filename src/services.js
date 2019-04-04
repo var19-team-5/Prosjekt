@@ -15,37 +15,51 @@ class s_Ny {
       success(results);
     });
   }
-  Utstyr(tilhører, type, success) {
+
+  UtstyrVare(tilhører, type, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
       [tilhører, tilhører, type],
       (error, results) => {
-        connection.query(
-          'INSERT INTO utstyr (v_id, type) VALUES ((SELECT MAX(v_id) FROM vare),?)',
-          [type],
-          (error, results) => {
-            if (error) return console.error(error);
+        if (error) return console.error(error);
 
-            success(results);
-          }
-        );
+        success(results);
       }
     );
   }
-  Sykkel(tilhører, type, ramme, girsystem, størrelse_hjul, success) {
+
+  Utstyr(type, success) {
+    connection.query(
+      'INSERT INTO utstyr (v_id, type) VALUES ((SELECT MAX(v_id) FROM vare),?)',
+      [type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+
+  SykkelVare(tilhører, type, success) {
     connection.query(
       'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
       [tilhører, tilhører, type],
       (error, results) => {
-        connection.query(
-          'INSERT INTO sykkel (v_id, ramme, girsystem, størrelse_hjul, type) VALUES ((SELECT MAX(v_id) FROM vare),?,?,?,?)',
-          [ramme, girsystem, størrelse_hjul, type],
-          (error, results) => {
-            if (error) return console.error(error);
+        if (error) return console.error(error);
 
-            success(results);
-          }
-        );
+        success(results);
+      }
+    );
+  }
+
+  Sykkel(type, ramme, girsystem, størrelse_hjul, success) {
+    connection.query(
+      'INSERT INTO sykkel (v_id, ramme, girsystem, størrelse_hjul, type) VALUES ((SELECT MAX(v_id) FROM vare),?,?,?,?)',
+      [ramme, girsystem, størrelse_hjul, type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
       }
     );
   }
@@ -124,7 +138,7 @@ class s_Hent {
   }
 
   Varer(success) {
-    connection.query('SELECT * FROM alle_varer', (error, results) => {
+    connection.query('SELECT * FROM alle_varer ORDER BY `alle_varer`.`v_id` ASC', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -425,6 +439,14 @@ class s_Endre {
   }
   Rep(v_id, success) {
     connection.query('update vare set status ="på reperasjon" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  stjålet(v_id, success) {
+    connection.query('update vare set status ="stjålet" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);

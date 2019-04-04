@@ -39,9 +39,9 @@ export class NyPris extends Ny {
                 ))}
                 <br />
               </Form.Control>
-
               <Form.Label>Pris:</Form.Label>
               <Form.Control type="number" onChange={e => (this.pris = e.target.value)} placeholder="00,00" />
+              <br />
               <Button value={this.nyPrisUtstyr()} onClick={() => this.visEndringPop()}>
                 Legg til ny utstyr pris
               </Button>
@@ -60,6 +60,7 @@ export class NyPris extends Ny {
               </Form.Control>
               <Form.Label>Pris:</Form.Label>
               <Form.Control type="number" onChange={e => (this.pris = e.target.value)} placeholder="00,00" />
+              <br />
               <Button value={this.nyPrisSykkel()} onClick={() => this.visEndringPop()}>
                 Legg til ny sykkel pris
               </Button>
