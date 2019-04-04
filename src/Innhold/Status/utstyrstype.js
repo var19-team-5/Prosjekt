@@ -9,28 +9,30 @@ export class StatusUtstyrType extends StatusUtstyr {
 
   render() {
     return [
+      <div className='status'>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
-            <th>Vare ID</th>
+            <th className="text-center">Vare ID</th>
             <th>Type</th>
             <th>Befinner seg</th>
             <th>Status</th>
-            <th>Pris</th>
+            <th className="text-center">Pris</th>
           </tr>
         </thead>
         <tbody>
           {this.utstyr.map(utstyr => (
             <tr key={utstyr.v_id}>
-              <td>{utstyr.v_id}</td>
+              <td className="text-center">{utstyr.v_id}</td>
               <td>{utstyr.type}</td>
               <td>{utstyr.lokasjon}</td>
               <td>{utstyr.status}</td>
-              <td>{utstyr.pris}</td>
+              <td className="text-center">{utstyr.pris}</td>
             </tr>
           ))}
         </tbody>
       </Table>
+      </div>
     ];
   }
   mounted() {

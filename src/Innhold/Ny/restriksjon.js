@@ -15,7 +15,7 @@ export class NyRestriksjon extends Ny {
           <Row>
             <Col>
               <Form.Label>Type sykkel:</Form.Label>
-              <Form.Control as="select" onChange={e => (this.s_type = e.target.value)}>
+              <Form.Control id="s_type" as="select" onChange={e => (this.s_type = e.target.value)}>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
                     {typeSykkel.type}
@@ -25,7 +25,7 @@ export class NyRestriksjon extends Ny {
             </Col>
             <Col>
               <Form.Label>Type Utstyr:</Form.Label>
-              <Form.Control as="select" onChange={e => (this.u_type = e.target.value)}>
+              <Form.Control id="u_type" as="select" onChange={e => (this.u_type = e.target.value)}>
                 {this.typerUtstyr.map(typerUtstyr => (
                   <option key={typerUtstyr.type} value={typerUtstyr.type}>
                     {typerUtstyr.type}
@@ -42,10 +42,12 @@ export class NyRestriksjon extends Ny {
   mounted() {
     s_typer.alleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
+      document.getElementById('s_type').value = this.typerSykler[0].type;
     });
 
     s_typer.alleUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
+      document.getElementById('u_type').value = this.typerUtstyr[0].type;
     });
   }
   nyRestriksjon() {

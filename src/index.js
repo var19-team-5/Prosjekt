@@ -7,6 +7,9 @@ import { Menu } from './Innhold/meny';
 
 import { Home } from './Innhold/hjem';
 
+import { Info } from './Innhold/info';
+import { Hjelp } from './Innhold/hjelp';
+
 import { Bestilling } from './Innhold/Bestilling/nav';
 import { BestillingNy } from './Innhold/Bestilling/ny';
 import { BestillingListe } from './Innhold/Bestilling/liste';
@@ -25,6 +28,10 @@ import { NySykkel } from './Innhold/Ny/sykkel';
 import { NyUtstyr } from './Innhold/Ny/utstyr';
 import { NyLokasjon } from './Innhold/Ny/lokasjon';
 import { NyRestriksjon } from './Innhold/Ny/restriksjon';
+import { NyPris } from './Innhold/Ny/nypris';
+
+import { Oversikt } from './Innhold/Oversikt/nav';
+import { SalgsOversikt } from './Innhold/Oversikt/soversikt';
 
 ReactDOM.render(
   <HashRouter>
@@ -53,6 +60,13 @@ ReactDOM.render(
       <Route exact path="/ny/utstyr" component={NyUtstyr} />
       <Route exact path="/ny/lokasjon" component={NyLokasjon} />
       <Route exact path="/ny/restriksjon" component={NyRestriksjon} />
+      <Route exact path="/ny/nypris" component={NyPris} />
+
+      <Route path="/oversikt" component={Oversikt} />
+      <Route exact path="/oversikt/soversikt" component={SalgsOversikt} />
+
+      <Route path="/info" component={Info} />
+      <Route path="/hjelp" component={Hjelp} />
     </div>
   </HashRouter>,
   document.getElementById('root')
