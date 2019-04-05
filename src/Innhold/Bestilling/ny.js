@@ -129,7 +129,6 @@ export class BestillingNy extends Bestilling {
 
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
-                    type="text"
                     id="navn"
                     value={this.navn}
                     onInput={e => (this.navn = e.target.value)}
@@ -138,7 +137,6 @@ export class BestillingNy extends Bestilling {
 
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
-                    type="text"
                     id="email"
                     value={this.email}
                     onInput={e => (this.email = e.target.value)}
@@ -216,7 +214,7 @@ export class BestillingNy extends Bestilling {
                   <br />
                 </Col>
                 <Col sm="2">
-                  <Form.Check id="restriksjoner" onClick={this.Restriksjoner} label="Restriksjoner" />
+                  <Button id="restriksjoner" label="Restriksjoner" />
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -362,7 +360,7 @@ export class BestillingNy extends Bestilling {
               <Col>
                 <div className="align-center">
                   Navn: {this.navn} <br />
-                  Epost: {this.epost} <br />
+                  Email: {this.email} <br />
                   Mobilnummer: {this.mobilnummer} <br />
                   <br />
                   Fra: {this.fra} <br />
@@ -451,6 +449,12 @@ export class BestillingNy extends Bestilling {
   }
 
   sjekkBestilling() {
+    document.getElementById('navn').value = document.getElementById('navn').placeholder;
+    document.getElementById('email').value = document.getElementById('email').placeholder;
+
+    this.navn = document.getElementById('navn').value;
+    this.email = document.getElementById('email').value;
+
     let mobilnummer = document.getElementById('mobilnummer').value;
     let navn = document.getElementById('navn').value;
     let email = document.getElementById('email').value;
@@ -490,6 +494,8 @@ export class BestillingNy extends Bestilling {
       }
     }
 
+    this.prisOgRabatt();
+
     for (var j = 0; j < this.utstyr.length; j++) {
       if (this.utstyr[j].v_id == this.v_id) {
         document.getElementById(this.v_id).disabled = false;
@@ -497,13 +503,12 @@ export class BestillingNy extends Bestilling {
       }
     }
 
-    document.getElementById(this.v_id).disabled = false;
-    document.getElementById(this.v_id).checked = false;
-
-    console.log(this.v_id);
-
-    this.prisOgRabatt();
-    this.Restriksjoner();
+    for (var k = 0; k < this.sykler.length; k++) {
+      if (this.sykler[k].v_id == this.v_id) {
+        document.getElementById(this.v_id).disabled = false;
+        document.getElementById(this.v_id).checked = false;
+      }
+    }
   }
   prisOgRabatt() {
     const { prisListe } = this.summer;
@@ -514,7 +519,9 @@ export class BestillingNy extends Bestilling {
       totalSum += prisListe[i];
     }
 
-    if (this.prisListe.length >= 10) {
+    totalSum = totalSum * this.dager;
+
+    if (this.prisListe.length >= 10 || this.antall[0].antall >= 10) {
       rabatt = totalSum * 0.1;
       totalSum = totalSum - rabatt;
     }
@@ -548,8 +555,8 @@ export class BestillingNy extends Bestilling {
     setTimeout(() => {}, 250);
     document.getElementById(this.v_id).disabled = true;
 
+    this.beregnDager();
     this.prisOgRabatt();
-    this.Restriksjoner();
   }
   mounted() {
     s_hent.Steder(steder => {
@@ -564,26 +571,42 @@ export class BestillingNy extends Bestilling {
       this.typerUtstyr = typerUtstyr;
     });
     document.getElementById('nyKunde').disabled = true;
-    document.getElementById('restriksjoner').checked = false;
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
     this.visKundePop();
     document.getElementById('nyKunde').disabled = true;
+    s_hent.KundeAntall(this.mobilnummer, antall => {
+      this.antall = antall;
+    });
   }
   sokKunde() {
-    s_sok.Kunde(this.mobilnummer, kunde => {
-      this.kundeliste = kunde;
+    s_sok.Kunde(this.mobilnummer, kundeSok => {
+      this.kundeListe = kundeSok;
+    });
+    s_hent.KundeAntall(this.mobilnummer, antall => {
+      this.antall = antall;
     });
     setTimeout(() => {
-      document.getElementById('navn').value = this.kundeliste[0].navn;
-      document.getElementById('email').value = this.kundeliste[0].email;
+      if (this.kundeListe.length == 1) {
+        document.getElementById('navn').placeholder = this.kundeListe[0].navn;
+        document.getElementById('email').placeholder = this.kundeListe[0].email;
 
-      this.navn = this.kundeliste[0].navn;
-      this.epost = this.kundeliste[0].email;
+        document.getElementById('navn').disabled = true;
+        document.getElementById('email').disabled = true;
+        document.getElementById('nyKunde').disabled = true;
 
-      document.getElementById('nyKunde').disabled = true;
-      console.log('nope');
+        this.sokKunde();
+      } else if (this.kundeListe.length == 0) {
+        document.getElementById('navn').placeholder = '';
+        document.getElementById('email').placeholder = '';
+
+        document.getElementById('navn').value = '';
+        document.getElementById('email').value = '';
+
+        document.getElementById('navn').disabled = false;
+        document.getElementById('email').disabled = false;
+      }
     }, 250);
   }
 
@@ -635,20 +658,19 @@ export class BestillingNy extends Bestilling {
       }
     }
   }
-  Restriksjoner() {
-    var restriksjoner = document.getElementById('restriksjoner').checked;
+  beregnDager() {
+    var til = new Date(this.til);
+    var fra = new Date(this.fra);
 
-    if ((restriksjoner = false)) {
-      for (var i = 0; i < this.vareListe.length; i++) {
-        s_hent.restriksjonerTyper(this.vareListe[i].type, typerUtstyr => {
-          this.typerUtstyr = typerUtstyr;
-        });
-        this.typerUtstyr.push(this.typerUtstyr);
-      }
-    } else if ((restriksjoner = true)) {
-      s_typer.UtstyrTyper(typerUtstyr => {
-        this.typerUtstyr = typerUtstyr;
-      });
+    var res = Math.abs(fra - til) / 1000;
+    var dager = Math.floor(res / 86400);
+
+    this.dager = dager;
+
+    if (this.dager == 0) {
+      this.dager = 1;
+    } else if (this.dager >= 7) {
+      this.dager = 7;
     }
   }
 }

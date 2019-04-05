@@ -181,6 +181,17 @@ class s_Hent {
       success(results);
     });
   }
+  KundeAntall(mobilnummer, success) {
+    connection.query(
+      'SELECT antall_b AS antall FROM antall_kundebestillinger WHERE mobilnummer=?',
+      [mobilnummer],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
 }
 
 class s_Sok {
