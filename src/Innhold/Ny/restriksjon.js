@@ -16,7 +16,7 @@ export class NyRestriksjon extends Ny {
           <Row>
             <Col>
               <Form.Label>Type sykkel:</Form.Label>
-              <Form.Control as="select" onInput={e => (this.type = e.target.value) && this.kjør(e)}>
+              <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
                 <option hidden>Velg sykkeltype</option>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -83,6 +83,7 @@ export class NyRestriksjon extends Ny {
   mounted() {
     s_typer.alleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
+      document.getElementById('s_type').value = this.typerSykler[0].type;
     });
   }
   kjør() {

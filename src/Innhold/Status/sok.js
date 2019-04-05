@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_sok, s_endre } from './../../services';
+import { s_sok, s_endre, s_slett } from './../../services';
 import { Table, Modal, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 
 import { Status } from './nav';
@@ -11,8 +11,16 @@ export class StatusSok extends Status {
     this.visInfoPop = this.visInfoPop.bind(this);
     this.skjulInfoPop = this.skjulInfoPop.bind(this);
 
+    this.visSikkerPop = this.visSikkerPop.bind(this);
+    this.skjulSikkerPop = this.skjulSikkerPop.bind(this);
+
+    this.visSlettPop = this.visSlettPop.bind(this);
+    this.skjulSlettPop = this.skjulSlettPop.bind(this);
+
     this.state = {
-      infoPop: false
+      infoPop: false,
+      sikkerPop: false,
+      slettPop: false
     };
   }
 
@@ -22,6 +30,21 @@ export class StatusSok extends Status {
 
   visInfoPop() {
     this.setState({ infoPop: true });
+  }
+  skjulSikkerPop() {
+    this.setState({ sikkerPop: false });
+  }
+
+  visSikkerPop() {
+    this.setState({ sikkerPop: true });
+  }
+
+  skjulSlettPop() {
+    this.setState({ slettPop: false });
+  }
+
+  visSlettPop() {
+    this.setState({ slettPop: true });
   }
 
   vare = [];
@@ -37,7 +60,7 @@ export class StatusSok extends Status {
               <th>Befinner seg</th>
               <th>Status</th>
               <th className="text-center">Pris</th>
-              <th className="text-center">Endre status</th>
+              <th className="text-center">Mer info</th>
             </tr>
           </thead>
           <tbody>
@@ -50,7 +73,7 @@ export class StatusSok extends Status {
                 <td className="text-center">{vare.pris}</td>
                 <div className="text-center">
                   <Button value={vare.v_id} onClick={e => (this.v_id = e.target.value) && this.hent(e)}>
-                    Endre
+                    Info
                   </Button>
                 </div>
               </tr>
@@ -58,7 +81,7 @@ export class StatusSok extends Status {
           </tbody>
         </Table>
 
-        <Modal centered size="lg" show={this.state.infoPop} onHide={this.skjulInfoPop}>
+        <Modal centered size="sm" show={this.state.infoPop} onHide={this.skjulInfoPop}>
           <Modal.Header closeButton>
             {this.vare.map(vare => (
               <Modal.Title>Vare {vare.v_id}</Modal.Title>
@@ -76,14 +99,45 @@ export class StatusSok extends Status {
                   <Dropdown.Item onClick={this.lager}>På lager</Dropdown.Item>
                   <Dropdown.Item onClick={this.trengerRep}>Trenger reperasjon</Dropdown.Item>
                   <Dropdown.Item onClick={this.påRep}>På reperasjon</Dropdown.Item>
+                  <Dropdown.Item onClick={this.stjålet}>Stjålet</Dropdown.Item>
                 </DropdownButton>
               </ButtonGroup>
             </Modal.Body>
           ))}
 
           <Modal.Footer>
+            <Button variant="danger" onClick={this.visSikkerPop}>
+              Slett
+            </Button>
             <Button variant="secondary" onClick={this.skjulInfoPop}>
               Gå tilbake
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal size="sm" show={this.state.sikkerPop} onHide={this.skjulSikkerPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Sikker?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Er du sikker på at du ønsker å slette denne varen?</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulSikkerPop}>
+              Gå tilbake
+            </Button>
+            <Button variant="danger" onClick={this.slett}>
+              Slett
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal size="sm" show={this.state.slettPop} onHide={this.skjulSlettPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Slettet!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Varen er slettet</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulSlettPop}>
+              OK
             </Button>
           </Modal.Footer>
         </Modal>
@@ -110,5 +164,16 @@ export class StatusSok extends Status {
   påRep() {
     s_endre.Rep(this.v_id);
     this.mounted();
+  }
+  stjålet() {
+    s_endre.stjålet(this.v_id);
+    this.mounted();
+  }
+  slett() {
+    s_slett.Vare(this.v_id);
+    this.skjulInfoPop();
+    this.skjulSikkerPop();
+    this.visSlettPop();
+    this.vare = [];
   }
 }

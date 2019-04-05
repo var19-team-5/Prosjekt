@@ -129,7 +129,6 @@ export class BestillingNy extends Bestilling {
 
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
-                    type="text"
                     id="navn"
                     value={this.navn}
                     onInput={e => (this.navn = e.target.value)}
@@ -138,7 +137,6 @@ export class BestillingNy extends Bestilling {
 
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
-                    type="text"
                     id="email"
                     value={this.email}
                     onInput={e => (this.email = e.target.value)}
@@ -191,7 +189,11 @@ export class BestillingNy extends Bestilling {
             <ListGroup.Item className="list-group-item">
               <Row xs={6}>
                 <Col>
-                  <Form.Control as="select" onClick={e => (this.type = e.target.value) && this.sokLedigeSyklerType(e)}>
+                  <Form.Control
+                    id="s_type"
+                    as="select"
+                    onClick={e => (this.type = e.target.value) && this.sokLedigeSyklerType(e)}
+                  >
                     <option hidden>Velg sykkeltype</option>
                     {this.typerSykler.map(typeSykkel => (
                       <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -210,6 +212,9 @@ export class BestillingNy extends Bestilling {
                     ))}
                   </Form.Control>
                   <br />
+                </Col>
+                <Col sm="2">
+                  <Button id="restriksjoner" label="Restriksjoner" />
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -355,7 +360,7 @@ export class BestillingNy extends Bestilling {
               <Col>
                 <div className="align-center">
                   Navn: {this.navn} <br />
-                  Epost: {this.epost} <br />
+                  Email: {this.email} <br />
                   Mobilnummer: {this.mobilnummer} <br />
                   <br />
                   Fra: {this.fra} <br />
@@ -444,6 +449,12 @@ export class BestillingNy extends Bestilling {
   }
 
   sjekkBestilling() {
+    document.getElementById('navn').value = document.getElementById('navn').placeholder;
+    document.getElementById('email').value = document.getElementById('email').placeholder;
+
+    this.navn = document.getElementById('navn').value;
+    this.email = document.getElementById('email').value;
+
     let mobilnummer = document.getElementById('mobilnummer').value;
     let navn = document.getElementById('navn').value;
     let email = document.getElementById('email').value;
@@ -483,6 +494,8 @@ export class BestillingNy extends Bestilling {
       }
     }
 
+    this.prisOgRabatt();
+
     for (var j = 0; j < this.utstyr.length; j++) {
       if (this.utstyr[j].v_id == this.v_id) {
         document.getElementById(this.v_id).disabled = false;
@@ -496,8 +509,6 @@ export class BestillingNy extends Bestilling {
         document.getElementById(this.v_id).checked = false;
       }
     }
-
-    this.prisOgRabatt();
   }
   prisOgRabatt() {
     const { prisListe } = this.summer;
@@ -508,7 +519,9 @@ export class BestillingNy extends Bestilling {
       totalSum += prisListe[i];
     }
 
-    if (this.prisListe.length >= 10) {
+    totalSum = totalSum * this.dager;
+
+    if (this.prisListe.length >= 10 || this.antall[0].antall >= 10) {
       rabatt = totalSum * 0.1;
       totalSum = totalSum - rabatt;
     }
@@ -542,6 +555,7 @@ export class BestillingNy extends Bestilling {
     setTimeout(() => {}, 250);
     document.getElementById(this.v_id).disabled = true;
 
+    this.beregnDager();
     this.prisOgRabatt();
   }
   mounted() {
@@ -562,21 +576,40 @@ export class BestillingNy extends Bestilling {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
     this.visKundePop();
     document.getElementById('nyKunde').disabled = true;
+    s_hent.KundeAntall(this.mobilnummer, antall => {
+      this.antall = antall;
+    });
   }
   sokKunde() {
-    s_sok.Kunde(this.mobilnummer, kunde => {
-      this.kundeliste = kunde;
+    s_sok.Kunde(this.mobilnummer, kundeSok => {
+      this.kundeListe = kundeSok;
+    });
+    s_hent.KundeAntall(this.mobilnummer, antall => {
+      this.antall = antall;
     });
     setTimeout(() => {
-      document.getElementById('navn').value = this.kundeliste[0].navn;
-      document.getElementById('email').value = this.kundeliste[0].email;
+      if (this.kundeListe.length == 1) {
+        document.getElementById('navn').placeholder = this.kundeListe[0].navn;
+        document.getElementById('email').placeholder = this.kundeListe[0].email;
 
-      this.navn = this.kundeliste[0].navn;
-      this.epost = this.kundeliste[0].email;
+        document.getElementById('navn').disabled = true;
+        document.getElementById('email').disabled = true;
+        document.getElementById('nyKunde').disabled = true;
 
-      document.getElementById('nyKunde').disabled = true;
+        this.sokKunde();
+      } else if (this.kundeListe.length == 0) {
+        document.getElementById('navn').placeholder = '';
+        document.getElementById('email').placeholder = '';
+
+        document.getElementById('navn').value = '';
+        document.getElementById('email').value = '';
+
+        document.getElementById('navn').disabled = false;
+        document.getElementById('email').disabled = false;
+      }
     }, 250);
   }
+
   nyBestilling() {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.rabatt, this.totalSum);
 
@@ -623,6 +656,21 @@ export class BestillingNy extends Bestilling {
           document.getElementById(this.idListe[y]).checked = true;
         }
       }
+    }
+  }
+  beregnDager() {
+    var til = new Date(this.til);
+    var fra = new Date(this.fra);
+
+    var res = Math.abs(fra - til) / 1000;
+    var dager = Math.floor(res / 86400);
+
+    this.dager = dager;
+
+    if (this.dager == 0) {
+      this.dager = 1;
+    } else if (this.dager >= 7) {
+      this.dager = 7;
     }
   }
 }
