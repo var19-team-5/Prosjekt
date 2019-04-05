@@ -2,7 +2,7 @@ import { connection } from './mysql_connection';
 
 class s_Ny {
   Restriksjon(s_type, u_type) {
-    connection.query('insert into lokasjon (s_type, u_type) values (?,?)', [s_type, u_type], (error, results) => {
+    connection.query('INSERT INTO restriksjoner (s_type, u_type) VALUES (?,?)', [s_type, u_type], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -142,6 +142,28 @@ class s_Hent {
 
       success(results);
     });
+  }
+  hentUpassendeUtstyr(type, u_type, s_type, kategori, success) {
+    connection.query(
+      'SELECT prisliste.type FROM prisliste LEFT JOIN restriksjoner ON prisliste.type = restriksjoner.u_type WHERE (restriksjoner.s_type != ? OR restriksjoner.u_type IS NULL) AND prisliste.kategori = "utstyr" ',
+      [type, u_type, s_type, kategori],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  hentPassendeUtstyr(u_type, type, s_type, success) {
+    connection.query(
+      'SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =? ',
+      [u_type, type, s_type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
   }
 }
 
@@ -407,6 +429,30 @@ class s_Slett {
 
       success(results);
     });
+  }
+
+  fjernPassendeUtstyr(s_type, u_type, success) {
+    connection.query(
+      'DELETE FROM restriksjoner WHERE s_type=? and u_type=?',
+      [s_type, u_type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      }
+    );
+  }
+
+  LeggTilPassendeUtstyr(success) {
+    connection.query(
+      'INSERT INTO restriksjoner (s_type, u_type) values (?, ?)',
+      [s_type, u_type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success();
+      }
+    );
   }
 }
 
