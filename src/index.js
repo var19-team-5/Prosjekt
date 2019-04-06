@@ -5,8 +5,6 @@ import { NavLink, HashRouter, Route } from 'react-router-dom';
 
 import { Menu } from './Innhold/meny';
 
-import { Home } from './Innhold/hjem';
-
 import { Info } from './Innhold/info';
 import { Hjelp } from './Innhold/hjelp';
 
@@ -37,7 +35,6 @@ ReactDOM.render(
   <HashRouter>
     <div>
       <Menu />
-      <Route exact path="/" component={Home} />
 
       <Route path="/bestilling" component={Bestilling} />
       <Route exact path="/bestilling/ny" component={BestillingNy} />

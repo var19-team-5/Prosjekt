@@ -83,7 +83,7 @@ export class BestillingListe extends Bestilling {
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
-                <th>ID</th>
+                <th className="text-center">ID</th>
                 <th>Fra</th>
                 <th>Til</th>
                 <th>Kunde</th>
@@ -98,7 +98,7 @@ export class BestillingListe extends Bestilling {
             <tbody>
               {this.bestillinger.map(bestilling => (
                 <tr value={bestilling.b_id}>
-                  <td>{bestilling.b_id}</td>
+                  <td className="text-center">{bestilling.b_id}</td>
                   <td>
                     {new Intl.DateTimeFormat('en-GB', {
                       year: 'numeric',

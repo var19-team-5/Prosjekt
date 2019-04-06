@@ -21,6 +21,9 @@ export class BestillingNy extends Bestilling {
     this.visTomPop = this.visTomPop.bind(this);
     this.skjulTomPop = this.skjulTomPop.bind(this);
 
+    this.visResPop = this.visResPop.bind(this);
+    this.skjulResPop = this.skjulResPop.bind(this);
+
     this.valgt = {
       idListe: []
     };
@@ -36,7 +39,8 @@ export class BestillingNy extends Bestilling {
       bestillingPop: false,
       kundePop: false,
       fullførtPop: false,
-      tomPop: false
+      tomPop: false,
+      resPop: false
     };
   }
 
@@ -70,6 +74,14 @@ export class BestillingNy extends Bestilling {
 
   visFullførtPop() {
     this.setState({ fullførtPop: true });
+  }
+
+  skjulResPop() {
+    this.setState({ resPop: false });
+  }
+
+  visResPop() {
+    this.setState({ resPop: true });
   }
 
   operationS() {
@@ -213,8 +225,12 @@ export class BestillingNy extends Bestilling {
                   </Form.Control>
                   <br />
                 </Col>
-                <Col sm="2">
-                  <Button id="restriksjoner" label="Restriksjoner" />
+                <Col sm="2.8">
+                  <div className="align-center">
+                    <Button onClick={this.visResPop} id="restriksjoner">
+                      Restriksjoner
+                    </Button>
+                  </div>
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -440,6 +456,18 @@ export class BestillingNy extends Bestilling {
           <Modal.Body>Denne bestillingen har mangler!</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.skjulTomPop}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal centered size="lg" show={this.state.resPop} onHide={this.skjulResPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Restriksjoner</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Informasjon om restriksjoner</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulResPop}>
               OK
             </Button>
           </Modal.Footer>

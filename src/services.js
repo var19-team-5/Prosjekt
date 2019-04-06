@@ -192,6 +192,13 @@ class s_Hent {
       }
     );
   }
+  priser(success) {
+    connection.query('SELECT * from prisliste', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 class s_Sok {
@@ -315,6 +322,13 @@ class s_Sok {
   }
   sumBestillinger(success) {
     connection.query('SELECT SUM(pris) AS sum FROM bestilling', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  sokPris(type, success) {
+    connection.query('SELECT * FROM prisliste where type=? ', [type], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
