@@ -114,7 +114,7 @@ export class NyRestriksjon extends Ny {
   }
   leggTilUtstyr() {
     this.plussUtstyr.push(this.type);
-    s_slett.LeggTilPassendeUtstyr(this.props.match.params.type, type, () => {
+    s_slett.leggTilPassendeUtstyr(this.props.match.params.type, type, () => {
       s_hent.hentUpassendeUtstyr(this.props.match.params.type, utstyr => {
         this.plussUtstyr = plussUtstyr;
       });

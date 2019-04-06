@@ -174,6 +174,13 @@ class s_Hent {
     connection.query(
       'SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =? ',
       [u_type, type, s_type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
   typeSykkel(success) {
     connection.query('SELECT * FROM prisliste WHERE kategori="sykkel"', (error, results) => {
       if (error) return console.error(error);
@@ -508,7 +515,7 @@ class s_Slett {
     );
   }
 
-  LeggTilPassendeUtstyr(success) {
+  leggTilPassendeUtstyr(s_type, u_type, success) {
     connection.query(
       'INSERT INTO restriksjoner (s_type, u_type) values (?, ?)',
       [s_type, u_type],
@@ -518,6 +525,7 @@ class s_Slett {
         success();
       }
     );
+  }
   Vare(v_id, success) {
     connection.query('delete from sykkel where v_id=?', [v_id], (error, results) => {
       connection.query('delete from vare where v_id=?', [v_id], (error, results) => {
