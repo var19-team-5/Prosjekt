@@ -1,55 +1,7 @@
 import { connection } from './mysql_connection';
 
 class s_Ny {
-  Restriksjon(s_type, u_type) {
-    connection.query('insert into lokasjon (s_type, u_type) values (?,?)', [s_type, u_type], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  Lokasjon(lokasjon, success) {
-    connection.query('insert into lokasjon (lokasjon) values (?)', [lokasjon], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
-  Utstyr(tilhører, type, success) {
-    connection.query(
-      'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
-      [tilhører, tilhører, type],
-      (error, results) => {
-        connection.query(
-          'INSERT INTO utstyr (v_id, type) VALUES ((SELECT MAX(v_id) FROM vare),?)',
-          [type],
-          (error, results) => {
-            if (error) return console.error(error);
-
-            success(results);
-          }
-        );
-      }
-    );
-  }
-  Sykkel(tilhører, type, ramme, girsystem, størrelse_hjul, success) {
-    connection.query(
-      'INSERT INTO vare (tilhører, status, lokasjon, type) VALUES ((SELECT l_id FROM lokasjon WHERE lokasjon=?), "på lager", (SELECT l_id FROM lokasjon WHERE lokasjon=?), ?)',
-      [tilhører, tilhører, type],
-      (error, results) => {
-        connection.query(
-          'INSERT INTO sykkel (v_id, ramme, girsystem, størrelse_hjul, type) VALUES ((SELECT MAX(v_id) FROM vare),?,?,?,?)',
-          [ramme, girsystem, størrelse_hjul, type],
-          (error, results) => {
-            if (error) return console.error(error);
-
-            success(results);
-          }
-        );
-      }
-    );
-  }
-  Bestilling(fra, til, henting, levering, mobilnummer, success) {
+  Bestilling(fra, til, henting, levering, mobilnummer, rabatt, totalSum, success) {
     connection.query(
       'insert into bestilling (fra, til, henting, levering, k_id, rabatt, status) values (?,?,(SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT l_id FROM lokasjon WHERE lokasjon=?), (SELECT k_id FROM kunde WHERE mobilnummer=?),"35","bestilt")',
       [fra, til, henting, levering, mobilnummer],
@@ -71,21 +23,11 @@ class s_Ny {
       }
     );
   }
-  TypeSykkel(nytype, nypris, success) {
-    connection.query(
-      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"sykkel")',
-      [nytype, nypris],
-      (error, results) => {
-        if (error) return console.error(error);
 
-        success(results);
-      }
-    );
-  }
-  TypeUtstyr(nytype, nypris, success) {
+  Vareliste(v_id) {
     connection.query(
-      'INSERT INTO prisliste (type, pris, kategori) VALUES (?,?,"utstyr")',
-      [nytype, nypris],
+      'INSERT INTO utleieliste (v_id, b_id) VALUES (?,(SELECT MAX(b_id) FROM bestilling))',
+      [v_id],
       (error, results) => {
         if (error) return console.error(error);
 
@@ -110,13 +52,7 @@ class s_Hent {
       success(results);
     });
   }
-  Varer(success) {
-    connection.query('SELECT * FROM alle_varer', (error, results) => {
-      if (error) return console.error(error);
 
-      success(results);
-    });
-  }
   Sykler(success) {
     connection.query('SELECT * FROM alle_sykler', (error, results) => {
       if (error) return console.error(error);
@@ -126,6 +62,46 @@ class s_Hent {
   }
   Utstyr(success) {
     connection.query('SELECT * FROM alt_utstyr', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  typeSykkel(success) {
+    connection.query('SELECT * FROM prisliste WHERE kategori="sykkel"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  typeUtstyr(success) {
+    connection.query('SELECT * FROM prisliste WHERE kategori="utstyr"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  restriksjonerTyper(type, success) {
+    connection.query('SELECT u_type AS type FROM restriksjoner WHERE s_type=?', [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  KundeAntall(mobilnummer, success) {
+    connection.query(
+      'SELECT antall_b AS antall FROM antall_kundebestillinger WHERE mobilnummer=?',
+      [mobilnummer],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  priser(success) {
+    connection.query('SELECT * from prisliste', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -202,16 +178,13 @@ class s_Sok {
       }
     );
   }
-  LedigeUtstyrType(fra, til, type, success) {
-    connection.query(
-      'SELECT DISTINCT v_id, type, status, pris FROM tilgjengelige_utstyr WHERE NOT (fra >= ? OR  til >= ?) OR (fra IS NULL OR til IS NULL) AND type = ?',
-      [fra, til, type],
-      (error, results) => {
-        if (error) return console.error(error);
 
-        success(results);
-      }
-    );
+  infoVarer(v_id, success) {
+    connection.query('SELECT v_id, type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
   }
 }
 
@@ -245,11 +218,136 @@ class s_Typer {
       success(results);
     });
   }
-  Statuser(success) {
-    connection.query('SELECT DISTINCT status FROM vare ', (error, results) => {
+}
+
+class s_Endre {
+  BestiltVare(v_id, success) {
+    connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
+    });
+  }
+  UtlevertVare(v_id, success) {
+    connection.query('update vare set status ="utleid" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  FerdigVare(v_id, success) {
+    connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  TransportVare(v_id, success) {
+    connection.query('update vare set status ="transporteres" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  SavnetVare(v_id, success) {
+    connection.query('update vare set status ="savnet" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  BestiltBest(b_id, success) {
+    connection.query('update bestilling set status ="bestilt" where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  UtlevertBest(b_id, success) {
+    connection.query('update bestilling set status ="levert ut" where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  FerdigBest(b_id, success) {
+    connection.query('update bestilling set status ="ferdig" where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  TransportBest(b_id, success) {
+    connection.query('update bestilling set status ="transporteres" where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  SavnetBest(b_id, success) {
+    connection.query('update bestilling set status ="savnet" where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  Lager(v_id, success) {
+    connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  trengerRep(v_id, success) {
+    connection.query('update vare set status ="trenger reperasjon" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  Rep(v_id, success) {
+    connection.query('update vare set status ="på reperasjon" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+
+  savnet(v_id, success) {
+    connection.query('update vare set status ="savnet" where v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+}
+
+class s_Slett {
+  BestillingVarer(b_id, success) {
+    connection.query('delete from utleieliste where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  Bestilling(b_id, success) {
+    connection.query('delete from bestilling where b_id=?', [b_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  Vare(v_id, success) {
+    connection.query('delete from sykkel where v_id=?', [v_id], (error, results) => {
+      connection.query('delete from vare where v_id=?', [v_id], (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      });
     });
   }
 }

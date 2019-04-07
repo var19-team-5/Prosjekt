@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { s_typer, s_ny } from './../../services';
+import { s_typer } from './../../services';
+import { s_restrikasjon } from './_n_services';
 import { ListGroup, Row, Col, Form, Button } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
-export class NyRestriksjon extends Ny {
+export class Restriksjon extends Ny {
   typerSykler = [];
   typerUtstyr = [];
 
@@ -34,6 +35,7 @@ export class NyRestriksjon extends Ny {
               </Form.Control>
             </Col>
           </Row>
+          <br />
           <Button onClick={this.nyRestriksjon}>Legg til ny restriksjon</Button>
         </ListGroup.Item>
       </React.Fragment>
@@ -49,6 +51,6 @@ export class NyRestriksjon extends Ny {
     });
   }
   nyRestriksjon() {
-    s_ny.Restriksjon(this.s_type, this.u_type);
+    s_restrikasjon.NyRestriksjon(this.s_type, this.u_type);
   }
 }
