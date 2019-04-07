@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { s_sok, s_endre, s_slett } from './../../services';
+import { s_sok } from './_s_services';
 import { Table, Modal, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 
 import { Status } from './nav';
 
-export class StatusSok extends Status {
+export class Sok extends Status {
   constructor(props, context) {
     super(props, context);
 
@@ -97,7 +98,7 @@ export class StatusSok extends Status {
                   <Dropdown.Item onClick={this.lager}>På lager</Dropdown.Item>
                   <Dropdown.Item onClick={this.trengerRep}>Trenger reperasjon</Dropdown.Item>
                   <Dropdown.Item onClick={this.påRep}>På reperasjon</Dropdown.Item>
-                  <Dropdown.Item onClick={this.stjålet}>Stjålet</Dropdown.Item>
+                  <Dropdown.Item onClick={this.savnet}>savnet</Dropdown.Item>
                 </DropdownButton>
               </ButtonGroup>
             </Modal.Body>
@@ -163,8 +164,8 @@ export class StatusSok extends Status {
     s_endre.Rep(this.v_id);
     this.mounted();
   }
-  stjålet() {
-    s_endre.stjålet(this.v_id);
+  savnet() {
+    s_endre.savnet(this.v_id);
     this.mounted();
   }
   slett() {

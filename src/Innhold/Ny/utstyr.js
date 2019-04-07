@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { s_ny, s_hent, s_typer } from './../../services';
+import { s_vare, s_utstyr } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
-export class NyUtstyr extends Ny {
+export class Utstyr extends Ny {
   constructor(props, context) {
     super(props, context);
 
@@ -194,16 +195,18 @@ export class NyUtstyr extends Ny {
 
   nyUtstyr() {
     for (var i = 0; i < this.antall; i++) {
-      s_ny.UtstyrVare(this.tilhører, this.type);
-      s_ny.Utstyr(this.type);
+      s_vare.NyVare(this.tilhører, this.type);
+      s_utstyr.NyUtstyr(this.type);
       this.skjulSam();
       this.visBek();
+      this.mounted();
     }
   }
   nyTypeUtstyr() {
-    s_ny.TypeUtstyr(this.nytype, this.nypris);
+    s_utstyr.NyTypeUtstyr(this.nytype, this.nypris);
     this.skjulNyType();
     this.visBekNY();
+    this.mounted();
     this.mounted();
   }
 }

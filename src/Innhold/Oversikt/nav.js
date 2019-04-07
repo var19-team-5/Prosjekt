@@ -7,7 +7,7 @@ export class Oversikt extends Component {
     return (
       <Navbar bg="light" variant="light">
         <Nav>
-          <Nav.Link href="#/Oversikt/soversikt">Salgsoversikt</Nav.Link>
+          <Nav.Link href="#/Oversikt/salg">Salg</Nav.Link>
         </Nav>
       </Navbar>
     );

@@ -604,6 +604,8 @@ export class BestillingNy extends Bestilling {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
     this.visKundePop();
     document.getElementById('nyKunde').disabled = true;
+    document.getElementById('navn').placeholder = this.navn;
+    document.getElementById('email').placeholder = this.email;
     s_hent.KundeAntall(this.mobilnummer, antall => {
       this.antall = antall;
     });
@@ -646,6 +648,8 @@ export class BestillingNy extends Bestilling {
     }
     this.skjulBestillingPop();
     this.visFullførtPop();
+
+    this.resert();
   }
 
   sokLedigeSyklerType() {
@@ -700,5 +704,35 @@ export class BestillingNy extends Bestilling {
     } else if (this.dager >= 7) {
       this.dager = 7;
     }
+  }
+  reset() {
+    this.til = '';
+    this.fra = '';
+    this.idListe = [];
+    this.steder = [];
+    this.typerSykler = [];
+    this.typerUtstyr = [];
+    this.kunde = [];
+    this.sykler = [];
+    this.utstyr = [];
+    this.kundeListe = [];
+
+    this.v_id = [];
+
+    this.prisListe = [];
+    this.vareListe = [];
+
+    this.varer = [];
+
+    this.totalSum = [];
+
+    document.getElementById('navn').placeholder = '';
+    document.getElementById('email').placeholder = '';
+
+    document.getElementById('navn').value = '';
+    document.getElementById('email').value = '';
+
+    document.getElementById('navn').disabled = false;
+    document.getElementById('email').disabled = false;
   }
 }

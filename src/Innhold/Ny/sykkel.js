@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { s_ny, s_hent, s_typer } from './../../services';
+import { s_vare, s_sykkel } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
-export class NySykkel extends Ny {
+export class Sykkel extends Ny {
   constructor(props, context) {
     super(props, context);
 
@@ -230,14 +231,14 @@ export class NySykkel extends Ny {
 
   nySykkel() {
     for (var i = 0; i < this.antall; i++) {
-      s_ny.SykkelVare(this.tilhører, this.type);
-      s_ny.Sykkel(this.type, this.ramme, this.girsystem, this.størrelse_hjul);
+      s_vare.NyVare(this.tilhører, this.type);
+      s_sykkel.NySykkel(this.type, this.ramme, this.girsystem, this.størrelse_hjul);
       this.skjulSam();
       this.visBek();
     }
   }
   nyTypeSykkel() {
-    s_ny.TypeSykkel(this.nytype, this.nypris);
+    s_sykkel.NyTypeSykkel(this.nytype, this.nypris);
     this.skjulNyType();
     this.visBekNY();
     this.mounted();

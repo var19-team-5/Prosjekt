@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { s_ny, s_hent, s_endre, s_sok } from './../../services';
+import { s_hent } from './../../services';
+import { s_pris } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, InputGroup, FormControl, Modal, Table } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
-export class NyPris extends Ny {
+export class Pris extends Ny {
   constructor(props, context) {
     super(props, context);
     this.visEndringPop = this.visEndringPop.bind(this);
@@ -107,26 +108,26 @@ export class NyPris extends Ny {
   }
 
   nyPrisSykkel() {
-    s_endre.PrisSykkel(this.pris, this.type);
+    s_pris.EndrePris(this.pris, this.type);
     this.visEndringPop();
     this.sokPrisSykkel();
     document.getElementById('sykkelPris').value = '';
   }
   nyPrisUtstyr() {
-    s_endre.PrisUtstyr(this.pris, this.type);
+    s_pris.EndrePris(this.pris, this.type);
     this.sokPrisUtstyr();
     this.visEndringPop();
     document.getElementById('utstyrPris').value = '';
   }
 
   sokPrisSykkel() {
-    s_sok.sokPris(this.type, sokPris => {
+    s_pris.HentPriser(this.type, sokPris => {
       this.sokPris = sokPris;
       document.getElementById('sykkelPris').placeholder = this.sokPris[0].pris;
     });
   }
   sokPrisUtstyr() {
-    s_sok.sokPris(this.type, sokPris => {
+    s_pris.HentPriser(this.type, sokPris => {
       this.sokPris = sokPris;
       document.getElementById('utstyrPris').placeholder = this.sokPris[0].pris;
     });

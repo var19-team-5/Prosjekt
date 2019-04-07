@@ -180,6 +180,7 @@ export class BestillingListe extends Bestilling {
                         <Dropdown.Item onClick={this.bestilt}>Bestilt</Dropdown.Item>
                         <Dropdown.Item onClick={this.utlevert}>Utlevert</Dropdown.Item>
                         <Dropdown.Item onClick={this.transport}>Under transport</Dropdown.Item>
+                        <Dropdown.Item onClick={this.savnet}>Savnet</Dropdown.Item>
                         <Dropdown.Item onClick={this.ferdig}>Levert tilbake</Dropdown.Item>
                       </DropdownButton>
                     </ButtonGroup>
@@ -302,6 +303,16 @@ export class BestillingListe extends Bestilling {
     this.mounted();
     this.hent();
   }
+
+  savnet() {
+    for (var i = 0; i < this.varer.length; i++) {
+      s_endre.SavnetVare(this.varer[i].v_id);
+    }
+    s_endre.SavnetBest(this.b_id);
+    this.mounted();
+    this.hent();
+  }
+
   sikker() {
     this.visSikkerPop();
   }

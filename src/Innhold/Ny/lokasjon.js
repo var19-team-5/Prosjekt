@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { s_ny } from './../../services';
+import { s_lokasjon } from './_n_services';
 import { Form, ListGroup, Button } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
-export class NyLokasjon extends Ny {
+export class Lokasjon extends Ny {
   render() {
     return (
       <Form.Group>
@@ -18,7 +18,7 @@ export class NyLokasjon extends Ny {
     );
   }
   nyLokasjon() {
-    s_ny.Lokasjon(this.lokasjon);
+    s_lokasjon.NyLokasjoner(this.lokasjon);
     alert('Lokasjonen ' + this.lokasjon + ' er lagt til!');
   }
 }

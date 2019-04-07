@@ -100,7 +100,7 @@ export class StatusStatus extends Status {
                   <Dropdown.Item onClick={this.lager}>På lager</Dropdown.Item>
                   <Dropdown.Item onClick={this.trengerRep}>Trenger reperasjon</Dropdown.Item>
                   <Dropdown.Item onClick={this.påRep}>På reperasjon</Dropdown.Item>
-                  <Dropdown.Item onClick={this.stjålet}>Stjålet</Dropdown.Item>
+                  <Dropdown.Item onClick={this.savnet}>savnet</Dropdown.Item>
                 </DropdownButton>
               </ButtonGroup>
             </Modal.Body>
@@ -169,8 +169,8 @@ export class StatusStatus extends Status {
     s_endre.Rep(this.v_id);
     this.mounted();
   }
-  stjålet() {
-    s_endre.stjålet(this.v_id);
+  savnet() {
+    s_endre.savnet(this.v_id);
     this.mounted();
   }
   slett() {
