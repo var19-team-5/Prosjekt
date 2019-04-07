@@ -84,22 +84,8 @@ export class Sykkel extends Ny {
             ))}
             <br />
           </Form.Control>
-        </ListGroup.Item>
-
-        <ListGroup.Item className="list-group-item">
-          <h4>Ligger ikke typen inne? Legg til ny her!</h4>
-          <Row>
-            <Col>
-              <Form.Label>Ny type:</Form.Label>
-              <Form.Control onChange={e => (this.nytype = e.target.value)} />
-            </Col>
-            <Col>
-              <Form.Label>Pris:</Form.Label>
-              <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} />
-              <br />
-            </Col>
-          </Row>
-          <Button onClick={this.nyTypeSykkel}>Legg til ny type</Button>
+          <br />
+          <Button onClick={this.visNyType}>Ny type</Button>
         </ListGroup.Item>
 
         <Form.Group>
@@ -119,7 +105,7 @@ export class Sykkel extends Ny {
 
               <Col>
                 <Form.Label>Ramme:</Form.Label>
-                <Form.Control onChange={e => (this.ramme = e.target.value)} />
+                <Form.Control id="ramme" onChange={e => (this.ramme = e.target.value)} placeholder="Navn" />
               </Col>
               <Col>
                 <Form.Label>Girsystem:</Form.Label>
