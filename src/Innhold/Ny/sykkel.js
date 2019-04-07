@@ -77,7 +77,6 @@ export class Sykkel extends Ny {
         <ListGroup.Item className="list-group-item">
           <Form.Label>Type sykkel:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
-            <option hidden>Velg type</option>
             {this.typerSykler.map(typeSykkel => (
               <option key={typeSykkel.type} value={typeSykkel.type}>
                 {typeSykkel.type}
@@ -105,15 +104,15 @@ export class Sykkel extends Ny {
 
               <Col>
                 <Form.Label>Ramme:</Form.Label>
-                <Form.Control id="ramme" onChange={e => (this.ramme = e.target.value)} placeholder="navn" />
+                <Form.Control id="ramme" onInput={e => (this.ramme = e.target.value)} onChange={this.sjekk} />
               </Col>
               <Col>
                 <Form.Label>Girsystem:</Form.Label>
                 <Form.Control
                   id="girsystem"
                   type="number"
-                  onChange={e => (this.girsystem = e.target.value)}
-                  placeholder="00"
+                  onInput={e => (this.girsystem = e.target.value)}
+                  onChange={this.sjekk}
                 />
               </Col>
               <Col>
@@ -121,22 +120,19 @@ export class Sykkel extends Ny {
                 <Form.Control
                   id="størrelse_hjul"
                   type="number"
-                  onChange={e => (this.størrelse_hjul = e.target.value)}
-                  placeholder="00"
+                  onInput={e => (this.størrelse_hjul = e.target.value)}
+                  onChange={this.sjekk}
                 />
               </Col>
               <Col>
                 <Form.Label>Antall:</Form.Label>
-                <Form.Control
-                  id="antall"
-                  type="number"
-                  onChange={e => (this.antall = e.target.value)}
-                  placeholder="00"
-                />
+                <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} />
               </Col>
             </Row>
             <br />
-            <Button onClick={this.visSam}>Legg til ny sykkel</Button>
+            <Button id="nySykkelKnapp" onClick={this.visSam}>
+              Legg til ny sykkel
+            </Button>
           </ListGroup.Item>
         </Form.Group>
 
@@ -148,11 +144,11 @@ export class Sykkel extends Ny {
             <Row>
               <Col>
                 <Form.Label>Ny type:</Form.Label>
-                <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder="navn" />
+                <Form.Control onChange={this.sjekkNy} onInput={e => (this.nytype = e.target.value)} />
               </Col>
               <Col>
                 <Form.Label>Pris:</Form.Label>
-                <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} placeholder="00,00" />
+                <Form.Control type="number" onChange={this.sjekkNy} onInput={e => (this.nypris = e.target.value)} />
                 <br />
               </Col>
             </Row>
@@ -161,7 +157,9 @@ export class Sykkel extends Ny {
             <Button variant="secondary" onClick={this.skjulNyType}>
               Gå tilbake
             </Button>
-            <Button onClick={this.nyTypeSykkel}>Legg til ny type</Button>
+            <Button id="nyType" onClick={this.nyTypeSykkel}>
+              Legg til ny type
+            </Button>
           </Modal.Footer>
         </Modal>
 
@@ -219,16 +217,30 @@ export class Sykkel extends Ny {
   }
 
   mounted() {
-    s_typer.alleSykkelTyper(typerSykler => {
+    s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
-      this.type = typerSykler[0].type;
+      this.type = this.typerSykler[0].type;
     });
     s_hent.Steder(steder => {
       this.steder = steder;
       this.tilhører = steder[0].lokasjon;
     });
+    document.getElementById('nySykkelKnapp').disabled = true;
   }
-
+  sjekk() {
+    if (this.ramme == '' || this.girsystem == '' || this.størrelse_hjul == '' || this.antall == '') {
+      document.getElementById('nySykkelKnapp').disabled = true;
+    } else {
+      document.getElementById('nySykkelKnapp').disabled = false;
+    }
+  }
+  sjekkNy() {
+    if (this.nytype == '' || this.nypris == '') {
+      document.getElementById('nyType').disabled = true;
+    } else {
+      document.getElementById('nyType').disabled = false;
+    }
+  }
   nySykkel() {
     for (var i = 0; i < this.antall; i++) {
       s_vare.NyVare(this.tilhører, this.type);

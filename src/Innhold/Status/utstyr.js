@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { s_hent } from './../../services';
+import { s_utstyr } from './_s_services';
 import { Table } from 'react-bootstrap';
-
 import { Status } from './nav';
 
 export class StatusUtstyr extends Status {
@@ -34,7 +33,7 @@ export class StatusUtstyr extends Status {
     ];
   }
   mounted() {
-    s_hent.Utstyr(utstyr => {
+    s_utstyr.AltUtstyr(utstyr => {
       this.utstyr = utstyr;
     });
   }

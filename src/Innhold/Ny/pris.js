@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_hent } from './../../services';
+import { s_typer } from './../../services';
 import { s_pris } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, InputGroup, FormControl, Modal, Table } from 'react-bootstrap';
 
@@ -36,7 +36,7 @@ export class Pris extends Ny {
               <Form.Control
                 id="sykkelType"
                 as="select"
-                onChange={e => (this.type = e.target.value) && this.sokPrisSykkel()}
+                onChange={e => (this.type = e.target.value) && this.PriserSykkel()}
               >
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -57,7 +57,7 @@ export class Pris extends Ny {
               <Form.Control
                 id="utstyrType"
                 as="select"
-                onChange={e => (this.type = e.target.value) && this.sokPrisUtstyr()}
+                onChange={e => (this.type = e.target.value) && this.PriserUtstyr()}
               >
                 {this.typerUtstyr.map(typeUtstyr => (
                   <option key={typeUtstyr.type} value={typeUtstyr.type}>
@@ -95,41 +95,41 @@ export class Pris extends Ny {
   }
 
   mounted() {
-    s_hent.typeSykkel(typerSykler => {
+    s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
-      document.getElementById('sykkelType').value = this.typerSykler[0].type;
-      document.getElementById('sykkelPris').placeholder = this.typerSykler[0].pris;
+      this.type = this.typerSykler[0].type;
+      document.getElementById('sykkelPris').placeholder = this.typerSykler[0].pris + ',-';
     });
-    s_hent.typeUtstyr(typerUtstyr => {
+    s_typer.AlleUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
-      document.getElementById('utstyrType').value = this.typerUtstyr[0].type;
-      document.getElementById('utstyrPris').placeholder = this.typerUtstyr[0].pris;
+      this.type = this.typerUtstyr[0].type;
+      document.getElementById('utstyrPris').placeholder = this.typerUtstyr[0].pris + ',-';
     });
   }
 
   nyPrisSykkel() {
     s_pris.EndrePris(this.pris, this.type);
     this.visEndringPop();
-    this.sokPrisSykkel();
+    this.PriserSykkel();
     document.getElementById('sykkelPris').value = '';
   }
   nyPrisUtstyr() {
     s_pris.EndrePris(this.pris, this.type);
-    this.sokPrisUtstyr();
+    this.PriserUtstyr();
     this.visEndringPop();
     document.getElementById('utstyrPris').value = '';
   }
 
-  sokPrisSykkel() {
-    s_pris.HentPriser(this.type, sokPris => {
-      this.sokPris = sokPris;
-      document.getElementById('sykkelPris').placeholder = this.sokPris[0].pris;
+  PriserSykkel() {
+    s_pris.Priser(this.type, Priser => {
+      this.Priser = Priser;
+      document.getElementById('sykkelPris').placeholder = this.Priser[0].pris + ',-';
     });
   }
-  sokPrisUtstyr() {
-    s_pris.HentPriser(this.type, sokPris => {
-      this.sokPris = sokPris;
-      document.getElementById('utstyrPris').placeholder = this.sokPris[0].pris;
+  PriserUtstyr() {
+    s_pris.Priser(this.type, Priser => {
+      this.Priser = Priser;
+      document.getElementById('utstyrPris').placeholder = this.Priser[0].pris + ',-';
     });
   }
 }

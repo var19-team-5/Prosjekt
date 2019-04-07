@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_hent, s_sok, s_endre, s_slett } from './../../services';
+import { s_statuser, s_slett, s_bestilling } from './_bl_services';
 import {
   Table,
   ListGroup,
@@ -253,62 +253,57 @@ export class BestillingListe extends Bestilling {
     );
   }
   mounted() {
-    s_hent.Bestillinger(bestillinger => {
+    s_bestilling.Bestillinger(bestillinger => {
       this.bestillinger = bestillinger;
     });
   }
   sok() {
-    s_sok.Bestilling(this.navn, bestillinger => {
+    s_bestilling.SokNavn(this.navn, bestillinger => {
       this.bestillinger = bestillinger;
     });
   }
   hent() {
-    s_sok.SpesBestilling(this.b_id, valgt => {
+    s_bestilling.InfoBestilling(this.b_id, valgt => {
       this.valgt = valgt;
     });
-    s_sok.SpesBestillingVarer(this.b_id, varer => {
+    s_bestilling.InfoBestillingVarer(this.b_id, varer => {
       this.varer = varer;
     });
     this.visInfoPop();
   }
   bestilt() {
     for (var i = 0; i < this.varer.length; i++) {
-      s_endre.BestiltVare(this.varer[i].v_id);
+      s_statuser.Bestilt(this.varer[i].v_id, this.b_id);
     }
-    s_endre.BestiltBest(this.b_id);
     this.mounted();
     this.hent();
   }
   utlevert() {
     for (var i = 0; i < this.varer.length; i++) {
-      s_endre.UtlevertVare(this.varer[i].v_id);
+      s_statuser.Utlevert(this.varer[i].v_id, this.b_id);
     }
-    s_endre.UtlevertBest(this.b_id);
     this.mounted();
     this.hent();
   }
   ferdig() {
     for (var i = 0; i < this.varer.length; i++) {
-      s_endre.FerdigVare(this.varer[i].v_id);
+      s_statuser.Ferdig(this.varer[i].v_id, this.b_id);
     }
-    s_endre.FerdigBest(this.b_id);
     this.mounted();
     this.hent();
   }
   transport() {
     for (var i = 0; i < this.varer.length; i++) {
-      s_endre.TransportVare(this.varer[i].v_id);
+      s_statuser.Transport(this.varer[i].v_id, this.b_id);
     }
-    s_endre.TransportBest(this.b_id);
     this.mounted();
     this.hent();
   }
 
   savnet() {
     for (var i = 0; i < this.varer.length; i++) {
-      s_endre.SavnetVare(this.varer[i].v_id);
+      s_statuser.Savnet(this.varer[i].v_id, this.b_id);
     }
-    s_endre.SavnetBest(this.b_id);
     this.mounted();
     this.hent();
   }
@@ -317,7 +312,6 @@ export class BestillingListe extends Bestilling {
     this.visSikkerPop();
   }
   slett() {
-    s_slett.BestillingVarer(this.b_id);
     s_slett.Bestilling(this.b_id);
 
     this.mounted();

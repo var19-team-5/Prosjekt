@@ -11,7 +11,6 @@ export class Status extends Component {
   typerSykler = [];
   typerUtstyr = [];
   statuser = [];
-  varer = [];
   v_id = '';
 
   render() {
@@ -72,9 +71,6 @@ export class Status extends Component {
     });
     s_nav.BrukteStatuser(statuser => {
       this.statuser = statuser;
-    });
-    s_nav.AlleVarer(varer => {
-      this.varer = varer;
     });
   }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { s_typer } from './../../services';
-import { s_restrikasjon } from './_n_services';
+import { s_restriksjon } from './_n_services';
 import { ListGroup, Row, Col, Form, Button } from 'react-bootstrap';
 
 import { Ny } from './nav';
@@ -42,17 +42,17 @@ export class Restriksjon extends Ny {
     ];
   }
   mounted() {
-    s_typer.alleSykkelTyper(typerSykler => {
+    s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
-      document.getElementById('s_type').value = this.typerSykler[0].type;
+      this.s_type = this.typerSykler[0].type;
     });
 
-    s_typer.alleUtstyrTyper(typerUtstyr => {
+    s_typer.AlleUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
-      document.getElementById('u_type').value = this.typerUtstyr[0].type;
+      this.u_type = this.typerUtstyr[0].type;
     });
   }
   nyRestriksjon() {
-    s_restrikasjon.NyRestriksjon(this.s_type, this.u_type);
+    s_restriksjon.NyRestriksjon(this.s_type, this.u_type);
   }
 }

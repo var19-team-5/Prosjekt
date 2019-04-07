@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_sok } from './../../services';
+import { s_sykler } from './_s_services';
 import { Table } from 'react-bootstrap';
 
 import { StatusSykler } from './sykler';
@@ -40,7 +40,7 @@ export class StatusSyklerType extends StatusSykler {
     ];
   }
   mounted() {
-    s_sok.SyklerType(this.props.match.params.type, sykler => {
+    s_sykler.SyklerType(this.props.match.params.type, sykler => {
       this.sykler = sykler;
     });
   }

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { s_hent } from './../../services';
+import { s_varer } from './_s_services';
 import { Table } from 'react-bootstrap';
-
 import { Status } from './nav';
 
 export class StatusVarer extends Status {
@@ -36,7 +35,7 @@ export class StatusVarer extends Status {
   }
 
   mounted() {
-    s_hent.Varer(varer => {
+    s_varer.AlleVarer(varer => {
       this.varer = varer;
     });
   }
