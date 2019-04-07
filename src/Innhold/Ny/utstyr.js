@@ -27,7 +27,7 @@ export class NyUtstyr extends Ny {
         </ListGroup.Item>
 
         <ListGroup.Item className="list-group-item">
-          <h5>Ligger ikke typen inne? Legg til ny her!</h5>
+          <h4>Ligger ikke typen inne? Legg til ny her!</h4>
           <Row>
             <Col>
               <Form.Label>Ny type:</Form.Label>
@@ -44,7 +44,7 @@ export class NyUtstyr extends Ny {
 
         <Form.Group>
           <ListGroup.Item className="list-group-item">
-            <Form.Label>Tilhører:</Form.Label>
+            <Form.Label>tilhører:</Form.Label>
             <Form.Control id="test" as="select" onChange={e => (this.tilhører = e.target.value)}>
               {this.steder.map(sted => (
                 <option key={sted.lokasjon} value={sted.tilhører}>
@@ -52,11 +52,14 @@ export class NyUtstyr extends Ny {
                 </option>
               ))}
             </Form.Control>
-            <br/>
-            <Button onClick={this.nyUtstyr}>Legg til nytt utstyr</Button>
-
           </ListGroup.Item>
 
+          <ListGroup.Item className="list-group-item">
+            <Form.Label>Antall:</Form.Label>
+            <Form.Control type="number" onChange={e => (this.antall = e.target.value)} />
+            <br />
+            <Button onClick={this.nyUtstyr}>Legg til nytt utstyr</Button>
+          </ListGroup.Item>
         </Form.Group>
       </React.Fragment>
     ];
