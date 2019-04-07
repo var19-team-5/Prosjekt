@@ -9,7 +9,7 @@ export class Lokasjon extends Ny {
     return (
       <Form.Group>
         <ListGroup.Item className="list-group-item">
-          <Form.Label> Sted: </Form.Label>
+          <Form.Label> Legg til ny lokasjon: </Form.Label>
           <Form.Control required type="text" onChange={e => (this.lokasjon = e.target.value)} placeholder="Stedsnavn"/>
           <br />
           <Button onClick={this.nyLokasjon}>Legg til</Button>

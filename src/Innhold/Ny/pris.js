@@ -32,12 +32,12 @@ export class Pris extends Ny {
         <Row>
           <Col>
             <ListGroup.Item className="list-group-item">
-              <Form.Label>Type sykkel:</Form.Label>
+              <Form.Label>Endre pris hos sykkel:</Form.Label>
               <Form.Control
                 id="sykkelType"
                 as="select"
-                onChange={e => (this.type = e.target.value) && this.sokPrisSykkel()}
-              >
+                onChange={e => (this.type = e.target.value) && this.sokPrisSykkel()}>
+              <option hidden>Velg type</option>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
                     {typeSykkel.type}
@@ -46,19 +46,19 @@ export class Pris extends Ny {
                 <br />
               </Form.Control>
               <Form.Label>Pris:</Form.Label>
-              <Form.Control id="sykkelPris" type="number" onChange={e => (this.pris = e.target.value)} />
+              <Form.Control id="sykkelPris" type="number" onChange={e => (this.pris = e.target.value)} placeholder="00,00"/>
               <br />
               <Button onClick={this.nyPrisSykkel}>Endre pris</Button>
             </ListGroup.Item>
           </Col>
           <Col>
             <ListGroup.Item className="list-group-item">
-              <Form.Label>Type Utstyr:</Form.Label>
+              <Form.Label>Endre pris hos utstyr:</Form.Label>
               <Form.Control
                 id="utstyrType"
                 as="select"
-                onChange={e => (this.type = e.target.value) && this.sokPrisUtstyr()}
-              >
+                onChange={e => (this.type = e.target.value) && this.sokPrisUtstyr()}>
+                <option hidden>Velg type</option>
                 {this.typerUtstyr.map(typeUtstyr => (
                   <option key={typeUtstyr.type} value={typeUtstyr.type}>
                     {typeUtstyr.type}
@@ -67,7 +67,7 @@ export class Pris extends Ny {
                 <br />
               </Form.Control>
               <Form.Label>Pris:</Form.Label>
-              <Form.Control id="utstyrPris" type="number" onChange={e => (this.pris = e.target.value)} />
+              <Form.Control id="utstyrPris" type="number" onChange={e => (this.pris = e.target.value)} placeholder="00,00"/>
               <br />
               <Button onClick={this.nyPrisUtstyr}>Endre pris</Button>
             </ListGroup.Item>
@@ -76,7 +76,7 @@ export class Pris extends Ny {
 
         <Modal size="sm" show={this.state.endringPop} onHide={this.skjulEndringPop}>
           <Modal.Header closeButton>
-            <Modal.Title>Oppdatert pris!</Modal.Title>
+            <Modal.Title>Pris er oppdatert</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Type: {this.type} <br />
@@ -97,13 +97,9 @@ export class Pris extends Ny {
   mounted() {
     s_hent.typeSykkel(typerSykler => {
       this.typerSykler = typerSykler;
-      document.getElementById('sykkelType').value = this.typerSykler[0].type;
-      document.getElementById('sykkelPris').placeholder = this.typerSykler[0].pris;
     });
     s_hent.typeUtstyr(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
-      document.getElementById('utstyrType').value = this.typerUtstyr[0].type;
-      document.getElementById('utstyrPris').placeholder = this.typerUtstyr[0].pris;
     });
   }
 
@@ -123,13 +119,11 @@ export class Pris extends Ny {
   sokPrisSykkel() {
     s_pris.HentPriser(this.type, sokPris => {
       this.sokPris = sokPris;
-      document.getElementById('sykkelPris').placeholder = this.sokPris[0].pris;
     });
   }
   sokPrisUtstyr() {
     s_pris.HentPriser(this.type, sokPris => {
       this.sokPris = sokPris;
-      document.getElementById('utstyrPris').placeholder = this.sokPris[0].pris;
     });
   }
 }

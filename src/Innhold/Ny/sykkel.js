@@ -75,7 +75,7 @@ export class Sykkel extends Ny {
     return [
       <React.Fragment>
         <ListGroup.Item className="list-group-item">
-          <Form.Label>Type sykkel:</Form.Label>
+          <Form.Label>Legg til ny sykkel:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
             <option hidden>Velg type</option>
             {this.typerSykler.map(typeSykkel => (
@@ -136,19 +136,19 @@ export class Sykkel extends Ny {
               </Col>
             </Row>
             <br />
-            <Button onClick={this.visSam}>Legg til ny sykkel</Button>
+            <Button onClick={this.visSam}>Legg til</Button>
           </ListGroup.Item>
         </Form.Group>
 
         <Modal size="lg" centered show={this.state.nytypepop} onHide={this.skjulNyType}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Legg til ny type</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
               <Col>
                 <Form.Label>Ny type:</Form.Label>
-                <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder="navn" />
+                <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder="Navn" />
               </Col>
               <Col>
                 <Form.Label>Pris:</Form.Label>
@@ -161,13 +161,13 @@ export class Sykkel extends Ny {
             <Button variant="secondary" onClick={this.skjulNyType}>
               Gå tilbake
             </Button>
-            <Button onClick={this.nyTypeSykkel}>Legg til ny type</Button>
+            <Button onClick={this.nyTypeSykkel}>Legg til</Button>
           </Modal.Footer>
         </Modal>
 
         <Modal size="sm" centered show={this.state.bekpopNY} onHide={this.skjulBekNY}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Type</Modal.Title>
           </Modal.Header>
           <Modal.Body>Ny type er lagt til!</Modal.Body>
           <Modal.Footer>
@@ -205,7 +205,7 @@ export class Sykkel extends Ny {
 
         <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
           <Modal.Header closeButton>
-            <Modal.Title>Nye sykler!</Modal.Title>
+            <Modal.Title>Nye sykler</Modal.Title>
           </Modal.Header>
           <Modal.Body>Nye sykler er lagt til!</Modal.Body>
           <Modal.Footer>

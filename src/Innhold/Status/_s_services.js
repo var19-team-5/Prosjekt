@@ -16,7 +16,5 @@ class s_Nav {
     });
   }
 }
-class s_Sok {}
 
 export let s_nav = new s_Nav();
-export let s_sok = new s_Sok();

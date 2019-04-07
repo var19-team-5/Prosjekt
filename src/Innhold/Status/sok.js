@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { s_sok, s_endre, s_slett } from './../../services';
-import { s_sok } from './_s_services';
 import { Table, Modal, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 
 import { Status } from './nav';

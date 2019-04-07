@@ -71,7 +71,7 @@ export class Utstyr extends Ny {
     return [
       <React.Fragment>
         <ListGroup.Item className="list-group-item">
-          <Form.Label>Type utstyr:</Form.Label>
+          <Form.Label>Legg til nytt utstyr:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
             <option hidden>Velg type</option>
             {this.typerUtstyr.map(typeUtstyr => (
@@ -108,19 +108,19 @@ export class Utstyr extends Ny {
               </Col>
             </Row>
             <br />
-            <Button onClick={this.visSam}>Legg til nytt utstyr</Button>
+            <Button onClick={this.visSam}>Legg til</Button>
           </ListGroup.Item>
         </Form.Group>
 
         <Modal size="lg" centered show={this.state.nytypepop} onHide={this.skjulNyType}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Legg til ny type</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
               <Col>
                 <Form.Label>Ny type:</Form.Label>
-                <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder="navn" />
+                <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder="Navn" />
               </Col>
               <Col>
                 <Form.Label>Pris:</Form.Label>
@@ -133,7 +133,7 @@ export class Utstyr extends Ny {
             <Button variant="secondary" onClick={this.skjulNyType}>
               Gå tilbake
             </Button>
-            <Button onClick={this.nyTypeUtstyr}>Legg til ny type</Button>
+            <Button onClick={this.nyTypeUtstyr}>Legg til</Button>
           </Modal.Footer>
         </Modal>
 
@@ -169,7 +169,7 @@ export class Utstyr extends Ny {
 
         <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
           <Modal.Header closeButton>
-            <Modal.Title>Nye utstyr!</Modal.Title>
+            <Modal.Title>Nye utstyr</Modal.Title>
           </Modal.Header>
           <Modal.Body>Nye utstyr er lagt til!</Modal.Body>
           <Modal.Footer>

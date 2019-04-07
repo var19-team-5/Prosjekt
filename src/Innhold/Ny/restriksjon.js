@@ -9,18 +9,18 @@ export class Restriksjon extends Ny {
   typerSykler = [];
   minusUtstyr = [];
   plussUtstyr = [];
-  type = '';
-  s_type = '';
-  u_type = '';
+  type = [];
+  s_type = [];
+  u_type = [];
 
   render() {
     return [
       <React.Fragment>
-        <ListGroup.Item className="list-group-item">
+        <ListGroup.Item className="list-group-item" xs={8}>
           <Row>
-            <Col>
+            <Col xs={8}>
               <Form.Label>Koble sykkel til utstyr:</Form.Label>
-              <Form.Control as="select" onChange={e => (this.type = e.target.value)&& this.kjør(e)}>
+              <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
                 <option hidden>Velg sykkeltype</option>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -30,21 +30,22 @@ export class Restriksjon extends Ny {
               </Form.Control>
             </Col>
           </Row>
-          <Row>
-          <div>
-            <br/>
-          <Table striped bordered hover size="sm" xs={6}>
+          <br/>
+          <Row xs={8}>
+          <Col xs={4}>
+          <div className="restr">
+          <Table striped bordered hover size="sm" xs={4}>
             <thead>
             <tr>
               <th>Koblet</th>
-              <th>-</th>
+              <th className="text-center">-</th>
             </tr>
             </thead>
             <tbody>
             {this.minusUtstyr.map(utstyr => (
                 <tr key={utstyr.type}>
                   <td>{utstyr.type}</td>
-                  <td>
+                  <td className="text-center">
                     <Button onClick={() => this.fjernUtstyr(this.type)}>
                       -
                     </Button>
@@ -54,20 +55,21 @@ export class Restriksjon extends Ny {
               </tbody>
             </Table>
             </div>
-          <div>
-            <br/>
-          <Table striped bordered hover size="sm" xs={6}>
+            </Col>
+            <Col xs={4}>
+          <div className="restr">
+          <Table striped bordered hover size="sm" xs={4}>
             <thead>
             <tr>
-              <th>Legg til</th>
-              <th>+</th>
+              <th xs={3}>Legg til</th>
+              <th className="text-center" xs={1}>+</th>
             </tr>
             </thead>
             <tbody>
             {this.plussUtstyr.map(utstyr => (
                 <tr key={utstyr.type}>
                   <td>{utstyr.type}</td>
-                  <td>
+                  <td className="text-center">
                     <Button onClick={() => this.leggTilUtstyr(this.type)}>
                       +
                     </Button>
@@ -77,6 +79,7 @@ export class Restriksjon extends Ny {
               </tbody>
             </Table>
             </div>
+            </Col>
           </Row>
         </ListGroup.Item>
       </React.Fragment>
@@ -108,6 +111,13 @@ export class Restriksjon extends Ny {
   }
   fjernUtstyr() {
     this.plussUtstyr.push(this.type);
+
+    for (var i = 0; i < this.minusUtstyr.length; i++) {
+      if (this.minusUtstyr[i] == this.type) {
+        this.minusUtstyr.splice(i, 1);
+      }
+    }
+
     s_slett.fjernPassendeUtstyr(this.props.match.params.type, type, () => {
       s_hent.hentPassendeUtstyr(this.props.match.params.type, utstyr => {
         this.minusUtstyr = minusUtstyr;
@@ -116,6 +126,13 @@ export class Restriksjon extends Ny {
   }
   leggTilUtstyr() {
     this.minusUtstyr.push(this.type);
+
+    for (var i = 0; i < this.plussUtstyr.length; i++) {
+      if (this.plussUtstyr[i] == this.type) {
+        this.plussUtstyr.splice(i, 1);
+      }
+    }
+
     s_slett.leggTilPassendeUtstyr(this.props.match.params.type, type, () => {
       s_hent.hentUpassendeUtstyr(this.props.match.params.type, utstyr => {
         this.plussUtstyr = plussUtstyr;
