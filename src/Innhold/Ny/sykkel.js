@@ -84,7 +84,7 @@ export class NySykkel extends Ny {
             ))}
           </Form.Control>
           <br />
-          <Button onClick={this.visNyType}>NY TYPE</Button>
+          <Button onClick={this.visNyType}>Ny type</Button>
         </ListGroup.Item>
 
         <Form.Group>
@@ -104,7 +104,7 @@ export class NySykkel extends Ny {
 
               <Col>
                 <Form.Label>Ramme:</Form.Label>
-                <Form.Control id="ramme" onChange={e => (this.ramme = e.target.value)} placeholder="navn" />
+                <Form.Control id="ramme" onChange={e => (this.ramme = e.target.value)} placeholder="Navn" />
               </Col>
               <Col>
                 <Form.Label>Girsystem:</Form.Label>

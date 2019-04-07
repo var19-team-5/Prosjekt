@@ -80,7 +80,7 @@ export class NyUtstyr extends Ny {
             ))}
           </Form.Control>
           <br />
-          <Button onClick={this.visNyType}>NY TYPE</Button>
+          <Button onClick={this.visNyType}>Ny type</Button>
         </ListGroup.Item>
 
         <Form.Group>

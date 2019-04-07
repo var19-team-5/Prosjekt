@@ -494,8 +494,6 @@ export class BestillingNy extends Bestilling {
       }
     }
 
-    this.prisOgRabatt();
-
     for (var j = 0; j < this.utstyr.length; j++) {
       if (this.utstyr[j].v_id == this.v_id) {
         document.getElementById(this.v_id).disabled = false;
@@ -509,6 +507,8 @@ export class BestillingNy extends Bestilling {
         document.getElementById(this.v_id).checked = false;
       }
     }
+    this.beregnDager();
+    this.prisOgRabatt();
   }
   prisOgRabatt() {
     const { prisListe } = this.summer;

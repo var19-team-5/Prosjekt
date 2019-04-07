@@ -8,6 +8,9 @@ export class NyRestriksjon extends Ny {
   typerSykler = [];
   minusUtstyr = [];
   plussUtstyr = [];
+  type = '';
+  s_type = '';
+  u_type = '';
 
   render() {
     return [
@@ -15,8 +18,8 @@ export class NyRestriksjon extends Ny {
         <ListGroup.Item className="list-group-item">
           <Row>
             <Col>
-              <Form.Label>Type sykkel:</Form.Label>
-              <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
+              <Form.Label>Koble sykkel til utstyr:</Form.Label>
+              <Form.Control as="select" onChange={e => (this.type = e.target.value)} onClick={this.kjør}>
                 <option hidden>Velg sykkeltype</option>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -29,11 +32,10 @@ export class NyRestriksjon extends Ny {
           <Row>
           <div>
             <br/>
-            <Form.Label>Passende:</Form.Label>
           <Table striped bordered hover size="sm" xs={6}>
             <thead>
             <tr>
-              <th>Utstyr</th>
+              <th>Koblet</th>
               <th>-</th>
             </tr>
             </thead>
@@ -42,7 +44,7 @@ export class NyRestriksjon extends Ny {
                 <tr key={utstyr.type}>
                   <td>{utstyr.type}</td>
                   <td>
-                    <Button onClick={e => (this.type = e.target.value) && this.fjernUtstyr(e)}>
+                    <Button onClick={() => this.fjernUtstyr(this.type)}>
                       -
                     </Button>
                   </td>
@@ -53,11 +55,10 @@ export class NyRestriksjon extends Ny {
             </div>
           <div>
             <br/>
-            <Form.Label>Legg til:</Form.Label>
           <Table striped bordered hover size="sm" xs={6}>
             <thead>
             <tr>
-              <th>Utstyr</th>
+              <th>Legg til</th>
               <th>+</th>
             </tr>
             </thead>
@@ -66,7 +67,7 @@ export class NyRestriksjon extends Ny {
                 <tr key={utstyr.type}>
                   <td>{utstyr.type}</td>
                   <td>
-                    <Button onClick={e => (this.type = e.target.value) && this.leggTilUtstyr(e)}>
+                    <Button onClick={() => this.leggTilUtstyr(this.type)}>
                       +
                     </Button>
                   </td>
@@ -85,27 +86,33 @@ export class NyRestriksjon extends Ny {
       this.typerSykler = typerSykler;
       document.getElementById('s_type').value = this.typerSykler[0].type;
     });
+    s_hent.hentPassendeUtstyr(this.type, this.type, this.s_type, minusUtstyr => {
+      this.minusUtstyr = minusUtstyr;
+    });
+    s_hent.hentUpassendeUtstyr(this.type, this.u_type, this.s_type, this.kategori, plussUtstyr => {
+      this.plussUtstyr = plussUtstyr;
+    });
   }
   kjør() {
     this.passendeUtstyr();
     this.upassendeUtstyr();
+    console.log(this.minusUtstyr);
+    console.log(this.plussUtstyr);
   }
   passendeUtstyr() {
     s_hent.hentPassendeUtstyr(this.type, this.type, this.s_type, minusUtstyr => {
       this.minusUtstyr = minusUtstyr;
     });
     setTimeout(() => {}, 250);
-    console.log(this.minusUtstyr);
   }
   upassendeUtstyr() {
     s_hent.hentUpassendeUtstyr(this.type, this.u_type, this.s_type, this.kategori, plussUtstyr => {
       this.plussUtstyr = plussUtstyr;
     });
     setTimeout(() => {}, 250);
-    console.log(this.plussUtstyr);
   }
   fjernUtstyr() {
-    this.minusUtstyr.push(this.type);
+    this.plussUtstyr.push(this.type);
     s_slett.fjernPassendeUtstyr(this.props.match.params.type, type, () => {
       s_hent.hentPassendeUtstyr(this.props.match.params.type, utstyr => {
         this.minusUtstyr = minusUtstyr;
@@ -113,7 +120,7 @@ export class NyRestriksjon extends Ny {
     });
   }
   leggTilUtstyr() {
-    this.plussUtstyr.push(this.type);
+    this.minusUtstyr.push(this.type);
     s_slett.leggTilPassendeUtstyr(this.props.match.params.type, type, () => {
       s_hent.hentUpassendeUtstyr(this.props.match.params.type, utstyr => {
         this.plussUtstyr = plussUtstyr;
