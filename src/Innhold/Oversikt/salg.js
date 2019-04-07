@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { s_ny, s_sok, s_typer, s_hent } from './../../services';
+import { s_salg } from './_o_services';
 import { Col, Button, Form, Row } from 'react-bootstrap';
 
 import { Oversikt } from './nav';
-export class SalgsOversikt extends Oversikt {
+export class Salg extends Oversikt {
   salg = [];
   kunder = [];
   sykler = [];
@@ -50,19 +50,19 @@ export class SalgsOversikt extends Oversikt {
   }
 
   mounted() {
-    s_sok.antallBestillinger(salg => {
+    s_salg.antallBestillinger(salg => {
       this.salg = salg;
     });
-    s_sok.antallKunder(kunder => {
+    s_salg.antallKunder(kunder => {
       this.kunder = kunder;
     });
-    s_sok.antallSykler(sykler => {
+    s_salg.antallSykler(sykler => {
       this.sykler = sykler;
     });
-    s_sok.antallSyklerRep(srep => {
+    s_salg.antallSyklerRep(srep => {
       this.srep = srep;
     });
-    s_sok.sumBestillinger(sum => {
+    s_salg.sumBestillinger(sum => {
       this.sum = sum;
     });
   }

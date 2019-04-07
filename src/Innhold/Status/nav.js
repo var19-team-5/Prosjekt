@@ -2,7 +2,9 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
-import { s_typer, s_hent } from './../../services';
+import { s_typer } from './../../services';
+import { s_nav } from './_s_services';
+
 import { Navbar, Nav, NavDropdown, ListGroup, InputGroup, FormControl } from 'react-bootstrap';
 
 export class Status extends Component {
@@ -68,10 +70,10 @@ export class Status extends Component {
     s_typer.UtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
     });
-    s_typer.Statuser(statuser => {
+    s_nav.BrukteStatuser(statuser => {
       this.statuser = statuser;
     });
-    s_hent.Varer(varer => {
+    s_nav.AlleVarer(varer => {
       this.varer = varer;
     });
   }

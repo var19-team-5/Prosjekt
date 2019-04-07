@@ -6,13 +6,13 @@ export class Menu extends Component {
   render() {
     return (
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#/">SUSU v8.4</Navbar.Brand>
+        <Navbar.Brand href="#bestilling/ny">SUSU v8.4.1</Navbar.Brand>
 
         <Nav className="mr-auto">
           <Nav.Link href="#bestilling/ny">Bestilling</Nav.Link>
           <Nav.Link href="#status/alle">Status</Nav.Link>
           <Nav.Link href="#ny/sykkel">Ny</Nav.Link>
-          <Nav.Link href="#oversikt/soversikt">Oversikt</Nav.Link>
+          <Nav.Link href="#oversikt/salg">Oversikt</Nav.Link>
         </Nav>
         <Nav>
           <Nav.Link href="#hjelp">Hjelp</Nav.Link>

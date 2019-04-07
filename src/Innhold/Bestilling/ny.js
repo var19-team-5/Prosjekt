@@ -21,6 +21,9 @@ export class BestillingNy extends Bestilling {
     this.visTomPop = this.visTomPop.bind(this);
     this.skjulTomPop = this.skjulTomPop.bind(this);
 
+    this.visResPop = this.visResPop.bind(this);
+    this.skjulResPop = this.skjulResPop.bind(this);
+
     this.valgt = {
       idListe: []
     };
@@ -36,7 +39,8 @@ export class BestillingNy extends Bestilling {
       bestillingPop: false,
       kundePop: false,
       fullførtPop: false,
-      tomPop: false
+      tomPop: false,
+      resPop: false
     };
   }
 
@@ -70,6 +74,14 @@ export class BestillingNy extends Bestilling {
 
   visFullførtPop() {
     this.setState({ fullførtPop: true });
+  }
+
+  skjulResPop() {
+    this.setState({ resPop: false });
+  }
+
+  visResPop() {
+    this.setState({ resPop: true });
   }
 
   operationS() {
@@ -213,8 +225,12 @@ export class BestillingNy extends Bestilling {
                   </Form.Control>
                   <br />
                 </Col>
-                <Col sm="2">
-                  <Button id="restriksjoner" label="Restriksjoner" />
+                <Col sm="2.8">
+                  <div className="align-center">
+                    <Button onClick={this.visResPop} id="restriksjoner">
+                      Restriksjoner
+                    </Button>
+                  </div>
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -444,6 +460,18 @@ export class BestillingNy extends Bestilling {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Modal centered size="lg" show={this.state.resPop} onHide={this.skjulResPop}>
+          <Modal.Header closeButton>
+            <Modal.Title>Restriksjoner</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Informasjon om restriksjoner</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.skjulResPop}>
+              OK
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </React.Fragment>
     );
   }
@@ -576,6 +604,8 @@ export class BestillingNy extends Bestilling {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
     this.visKundePop();
     document.getElementById('nyKunde').disabled = true;
+    document.getElementById('navn').placeholder = this.navn;
+    document.getElementById('email').placeholder = this.email;
     s_hent.KundeAntall(this.mobilnummer, antall => {
       this.antall = antall;
     });
@@ -618,6 +648,8 @@ export class BestillingNy extends Bestilling {
     }
     this.skjulBestillingPop();
     this.visFullførtPop();
+
+    this.resert();
   }
 
   sokLedigeSyklerType() {
@@ -672,5 +704,35 @@ export class BestillingNy extends Bestilling {
     } else if (this.dager >= 7) {
       this.dager = 7;
     }
+  }
+  reset() {
+    this.til = '';
+    this.fra = '';
+    this.idListe = [];
+    this.steder = [];
+    this.typerSykler = [];
+    this.typerUtstyr = [];
+    this.kunde = [];
+    this.sykler = [];
+    this.utstyr = [];
+    this.kundeListe = [];
+
+    this.v_id = [];
+
+    this.prisListe = [];
+    this.vareListe = [];
+
+    this.varer = [];
+
+    this.totalSum = [];
+
+    document.getElementById('navn').placeholder = '';
+    document.getElementById('email').placeholder = '';
+
+    document.getElementById('navn').value = '';
+    document.getElementById('email').value = '';
+
+    document.getElementById('navn').disabled = false;
+    document.getElementById('email').disabled = false;
   }
 }

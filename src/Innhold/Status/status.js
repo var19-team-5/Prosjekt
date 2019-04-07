@@ -59,7 +59,6 @@ export class StatusStatus extends Status {
               <tr>
                 <th className="text-center">Vare ID</th>
                 <th>Type</th>
-                <th>Befinner seg</th>
                 <th>Status</th>
                 <th className="text-center">Pris</th>
                 <th className="text-center">Mer info</th>
@@ -70,7 +69,6 @@ export class StatusStatus extends Status {
                 <tr key={vare.v_id}>
                   <td className="text-center">{vare.v_id}</td>
                   <td>{vare.type}</td>
-                  <td>{vare.lokasjon}</td>
                   <td>{vare.status}</td>
                   <td className="text-center">{vare.pris}</td>
                   <div className="text-center">
@@ -102,7 +100,7 @@ export class StatusStatus extends Status {
                   <Dropdown.Item onClick={this.lager}>På lager</Dropdown.Item>
                   <Dropdown.Item onClick={this.trengerRep}>Trenger reperasjon</Dropdown.Item>
                   <Dropdown.Item onClick={this.påRep}>På reperasjon</Dropdown.Item>
-                  <Dropdown.Item onClick={this.stjålet}>Stjålet</Dropdown.Item>
+                  <Dropdown.Item onClick={this.savnet}>savnet</Dropdown.Item>
                 </DropdownButton>
               </ButtonGroup>
             </Modal.Body>
@@ -171,8 +169,8 @@ export class StatusStatus extends Status {
     s_endre.Rep(this.v_id);
     this.mounted();
   }
-  stjålet() {
-    s_endre.stjålet(this.v_id);
+  savnet() {
+    s_endre.savnet(this.v_id);
     this.mounted();
   }
   slett() {

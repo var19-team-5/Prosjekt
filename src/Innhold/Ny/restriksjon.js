@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { s_typer, s_ny, s_hent, s_slett} from './../../services';
+import { s_restrikasjon } from './_n_services';
 import { ListGroup, Row, Col, Form, Button, Card, Table} from 'react-bootstrap';
 
 import { Ny } from './nav';
 
-export class NyRestriksjon extends Ny {
+export class Restriksjon extends Ny {
   typerSykler = [];
   minusUtstyr = [];
   plussUtstyr = [];
@@ -19,7 +20,7 @@ export class NyRestriksjon extends Ny {
           <Row>
             <Col>
               <Form.Label>Koble sykkel til utstyr:</Form.Label>
-              <Form.Control as="select" onChange={e => (this.type = e.target.value)} onClick={this.kjør}>
+              <Form.Control as="select" onChange={e => (this.type = e.target.value)&& this.kjør(e)}>
                 <option hidden>Velg sykkeltype</option>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -85,12 +86,6 @@ export class NyRestriksjon extends Ny {
     s_typer.alleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
       document.getElementById('s_type').value = this.typerSykler[0].type;
-    });
-    s_hent.hentPassendeUtstyr(this.type, this.type, this.s_type, minusUtstyr => {
-      this.minusUtstyr = minusUtstyr;
-    });
-    s_hent.hentUpassendeUtstyr(this.type, this.u_type, this.s_type, this.kategori, plussUtstyr => {
-      this.plussUtstyr = plussUtstyr;
     });
   }
   kjør() {
