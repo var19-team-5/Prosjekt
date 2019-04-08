@@ -18,7 +18,7 @@ export class Restriksjon extends Ny {
       <React.Fragment>
         <ListGroup.Item className="list-group-item" xs={8}>
           <Row>
-            <Col xs={8}>
+            <Col>
               <Form.Label>Koble sykkel til utstyr:</Form.Label>
               <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
                 {this.typerSykler.map(typeSykkel => (
@@ -30,8 +30,8 @@ export class Restriksjon extends Ny {
             </Col>
           </Row>
           <br />
-          <Row xs={8}>
-            <Col xs={4}>
+          <Row>
+            <Col>
               <div className="restr">
                 <Table striped bordered hover size="sm" xs={4}>
                   <thead>
@@ -58,12 +58,12 @@ export class Restriksjon extends Ny {
                 </Table>
               </div>
             </Col>
-            <Col xs={4}>
+            <Col>
               <div className="restr">
                 <Table striped bordered hover size="sm" xs={4}>
                   <thead>
                     <tr>
-                      <th xs={3}>Legg til</th>
+                      <th>Legg til</th>
                       <th className="text-center" xs={1}>
                         +
                       </th>
@@ -95,8 +95,9 @@ export class Restriksjon extends Ny {
   mounted() {
     s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
-      this.s_type = this.typerSykler[0].type;
+      this.type = this.typerSykler[0].type;
     });
+    this.kjør();
   }
   kjør() {
     this.passendeUtstyr();

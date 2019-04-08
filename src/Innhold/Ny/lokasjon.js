@@ -55,19 +55,6 @@ export class Lokasjon extends Ny {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Form.Group>
-          <ListGroup.Item className="list-group-item">
-            <Form.Label> Legg til ny lokasjon: </Form.Label>
-            <Form.Control
-              required
-              type="text"
-              onChange={e => (this.lokasjon = e.target.value)}
-              placeholder="Stedsnavn"
-            />
-            <br />
-            <Button onClick={this.nyLokasjon}>Legg til</Button>
-          </ListGroup.Item>
-        </Form.Group>
       </React.Fragment>
     );
   }
