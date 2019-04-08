@@ -20,7 +20,7 @@ class s_Restriksjon {
   }
   hentUpassendeUtstyr(type, success) {
     connection.query(
-      'SELECT prisliste.type FROM prisliste LEFT JOIN restriksjoner ON prisliste.type = restriksjoner.u_type WHERE (restriksjoner.s_type != ? OR restriksjoner.u_type IS NULL) AND prisliste.kategori = "utstyr" ',
+      'SELECT type FROM prisliste WHERE type NOT IN ( SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =?) AND kategori="utstyr" ORDER BY prisliste.`type` ASC ',
       [type],
       (error, results) => {
         if (error) return console.error(error);

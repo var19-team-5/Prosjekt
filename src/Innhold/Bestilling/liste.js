@@ -70,7 +70,7 @@ export class BestillingListe extends Bestilling {
         <ListGroup.Item className="list-group-item">
           <InputGroup className="mb-3">
             <FormControl
-              placeholder="Søk på et navn!"
+              placeholder="Søk kundenavn"
               aria-describedby="basic-addon2"
               type="text"
               value={this.navn}

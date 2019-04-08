@@ -48,7 +48,7 @@ export class Status extends Component {
         <ListGroup.Item className="list-group-item">
           <InputGroup className="mb-3">
             <FormControl
-              placeholder="vare ID"
+              placeholder="Søk vare ID"
               aria-describedby="basic-addon2"
               type="text"
               onInput={e => (this.v_id = e.target.value)}
