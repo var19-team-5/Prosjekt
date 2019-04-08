@@ -1,13 +1,13 @@
-import { connection } from './../../mysql_connection';
+import { connection } FROM './../../mysql_connection';
 
 class s_Statuser {
   Bestilt(v_id, b_id, success) {
-    connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
+    connection.query('UPDATE vare set status ="på lager" WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
-    connection.query('update bestilling set status ="bestilt" where b_id=?', [b_id], (error, results) => {
+    connection.query('UPDATE bestilling set status ="bestilt" WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -15,12 +15,12 @@ class s_Statuser {
   }
 
   Utlevert(v_id, b_id, success) {
-    connection.query('update vare set status ="utleid" where v_id=?', [v_id], (error, results) => {
+    connection.query('UPDATE vare set status ="utleid" WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
-    connection.query('update bestilling set status ="levert ut" where b_id=?', [b_id], (error, results) => {
+    connection.query('UPDATE bestilling set status ="levert ut" WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -28,12 +28,12 @@ class s_Statuser {
   }
 
   Ferdig(v_id, b_id, success) {
-    connection.query('update vare set status ="på lager" where v_id=?', [v_id], (error, results) => {
+    connection.query('UPDATE vare set status ="på lager" WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
-    connection.query('update bestilling set status ="ferdig" where b_id=?', [b_id], (error, results) => {
+    connection.query('UPDATE bestilling set status ="ferdig" WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -41,12 +41,12 @@ class s_Statuser {
   }
 
   Transport(v_id, b_id, success) {
-    connection.query('update vare set status ="transporteres" where v_id=?', [v_id], (error, results) => {
+    connection.query('UPDATE vare set status ="transporteres" WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
-    connection.query('update bestilling set status ="transporteres" where b_id=?', [b_id], (error, results) => {
+    connection.query('UPDATE bestilling set status ="transporteres" WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -54,12 +54,12 @@ class s_Statuser {
   }
 
   Savnet(v_id, b_id, success) {
-    connection.query('update bestilling set status ="savnet" where b_id=?', [b_id], (error, results) => {
+    connection.query('UPDATE bestilling set status ="savnet" WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
-    connection.query('update vare set status ="savnet" where v_id=?', [v_id], (error, results) => {
+    connection.query('UPDATE vare set status ="savnet" WHERE v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -69,8 +69,8 @@ class s_Statuser {
 
 class s_Slett {
   Bestilling(b_id, success) {
-    connection.query('delete from utleieliste where b_id=?', [b_id], (error, results) => {
-      connection.query('delete from bestilling where b_id=?', [b_id], (error, results) => {
+    connection.query('delete FROM utleieliste WHERE b_id=?', [b_id], (error, results) => {
+      connection.query('delete FROM bestilling WHERE b_id=?', [b_id], (error, results) => {
         if (error) return console.error(error);
 
         success(results);
@@ -81,7 +81,7 @@ class s_Slett {
 
 class s_Bestilling {
   Bestillinger(success) {
-    connection.query('select * from alle_bestillinger', (error, results) => {
+    connection.query('SELECT * FROM alle_bestillinger ORDER BY ABS( DATEDIFF( fra, NOW() ) )', (error, results) => {
       if (error) return console.error(error);
 
       success(results);
@@ -95,14 +95,14 @@ class s_Bestilling {
     });
   }
   InfoBestilling(b_id, success) {
-    connection.query('select * from alle_bestillinger where b_id=?', [b_id], (error, results) => {
+    connection.query('SELECT * FROM alle_bestillinger WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
   InfoBestillingVarer(b_id, success) {
-    connection.query('select * from bestillinger_varer where b_id=?', [b_id], (error, results) => {
+    connection.query('SELECT * FROM bestillinger_varer WHERE b_id=?', [b_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);

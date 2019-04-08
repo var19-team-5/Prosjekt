@@ -575,7 +575,7 @@ export class BestillingNy extends Bestilling {
     idListe.push(this.v_id);
     prisListe.push(this.pris);
 
-    s_sok.infoVarer(this.v_id, varer => {
+    s_info.Varer(this.v_id, varer => {
       this.varer = varer;
       for (var i = 0; i < idListe.length; i++) {
         vareListe.push({ v_id: this.v_id, type: this.varer[i].type, pris: this.varer[i].pris });

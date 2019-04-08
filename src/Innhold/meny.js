@@ -6,7 +6,7 @@ export class Menu extends Component {
   render() {
     return (
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#bestilling/ny">SUSU v9</Navbar.Brand>
+        <Navbar.Brand href="#bestilling/ny">SUSU v9.1</Navbar.Brand>
 
         <Nav className="mr-auto">
           <Nav.Link href="#bestilling/ny">Bestilling</Nav.Link>

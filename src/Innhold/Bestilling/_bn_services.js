@@ -57,6 +57,13 @@ class s_Info {
       }
     );
   }
+  Varer(v_id, success) {
+    connection.query('SELECT v_id, type, pris FROM alle_varer WHERE v_id=?', [v_id], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 class s_Ledige {
