@@ -450,11 +450,21 @@ export class BestillingNy extends Bestilling {
           </Modal.Footer>
         </Modal>
 
-        <Modal size="sm" show={this.state.tomPop} onHide={this.skjulTomPop}>
+        <Modal centered size="sm" dialogClassName="modal-100w" show={this.state.tomPop} onHide={this.skjulTomPop}>
           <Modal.Header closeButton>
             <Modal.Title>Feil!</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Denne bestillingen har mangler!</Modal.Body>
+          <Modal.Body>
+            Denne bestillingen har feil eller mangler! <br />
+            <br />
+            Dette kan være:
+            <ul>
+              <li> Manglende informasjon om kunden </li>
+              <li> Manglende dato </li>
+              <li> Startdato er før sluttdato </li>
+              <li> Bestillingen har ikke noe innhold </li>
+            </ul>
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.skjulTomPop}>
               OK
@@ -492,7 +502,15 @@ export class BestillingNy extends Bestilling {
 
     const { idListe } = this.valgt;
 
-    if (this.idListe.length === 0 || mobilnummer == '' || navn == '' || email == '' || fra == '' || til == '') {
+    if (
+      this.idListe.length === 0 ||
+      mobilnummer == '' ||
+      navn == '' ||
+      email == '' ||
+      fra == '' ||
+      til == '' ||
+      this.fra >= this.til
+    ) {
       this.visTomPop();
     } else {
       this.visBestillingPop();
@@ -697,7 +715,6 @@ export class BestillingNy extends Bestilling {
 
     var res = Math.abs(fra - til) / 1000;
     var dager = Math.floor(res / 86400);
-
     this.dager = dager;
 
     if (this.dager == 0) {
@@ -706,6 +723,7 @@ export class BestillingNy extends Bestilling {
       this.dager = 7;
     }
   }
+
   reset() {
     this.til = '';
     this.fra = '';
