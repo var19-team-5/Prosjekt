@@ -1,4 +1,4 @@
-import { connection } FROM './../../mysql_connection';
+import { connection } from './../../mysql_connection';
 
 class s_Statuser {
   Bestilt(v_id, b_id, success) {
