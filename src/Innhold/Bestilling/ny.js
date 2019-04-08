@@ -101,6 +101,8 @@ export class BestillingNy extends Bestilling {
 
   til = '';
   fra = '';
+  til2 = '';
+  fra2 = '';
   idListe = [];
   steder = [];
   typerSykler = [];
@@ -344,6 +346,15 @@ export class BestillingNy extends Bestilling {
                   <ListGroup.Item>
                     <Row>
                       <Col>
+                        <div>Antall varer:</div>
+                      </Col>
+                      <Col>
+                        <div> {this.prisListe.length} </div>
+                        <br />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
                         <div>Rabatt:</div>
                       </Col>
                       <Col>
@@ -359,9 +370,18 @@ export class BestillingNy extends Bestilling {
                       </Col>
                     </Row>
                     <br />
-                    <Button id="nyBestilling" onClick={this.sjekkBestilling}>
-                      Ny bestilling
-                    </Button>
+                    <Row>
+                      <Col>
+                        <Button id="nyBestilling" onClick={this.sjekkBestilling}>
+                          Ny bestilling
+                        </Button>
+                      </Col>
+                      <Col>
+                        <Button variant="danger" onClick={this.reset}>
+                          Reset Bestilling
+                        </Button>
+                      </Col>
+                    </Row>
                   </ListGroup.Item>
                 </Col>
               </Row>
@@ -380,8 +400,8 @@ export class BestillingNy extends Bestilling {
                   Email: {this.email} <br />
                   Mobilnummer: {this.mobilnummer} <br />
                   <br />
-                  Fra: {this.fra} <br />
-                  Til: {this.til} <br />
+                  Fra: {this.fra2} <br />
+                  Til: {this.til2} <br />
                   Hentested: {this.henting} <br />
                   Leveringssted: {this.levering} <br />
                   <br />
@@ -450,7 +470,7 @@ export class BestillingNy extends Bestilling {
           </Modal.Footer>
         </Modal>
 
-        <Modal centered size="sm" dialogClassName="modal-100w" show={this.state.tomPop} onHide={this.skjulTomPop}>
+        <Modal centered size="sm" show={this.state.tomPop} onHide={this.skjulTomPop}>
           <Modal.Header closeButton>
             <Modal.Title>Feil!</Modal.Title>
           </Modal.Header>
@@ -502,6 +522,9 @@ export class BestillingNy extends Bestilling {
 
     const { idListe } = this.valgt;
 
+    this.fra2 = this.fra.replace('T', ' ');
+    this.til2 = this.til.replace('T', ' ');
+
     if (
       this.idListe.length === 0 ||
       mobilnummer == '' ||
@@ -533,16 +556,6 @@ export class BestillingNy extends Bestilling {
     const { vareListe } = this.varerx;
     const { prisListe } = this.summer;
 
-    for (var i = 0; i < this.idListe.length; i++) {
-      if (this.idListe[i] == this.v_id) {
-        this.idListe.splice(i, 1);
-        this.vareListe.splice(i, 1);
-        this.prisListe.splice(i, 1);
-      }
-    }
-
-    this.prisOgRabatt();
-
     for (var j = 0; j < this.utstyr.length; j++) {
       if (this.utstyr[j].v_id == this.v_id) {
         document.getElementById(this.v_id).disabled = false;
@@ -556,6 +569,15 @@ export class BestillingNy extends Bestilling {
         document.getElementById(this.v_id).checked = false;
       }
     }
+
+    for (var i = 0; i < this.idListe.length; i++) {
+      if (this.idListe[i] == this.v_id) {
+        this.idListe.splice(i, 1);
+        this.vareListe.splice(i, 1);
+        this.prisListe.splice(i, 1);
+      }
+    }
+    this.prisOgRabatt();
   }
   prisOgRabatt() {
     const { prisListe } = this.summer;
@@ -586,11 +608,8 @@ export class BestillingNy extends Bestilling {
     const { vareListe } = this.varerx;
     const { prisListe } = this.summer;
 
-    this.idListe = idListe;
-    this.vareListe = vareListe;
-    this.prisListe = prisListe;
-
     idListe.push(this.v_id);
+    console.log(this.idListe);
     prisListe.push(this.pris);
 
     s_info.Varer(this.v_id, varer => {
@@ -618,6 +637,14 @@ export class BestillingNy extends Bestilling {
       this.typerUtstyr = typerUtstyr;
     });
     document.getElementById('nyKunde').disabled = true;
+
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
+
+    this.idListe = idListe;
+    this.vareListe = vareListe;
+    this.prisListe = prisListe;
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
@@ -668,7 +695,7 @@ export class BestillingNy extends Bestilling {
     this.skjulBestillingPop();
     this.visFullførtPop();
 
-    this.resert();
+    this.reset();
   }
 
   sokLedigeSyklerType() {
@@ -725,31 +752,33 @@ export class BestillingNy extends Bestilling {
   }
 
   reset() {
-    this.til = '';
-    this.fra = '';
-    this.idListe = [];
-    this.steder = [];
-    this.typerSykler = [];
-    this.typerUtstyr = [];
-    this.kunde = [];
-    this.sykler = [];
-    this.utstyr = [];
-    this.kundeListe = [];
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
 
-    this.v_id = [];
+    this.henting = this.steder[0].lokasjon;
+    this.levering = this.steder[0].lokasjon;
 
-    this.prisListe = [];
-    this.vareListe = [];
+    for (var i = 0; i < this.sykler.length; i++) {
+      document.getElementById(this.sykler[i].v_id).disabled = false;
+      document.getElementById(this.sykler[i].v_id).checked = false;
+    }
 
-    this.varer = [];
+    for (var y = 0; y < this.utstyr.length; y++) {
+      document.getElementById(this.utstyr[y].v_id).disabled = false;
+      document.getElementById(this.utstyr[y].v_id).checked = false;
+    }
 
-    this.totalSum = [];
+    document.getElementById('nyKunde').disabled = true;
 
     document.getElementById('navn').placeholder = '';
     document.getElementById('email').placeholder = '';
 
+    document.getElementById('mobilnummer').value = '';
     document.getElementById('navn').value = '';
     document.getElementById('email').value = '';
+    document.getElementById('fra').value = '';
+    document.getElementById('til').value = '';
 
     document.getElementById('navn').disabled = false;
     document.getElementById('email').disabled = false;
