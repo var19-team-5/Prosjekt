@@ -45,7 +45,12 @@ export class Restriksjon extends Ny {
                       <tr key={utstyr.type}>
                         <td>{utstyr.type}</td>
                         <td className="text-center">
-                          <Button onClick={() => this.fjernUtstyr(this.type)}>-</Button>
+                          <Button
+                            value={utstyr.type}
+                            onClick={e => (this.u_type = e.target.value) && this.fjernUtstyr()}
+                          >
+                            -
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -68,8 +73,13 @@ export class Restriksjon extends Ny {
                     {this.plussUtstyr.map(utstyr => (
                       <tr key={utstyr.type}>
                         <td>{utstyr.type}</td>
-                        <td value={utstyr.type} className="text-center">
-                          <Button onClick={e => (this.u_type = e.target.value) && this.leggTilUtstyr()}>+</Button>
+                        <td className="text-center">
+                          <Button
+                            value={utstyr.type}
+                            onClick={e => (this.u_type = e.target.value) && this.leggTilUtstyr()}
+                          >
+                            +
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -106,20 +116,20 @@ export class Restriksjon extends Ny {
   }
   fjernUtstyr() {
     this.plussUtstyr.push(this.type);
-    console.log(this.type);
+    this.minusUtstyr.pop(this.type);
 
     for (var i = 0; i < this.minusUtstyr.length; i++) {
       if (this.minusUtstyr[i] == this.type) {
         this.minusUtstyr.splice(i, 1);
       }
     }
-    console.log(this.u_type);
     s_restriksjon.fjernPassendeUtstyr(this.type, this.u_type);
-    this.mounted();
+    this.kjør();
   }
 
   leggTilUtstyr() {
     this.minusUtstyr.push(this.type);
+    this.plussUtstyr.pop(this.type);
 
     for (var i = 0; i < this.plussUtstyr.length; i++) {
       if (this.plussUtstyr[i] == this.type) {
@@ -127,10 +137,7 @@ export class Restriksjon extends Ny {
       }
     }
 
-    s_restriksjon.leggTilPassendeUtstyr(this.props.match.params.type, type, () => {
-      s_restriksjon.hentUpassendeUtstyr(this.props.match.params.type, utstyr => {
-        this.plussUtstyr = plussUtstyr;
-      });
-    });
+    s_restriksjon.leggTilPassendeUtstyr(this.type, this.u_type);
+    this.kjør();
   }
 }

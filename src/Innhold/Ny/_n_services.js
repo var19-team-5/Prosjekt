@@ -18,6 +18,50 @@ class s_Restriksjon {
       success(results);
     });
   }
+  hentUpassendeUtstyr(type, success) {
+    connection.query(
+      'SELECT prisliste.type FROM prisliste LEFT JOIN restriksjoner ON prisliste.type = restriksjoner.u_type WHERE (restriksjoner.s_type != ? OR restriksjoner.u_type IS NULL) AND prisliste.kategori = "utstyr" ',
+      [type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  hentPassendeUtstyr(type, success) {
+    connection.query(
+      'SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =? ',
+      [type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+  fjernPassendeUtstyr(type, u_type, success) {
+    connection.query('DELETE FROM restriksjoner WHERE s_type=? and u_type=?', [type, u_type], (error, results) => {
+      if (error) return console.error(error);
+
+      success();
+    });
+  }
+
+  leggTilPassendeUtstyr(type, u_type, success) {
+    connection.query('INSERT INTO restriksjoner (s_type, u_type) values (?, ?)', [type, u_type], (error, results) => {
+      if (error) return console.error(error);
+
+      success();
+    });
+  }
+  restriksjonerTyper(type, success) {
+    connection.query('SELECT u_type AS type FROM restriksjoner WHERE s_type=?', [type], (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 class s_Vare {
