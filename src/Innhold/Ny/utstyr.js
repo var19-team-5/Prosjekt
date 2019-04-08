@@ -71,7 +71,7 @@ export class Utstyr extends Ny {
     return [
       <React.Fragment>
         <ListGroup.Item className="list-group-item">
-          <Form.Label>Type utstyr:</Form.Label>
+          <Form.Label>Legg til nytt utstyr:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
             {this.typerUtstyr.map(typeUtstyr => (
               <option key={typeUtstyr.type} value={typeUtstyr.type}>
@@ -80,7 +80,7 @@ export class Utstyr extends Ny {
             ))}
           </Form.Control>
           <br />
-          <Button onClick={this.visNyType}>NY TYPE</Button>
+          <Button onClick={this.visNyType}>Ny type</Button>
         </ListGroup.Item>
 
         <Form.Group>
@@ -103,14 +103,14 @@ export class Utstyr extends Ny {
             </Row>
             <br />
             <Button id="ny" onClick={this.visSam}>
-              Legg til nytt utstyr
+              Legg til
             </Button>
           </ListGroup.Item>
         </Form.Group>
 
         <Modal size="lg" centered show={this.state.nytypepop} onHide={this.skjulNyType}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Legg til ny type</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
@@ -130,7 +130,7 @@ export class Utstyr extends Ny {
               Gå tilbake
             </Button>
             <Button id="nyType" onClick={this.nyTypeUtstyr}>
-              Legg til ny type
+              Legg til
             </Button>
           </Modal.Footer>
         </Modal>
@@ -167,7 +167,7 @@ export class Utstyr extends Ny {
 
         <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
           <Modal.Header closeButton>
-            <Modal.Title>Nye utstyr!</Modal.Title>
+            <Modal.Title>Nye utstyr</Modal.Title>
           </Modal.Header>
           <Modal.Body>Nye utstyr er lagt til!</Modal.Body>
           <Modal.Footer>

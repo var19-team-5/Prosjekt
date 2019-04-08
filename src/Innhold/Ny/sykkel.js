@@ -75,7 +75,7 @@ export class Sykkel extends Ny {
     return [
       <React.Fragment>
         <ListGroup.Item className="list-group-item">
-          <Form.Label>Type sykkel:</Form.Label>
+          <Form.Label>Legg til ny sykkel:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
             {this.typerSykler.map(typeSykkel => (
               <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -84,7 +84,7 @@ export class Sykkel extends Ny {
             ))}
           </Form.Control>
           <br />
-          <Button onClick={this.visNyType}>NY TYPE</Button>
+          <Button onClick={this.visNyType}>Ny type</Button>
         </ListGroup.Item>
 
         <Form.Group>
@@ -131,14 +131,14 @@ export class Sykkel extends Ny {
             </Row>
             <br />
             <Button id="nySykkelKnapp" onClick={this.visSam}>
-              Legg til ny sykkel
+              Legg til
             </Button>
           </ListGroup.Item>
         </Form.Group>
 
         <Modal size="lg" centered show={this.state.nytypepop} onHide={this.skjulNyType}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Legg til ny type</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Row>
@@ -158,14 +158,14 @@ export class Sykkel extends Ny {
               Gå tilbake
             </Button>
             <Button id="nyType" onClick={this.nyTypeSykkel}>
-              Legg til ny type
+              Legg til
             </Button>
           </Modal.Footer>
         </Modal>
 
         <Modal size="sm" centered show={this.state.bekpopNY} onHide={this.skjulBekNY}>
           <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
+            <Modal.Title>Type</Modal.Title>
           </Modal.Header>
           <Modal.Body>Ny type er lagt til!</Modal.Body>
           <Modal.Footer>
@@ -203,7 +203,7 @@ export class Sykkel extends Ny {
 
         <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
           <Modal.Header closeButton>
-            <Modal.Title>Nye sykler!</Modal.Title>
+            <Modal.Title>Nye sykler</Modal.Title>
           </Modal.Header>
           <Modal.Body>Nye sykler er lagt til!</Modal.Body>
           <Modal.Footer>

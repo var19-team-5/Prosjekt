@@ -577,6 +577,7 @@ export class BestillingNy extends Bestilling {
         this.prisListe.splice(i, 1);
       }
     }
+    this.beregnDager();
     this.prisOgRabatt();
   }
   prisOgRabatt() {

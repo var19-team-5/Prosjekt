@@ -1,22 +1,26 @@
 import * as React from 'react';
 import { s_typer } from './../../services';
 import { s_restriksjon } from './_n_services';
-import { ListGroup, Row, Col, Form, Button } from 'react-bootstrap';
+import { ListGroup, Row, Col, Form, Button, Card, Table } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
 export class Restriksjon extends Ny {
   typerSykler = [];
-  typerUtstyr = [];
+  minusUtstyr = [];
+  plussUtstyr = [];
+  type = [];
+  s_type = [];
+  u_type = [];
 
   render() {
     return [
       <React.Fragment>
-        <ListGroup.Item className="list-group-item">
+        <ListGroup.Item className="list-group-item" xs={8}>
           <Row>
-            <Col>
-              <Form.Label>Type sykkel:</Form.Label>
-              <Form.Control id="s_type" as="select" onChange={e => (this.s_type = e.target.value)}>
+            <Col xs={8}>
+              <Form.Label>Koble sykkel til utstyr:</Form.Label>
+              <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
                     {typeSykkel.type}
@@ -24,19 +28,56 @@ export class Restriksjon extends Ny {
                 ))}
               </Form.Control>
             </Col>
-            <Col>
-              <Form.Label>Type Utstyr:</Form.Label>
-              <Form.Control id="u_type" as="select" onChange={e => (this.u_type = e.target.value)}>
-                {this.typerUtstyr.map(typerUtstyr => (
-                  <option key={typerUtstyr.type} value={typerUtstyr.type}>
-                    {typerUtstyr.type}
-                  </option>
-                ))}
-              </Form.Control>
-            </Col>
           </Row>
           <br />
-          <Button onClick={this.nyRestriksjon}>Legg til ny restriksjon</Button>
+          <Row xs={8}>
+            <Col xs={4}>
+              <div className="restr">
+                <Table striped bordered hover size="sm" xs={4}>
+                  <thead>
+                    <tr>
+                      <th>Koblet</th>
+                      <th className="text-center">-</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.minusUtstyr.map(utstyr => (
+                      <tr key={utstyr.type}>
+                        <td>{utstyr.type}</td>
+                        <td className="text-center">
+                          <Button onClick={() => this.fjernUtstyr(this.type)}>-</Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </Col>
+            <Col xs={4}>
+              <div className="restr">
+                <Table striped bordered hover size="sm" xs={4}>
+                  <thead>
+                    <tr>
+                      <th xs={3}>Legg til</th>
+                      <th className="text-center" xs={1}>
+                        +
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.plussUtstyr.map(utstyr => (
+                      <tr key={utstyr.type}>
+                        <td>{utstyr.type}</td>
+                        <td value={utstyr.type} className="text-center">
+                          <Button onClick={e => (this.u_type = e.target.value) && this.leggTilUtstyr()}>+</Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            </Col>
+          </Row>
         </ListGroup.Item>
       </React.Fragment>
     ];
@@ -46,13 +87,50 @@ export class Restriksjon extends Ny {
       this.typerSykler = typerSykler;
       this.s_type = this.typerSykler[0].type;
     });
-
-    s_typer.AlleUtstyrTyper(typerUtstyr => {
-      this.typerUtstyr = typerUtstyr;
-      this.u_type = this.typerUtstyr[0].type;
-    });
   }
-  nyRestriksjon() {
-    s_restriksjon.NyRestriksjon(this.s_type, this.u_type);
+  kjør() {
+    this.passendeUtstyr();
+    this.upassendeUtstyr();
+  }
+  passendeUtstyr() {
+    s_restriksjon.hentPassendeUtstyr(this.type, minusUtstyr => {
+      this.minusUtstyr = minusUtstyr;
+    });
+    setTimeout(() => {}, 250);
+  }
+  upassendeUtstyr() {
+    s_restriksjon.hentUpassendeUtstyr(this.type, plussUtstyr => {
+      this.plussUtstyr = plussUtstyr;
+    });
+    setTimeout(() => {}, 250);
+  }
+  fjernUtstyr() {
+    this.plussUtstyr.push(this.type);
+    console.log(this.type);
+
+    for (var i = 0; i < this.minusUtstyr.length; i++) {
+      if (this.minusUtstyr[i] == this.type) {
+        this.minusUtstyr.splice(i, 1);
+      }
+    }
+    console.log(this.u_type);
+    s_restriksjon.fjernPassendeUtstyr(this.type, this.u_type);
+    this.mounted();
+  }
+
+  leggTilUtstyr() {
+    this.minusUtstyr.push(this.type);
+
+    for (var i = 0; i < this.plussUtstyr.length; i++) {
+      if (this.plussUtstyr[i] == this.type) {
+        this.plussUtstyr.splice(i, 1);
+      }
+    }
+
+    s_restriksjon.leggTilPassendeUtstyr(this.props.match.params.type, type, () => {
+      s_restriksjon.hentUpassendeUtstyr(this.props.match.params.type, utstyr => {
+        this.plussUtstyr = plussUtstyr;
+      });
+    });
   }
 }
