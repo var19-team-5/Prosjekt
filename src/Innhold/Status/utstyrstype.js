@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_sok } from './../../services';
+import { s_utstyr } from './_s_services';
 import { Table } from 'react-bootstrap';
 
 import { StatusUtstyr } from './utstyr';
@@ -34,7 +34,7 @@ export class StatusUtstyrType extends StatusUtstyr {
     ];
   }
   mounted() {
-    s_sok.UtstyrType(this.props.match.params.type, utstyr => {
+    s_utstyr.UtstyrType(this.props.match.params.type, utstyr => {
       this.utstyr = utstyr;
     });
   }

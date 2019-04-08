@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_sok, s_endre, s_slett } from './../../services';
+import { s_sok, s_status, s_slett } from './_s_services';
 import { Table, Modal, Button, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 
 import { Status } from './nav';
@@ -152,19 +152,19 @@ export class Sok extends Status {
     this.visInfoPop();
   }
   lager() {
-    s_endre.Lager(this.v_id);
+    s_status.PåLager(this.v_id);
     this.mounted();
   }
   trengerRep() {
-    s_endre.trengerRep(this.v_id);
+    s_status.TrengerReperasjon(this.v_id);
     this.mounted();
   }
   påRep() {
-    s_endre.Rep(this.v_id);
+    s_status.PåReperasjon(this.v_id);
     this.mounted();
   }
   savnet() {
-    s_endre.savnet(this.v_id);
+    s_status.Savnet(this.v_id);
     this.mounted();
   }
   slett() {

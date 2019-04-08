@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { s_ny, s_sok, s_typer, s_hent } from './../../services';
-import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup } from 'react-bootstrap';
+import { s_typer, s_hent } from './../../services';
+import { s_ny, s_info, s_sok, s_ledige } from './_bn_services';
+import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Modal } from 'react-bootstrap';
+import ReactDOM from 'react-dom';
 
 import { Bestilling } from './nav';
 
@@ -564,7 +566,7 @@ export class BestillingNy extends Bestilling {
     idListe.push(this.v_id);
     prisListe.push(this.pris);
 
-    s_sok.infoVarer(this.v_id, varer => {
+    s_info.Varer(this.v_id, varer => {
       this.varer = varer;
       for (var i = 0; i < idListe.length; i++) {
         vareListe.push({ v_id: this.v_id, type: this.varer[i].type, pris: this.varer[i].pris });
@@ -593,7 +595,7 @@ export class BestillingNy extends Bestilling {
     document.getElementById('nyKunde').disabled = true;
     document.getElementById('navn').placeholder = this.navn;
     document.getElementById('email').placeholder = this.email;
-    s_hent.KundeAntall(this.mobilnummer, antall => {
+    s_info.AntallBestillinger(this.mobilnummer, antall => {
       this.antall = antall;
     });
   }
@@ -601,7 +603,7 @@ export class BestillingNy extends Bestilling {
     s_sok.Kunde(this.mobilnummer, kundeSok => {
       this.kundeListe = kundeSok;
     });
-    s_hent.KundeAntall(this.mobilnummer, antall => {
+    s_info.AntallBestillinger(this.mobilnummer, antall => {
       this.antall = antall;
     });
     setTimeout(() => {
@@ -630,7 +632,7 @@ export class BestillingNy extends Bestilling {
     s_ny.Bestilling(this.fra, this.til, this.henting, this.levering, this.mobilnummer, this.rabatt, this.totalSum);
 
     for (var i = 0; i < this.idListe.length; i++) {
-      s_ny.Vareliste(this.idListe[i]);
+      s_ny.Varer(this.idListe[i]);
     }
     this.skjulBestillingPop();
     this.visFullførtPop();
@@ -638,7 +640,7 @@ export class BestillingNy extends Bestilling {
     this.resert();
   }
   sokLedigeSyklerType() {
-    s_sok.LedigeSyklerType(this.fra, this.til, this.type, sykler => {
+    s_ledige.Sykler(this.fra, this.til, this.type, sykler => {
       this.sykler = sykler;
     });
     setTimeout(() => {}, 250);
@@ -650,7 +652,7 @@ export class BestillingNy extends Bestilling {
     setTimeout(() => {}, 250);
   }
   sokLedigeUtstyrType() {
-    s_sok.LedigeUtstyrType(this.fra, this.til, this.type, utstyr => {
+    s_ledige.Utstyr(this.fra, this.til, this.type, utstyr => {
       this.utstyr = utstyr;
     });
     setTimeout(() => {}, 250);

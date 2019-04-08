@@ -73,7 +73,6 @@ export class Utstyr extends Ny {
         <ListGroup.Item className="list-group-item">
           <Form.Label>Type utstyr:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
-            <option hidden>Velg type</option>
             {this.typerUtstyr.map(typeUtstyr => (
               <option key={typeUtstyr.type} value={typeUtstyr.type}>
                 {typeUtstyr.type}
@@ -99,16 +98,13 @@ export class Utstyr extends Ny {
               </Col>
               <Col>
                 <Form.Label>Antall:</Form.Label>
-                <Form.Control
-                  id="antall"
-                  type="number"
-                  onChange={e => (this.antall = e.target.value)}
-                  placeholder="00"
-                />
+                <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} />
               </Col>
             </Row>
             <br />
-            <Button onClick={this.visSam}>Legg til nytt utstyr</Button>
+            <Button id="ny" onClick={this.visSam}>
+              Legg til nytt utstyr
+            </Button>
           </ListGroup.Item>
         </Form.Group>
 
@@ -120,11 +116,11 @@ export class Utstyr extends Ny {
             <Row>
               <Col>
                 <Form.Label>Ny type:</Form.Label>
-                <Form.Control onChange={e => (this.nytype = e.target.value)} placeholder="navn" />
+                <Form.Control onChange={this.sjekk} onInput={e => (this.nytype = e.target.value)} />
               </Col>
               <Col>
                 <Form.Label>Pris:</Form.Label>
-                <Form.Control type="number" onChange={e => (this.nypris = e.target.value)} placeholder="00,00" />
+                <Form.Control type="number" onChange={this.sjekk} onInput={e => (this.nypris = e.target.value)} />
                 <br />
               </Col>
             </Row>
@@ -133,7 +129,9 @@ export class Utstyr extends Ny {
             <Button variant="secondary" onClick={this.skjulNyType}>
               Gå tilbake
             </Button>
-            <Button onClick={this.nyTypeUtstyr}>Legg til ny type</Button>
+            <Button id="nyType" onClick={this.nyTypeUtstyr}>
+              Legg til ny type
+            </Button>
           </Modal.Footer>
         </Modal>
 
@@ -183,16 +181,22 @@ export class Utstyr extends Ny {
   }
 
   mounted() {
-    s_typer.alleUtstyrTyper(typerUtstyr => {
+    s_typer.AlleUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
-      this.type = typerUtstyr[0].type;
+      this.type = this.typerUtstyr[0].type;
     });
     s_hent.Steder(steder => {
       this.steder = steder;
       this.tilhører = steder[0].lokasjon;
     });
   }
-
+  sjekk() {
+    if (this.nytype == '' || this.nypris == '') {
+      document.getElementById('nyType').disabled = true;
+    } else {
+      document.getElementById('nyType').disabled = false;
+    }
+  }
   nyUtstyr() {
     for (var i = 0; i < this.antall; i++) {
       s_vare.NyVare(this.tilhører, this.type);

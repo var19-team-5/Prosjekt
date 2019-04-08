@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { s_typer, s_ny, s_hent, s_slett } from './../../services';
-import { s_restrikasjon } from './_n_services';
-import { ListGroup, Row, Col, Form, Button, Card, Table } from 'react-bootstrap';
+import { s_typer } from './../../services';
+import { s_restriksjon } from './_n_services';
+import { ListGroup, Row, Col, Form, Button } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
@@ -79,42 +79,18 @@ export class Restriksjon extends Ny {
     ];
   }
   mounted() {
-    s_typer.alleSykkelTyper(typerSykler => {
+    s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
+      this.s_type = this.typerSykler[0].type;
     });
-  }
-  kjør() {
-    this.passendeUtstyr();
-    this.upassendeUtstyr();
-    console.log(this.minusUtstyr);
-    console.log(this.plussUtstyr);
-  }
-  passendeUtstyr() {
-    s_hent.hentPassendeUtstyr(this.type, this.type, this.s_type, minusUtstyr => {
-      this.minusUtstyr = minusUtstyr;
+
+    s_typer.AlleUtstyrTyper(typerUtstyr => {
+      this.typerUtstyr = typerUtstyr;
+      this.u_type = this.typerUtstyr[0].type;
     });
     setTimeout(() => {}, 250);
   }
-  upassendeUtstyr() {
-    s_hent.hentUpassendeUtstyr(this.type, this.u_type, this.s_type, this.kategori, plussUtstyr => {
-      this.plussUtstyr = plussUtstyr;
-    });
-    setTimeout(() => {}, 250);
-  }
-  fjernUtstyr() {
-    this.plussUtstyr.push(this.type);
-    s_slett.fjernPassendeUtstyr(this.props.match.params.type, type, () => {
-      s_hent.hentPassendeUtstyr(this.props.match.params.type, utstyr => {
-        this.minusUtstyr = minusUtstyr;
-      });
-    });
-  }
-  leggTilUtstyr() {
-    this.minusUtstyr.push(this.type);
-    s_slett.leggTilPassendeUtstyr(this.props.match.params.type, type, () => {
-      s_hent.hentUpassendeUtstyr(this.props.match.params.type, utstyr => {
-        this.plussUtstyr = plussUtstyr;
-      });
-    });
+  nyRestriksjon() {
+    s_restriksjon.NyRestriksjon(this.s_type, this.u_type);
   }
 }

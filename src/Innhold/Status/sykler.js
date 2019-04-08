@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_hent } from './../../services';
+import { s_sykler } from './_s_services';
 import { Table } from 'react-bootstrap';
 
 import { Status } from './nav';
@@ -40,8 +40,8 @@ export class StatusSykler extends Status {
     ];
   }
   mounted() {
-    s_hent.Sykler(sykler => {
-      this.sykler = sykler;
+    s_sykler.AlleSykler(alle_sykler => {
+      this.alle_sykler = alle_sykler;
     });
   }
 }
