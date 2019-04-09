@@ -147,6 +147,7 @@ class s_Pris {
   }
 }
 
+// Eksporterer de forskjellige klassene
 export let s_lokasjon = new s_Lokasjon();
 export let s_restriksjon = new s_Restriksjon();
 export let s_vare = new s_Vare();

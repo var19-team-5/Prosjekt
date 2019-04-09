@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_hent, s_typer } from './../../services';
+import { s_steder, s_typer } from './../../services';
 import { s_vare, s_utstyr } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 
@@ -201,7 +201,7 @@ export class Utstyr extends Ny {
       this.typerUtstyr = typerUtstyr;
       this.type = this.typerUtstyr[0].type;
     });
-    s_hent.Steder(steder => {
+    s_steder.Steder(steder => {
       this.steder = steder;
       this.tilhører = steder[0].lokasjon;
     });

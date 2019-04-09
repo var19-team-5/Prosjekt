@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_typer, s_hent } from './../../services';
+import { s_typer, s_steder } from './../../services';
 import { s_ny, s_info, s_sok, s_ledige, s_restriksjon } from './_bn_services';
 import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Modal } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
@@ -668,7 +668,7 @@ export class BestillingNy extends Bestilling {
     this.prisOgRabatt();
   }
   mounted() {
-    s_hent.Steder(steder => {
+    s_steder.Steder(steder => {
       this.steder = steder;
       this.henting = this.steder[0].lokasjon;
       this.levering = this.steder[0].lokasjon;
@@ -804,7 +804,7 @@ export class BestillingNy extends Bestilling {
   }
 
   passendeUtstyr() {
-    s_restriksjon.hentPassendeUtstyr(this.type, minusUtstyr => {
+    s_restriksjon.HentPassendeUtstyr(this.type, minusUtstyr => {
       this.minusUtstyr = minusUtstyr;
     });
     setTimeout(() => {}, 250);
