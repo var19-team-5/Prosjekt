@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_ny, s_hent, s_typer } from './../../services';
+import { s_hent, s_typer } from './../../services';
 import { s_vare, s_sykkel } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 
@@ -63,10 +63,8 @@ export class Sykkel extends Ny {
 
   steder = [];
   typerSykler = [];
-
   nytype = '';
   nypris = '';
-
   ramme = '';
   girsystem = '';
   størrelse_hjul = '';
@@ -87,7 +85,6 @@ export class Sykkel extends Ny {
                       {typeSykkel.type}
                     </option>
                   ))}
-                  <br />
                 </Form.Control>
                 <br />
                 <Button onClick={this.visNyType}>Ny type</Button>
@@ -253,6 +250,7 @@ export class Sykkel extends Ny {
     });
     document.getElementById('nySykkelKnapp').disabled = true;
   }
+
   sjekk() {
     if (this.ramme == '' || this.girsystem == '' || this.størrelse_hjul == '' || this.antall == '') {
       document.getElementById('nySykkelKnapp').disabled = true;
@@ -260,6 +258,7 @@ export class Sykkel extends Ny {
       document.getElementById('nySykkelKnapp').disabled = false;
     }
   }
+
   sjekkNy() {
     if (this.nytype == '' || this.nypris == '') {
       document.getElementById('nyType').disabled = true;
@@ -267,6 +266,7 @@ export class Sykkel extends Ny {
       document.getElementById('nyType').disabled = false;
     }
   }
+
   nySykkel() {
     for (var i = 0; i < this.antall; i++) {
       s_vare.NyVare(this.tilhører, this.type);
@@ -275,6 +275,7 @@ export class Sykkel extends Ny {
       this.visBek();
     }
   }
+
   nyTypeSykkel() {
     s_sykkel.NyTypeSykkel(this.nytype, this.nypris);
     this.skjulNyType();

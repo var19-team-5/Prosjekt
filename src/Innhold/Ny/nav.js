@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
+// Dette er den menyen som hører til Ny
 export class Ny extends Component {
   render() {
     return (

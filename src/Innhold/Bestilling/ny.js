@@ -136,8 +136,8 @@ export class BestillingNy extends Bestilling {
 
                     <Form.Label> Navn: </Form.Label>
                     <Form.Control
-                      id="navn"
                       placeholder="Fornavn Etternavn"
+                      id="navn"
                       value={this.navn}
                       onInput={e => (this.navn = e.target.value)}
                       onChange={this.tomKunde}
@@ -145,8 +145,8 @@ export class BestillingNy extends Bestilling {
 
                     <Form.Label> Email: </Form.Label>
                     <Form.Control
-                      id="email"
                       placeholder="eksempel@email.com"
+                      id="email"
                       value={this.email}
                       onInput={e => (this.email = e.target.value)}
                       onChange={this.tomKunde}
@@ -162,24 +162,14 @@ export class BestillingNy extends Bestilling {
               <ListGroup.Item className="list-group-item">
                 <Row>
                   <Col>
-                    <Form.Label>Hentested:</Form.Label>
-                    <Form.Control as="select" onChange={e => (this.henting = e.target.value)}>
-                      {this.steder.map(sted => (
-                        <option key={sted.l_id}>{sted.lokasjon}</option>
-                      ))}
-                    </Form.Control>
+                    <Form.Label> Fra: </Form.Label>
+                    <Form.Control id="fra" required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
                   </Col>
                   <Col>
-                    <Form.Label>Leveringsted:</Form.Label>
-                    <Form.Control as="select" onChange={e => (this.levering = e.target.value)}>
-                      {this.steder.map(sted => (
-                        <option key={sted.l_id}>{sted.lokasjon}</option>
-                      ))}
-                    </Form.Control>
-                    <br />
+                    <Form.Label> Til: </Form.Label>
+                    <Form.Control id="til" required type="datetime-local" onChange={e => (this.til = e.target.value)} />
                   </Col>
                 </Row>
-                <Button onClick={this.nyBestilling}>Ny bestilling</Button>
               </ListGroup.Item>
 
               <ListGroup.Item className="list-group-item">
@@ -417,24 +407,24 @@ export class BestillingNy extends Bestilling {
                   </div>
                 </Col>
                 <Col>
-                  <Button onClick={this.sokLedigeUtstyr}>Utstyr</Button>
-
-                  <Form.Label>Type utstyr:</Form.Label>
-                  <Form.Control
-                    as="select"
-                    onChange={this.sokLedigeUtstyrType}
-                    onInput={e => (this.type = e.target.value)}
-                  >
-                    <option value="" disabled selected hidden>
-                      Velg type her
-                    </option>
-                    {this.typerUtstyr.map(typerUtstyr => (
-                      <option key={typerUtstyr.type} value={typerUtstyr.type}>
-                        {typerUtstyr.type}
-                      </option>
-                    ))}
-                    <br />
-                  </Form.Control>
+                  <div className="bekreftelse">
+                    <Table striped bordered hover size="sm" xs={2}>
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th className="text-center">Pris</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {this.vareListe.map(vare => (
+                          <tr key={vare.v_id}>
+                            <td>{vare.type}</td>
+                            <td className="text-center">{vare.pris}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
                 </Col>
               </Row>
             </Modal.Body>
@@ -549,9 +539,6 @@ export class BestillingNy extends Bestilling {
   }
 
   sjekkBestilling() {
-    document.getElementById('navn').value = document.getElementById('navn').placeholder;
-    document.getElementById('email').value = document.getElementById('email').placeholder;
-
     this.navn = document.getElementById('navn').value;
     this.email = document.getElementById('email').value;
 
@@ -711,23 +698,26 @@ export class BestillingNy extends Bestilling {
       this.antall = antall;
     });
     setTimeout(() => {
-      if (this.kundeListe.length == 1) {
-        document.getElementById('navn').placeholder = this.kundeListe[0].navn;
-        document.getElementById('email').placeholder = this.kundeListe[0].email;
-
-        document.getElementById('navn').disabled = true;
-        document.getElementById('email').disabled = true;
-        document.getElementById('nyKunde').disabled = true;
-        console.log(this.kundeListe.length);
-      } else if (this.kundeListe.length == 0) {
-        document.getElementById('navn').placeholder = '';
-        document.getElementById('email').placeholder = '';
+      if (this.kundeListe.length == 0) {
+        document.getElementById('navn').placeholder = 'Fornavn Etternavn';
+        document.getElementById('email').placeholder = 'eksempel@email.com';
 
         document.getElementById('navn').value = '';
         document.getElementById('email').value = '';
 
         document.getElementById('navn').disabled = false;
         document.getElementById('email').disabled = false;
+        console.log(this.kundeListe.length);
+      } else if (this.kundeListe.length == 1) {
+        document.getElementById('navn').placeholder = this.kundeListe[0].navn;
+        document.getElementById('email').placeholder = this.kundeListe[0].email;
+
+        document.getElementById('navn').value = document.getElementById('navn').placeholder;
+        document.getElementById('email').value = document.getElementById('email').placeholder;
+
+        document.getElementById('navn').disabled = true;
+        document.getElementById('email').disabled = true;
+        document.getElementById('nyKunde').disabled = true;
         console.log(this.kundeListe.length);
       }
     }, 250);
@@ -844,6 +834,15 @@ export class BestillingNy extends Bestilling {
 
     this.henting = this.steder[0].lokasjon;
     this.levering = this.steder[0].lokasjon;
+
+    document.getElementById('navn').placeholder = 'Fornavn Etternavn';
+    document.getElementById('email').placeholder = 'eksempel@email.com';
+
+    document.getElementById('navn').value = '';
+    document.getElementById('email').value = '';
+
+    document.getElementById('navn').disabled = false;
+    document.getElementById('email').disabled = false;
 
     this.sokKunde();
     this.prisOgRabatt();

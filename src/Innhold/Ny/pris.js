@@ -22,92 +22,92 @@ export class Pris extends Ny {
   visEndringPop() {
     this.setState({ endringPop: true });
   }
+
   typerSykler = [];
   typerUtstyr = [];
-  prisVarer = [];
 
   render() {
     return [
       <React.Fragment>
-      <ListGroup.Item className="list-group-item">
-      <h5> Endre pris på type: </h5>
-      <br/>
-        <Row>
-          <Col>
-            <ListGroup.Item className="list-group-item">
-            <h5> Sykkel </h5>
-            <br/>
-              <Form.Label>Velg type:</Form.Label>
-              <Form.Control
-                id="sykkelType"
-                as="select"
-                onChange={e => (this.type = e.target.value) && this.PriserSykkel()}
-              >
-                {this.typerSykler.map(typeSykkel => (
-                  <option key={typeSykkel.type} value={typeSykkel.type}>
-                    {typeSykkel.type}
-                  </option>
-                ))}
-              </Form.Control>
-              <br />
-              <Form.Label>Pris:</Form.Label>
-              <Form.Control
-                id="sykkelPris"
-                type="number"
-                onChange={e => (this.pris = e.target.value)}
-                placeholder="00,00"
-              />
-              <br />
-              <Button onClick={this.nyPrisSykkel}>Endre pris</Button>
-            </ListGroup.Item>
-          </Col>
-          <Col>
-            <ListGroup.Item className="list-group-item">
-            <h5> Utstyr </h5>
-            <br/>
-              <Form.Label>Velg type:</Form.Label>
-              <Form.Control
-                id="utstyrType"
-                as="select"
-                onChange={e => (this.type = e.target.value) && this.PriserUtstyr()}
-              >
-                {this.typerUtstyr.map(typeUtstyr => (
-                  <option key={typeUtstyr.type} value={typeUtstyr.type}>
-                    {typeUtstyr.type}
-                  </option>
-                ))}
+        <ListGroup.Item className="list-group-item">
+          <h5> Endre pris på type: </h5>
+          <br />
+          <Row>
+            <Col>
+              <ListGroup.Item className="list-group-item">
+                <h5> Sykkel </h5>
                 <br />
-              </Form.Control>
-              <br />
-              <Form.Label>Pris:</Form.Label>
-              <Form.Control
-                id="utstyrPris"
-                type="number"
-                onChange={e => (this.pris = e.target.value)}
-                placeholder="00,00"
-              />
-              <br />
-              <Button onClick={this.nyPrisUtstyr}>Endre pris</Button>
-            </ListGroup.Item>
-          </Col>
-        </Row>
+                <Form.Label>Velg type:</Form.Label>
+                <Form.Control
+                  id="sykkelType"
+                  as="select"
+                  onChange={e => (this.type = e.target.value) && this.PriserSykkel()}
+                >
+                  {this.typerSykler.map(typeSykkel => (
+                    <option key={typeSykkel.type} value={typeSykkel.type}>
+                      {typeSykkel.type}
+                    </option>
+                  ))}
+                </Form.Control>
+                <br />
+                <Form.Label>Pris:</Form.Label>
+                <Form.Control
+                  id="sykkelPris"
+                  type="number"
+                  onChange={e => (this.pris = e.target.value)}
+                  placeholder="00,00"
+                />
+                <br />
+                <Button onClick={this.nyPrisSykkel}>Endre pris</Button>
+              </ListGroup.Item>
+            </Col>
+            <Col>
+              <ListGroup.Item className="list-group-item">
+                <h5> Utstyr </h5>
+                <br />
+                <Form.Label>Velg type:</Form.Label>
+                <Form.Control
+                  id="utstyrType"
+                  as="select"
+                  onChange={e => (this.type = e.target.value) && this.PriserUtstyr()}
+                >
+                  {this.typerUtstyr.map(typeUtstyr => (
+                    <option key={typeUtstyr.type} value={typeUtstyr.type}>
+                      {typeUtstyr.type}
+                    </option>
+                  ))}
+                  <br />
+                </Form.Control>
+                <br />
+                <Form.Label>Pris:</Form.Label>
+                <Form.Control
+                  id="utstyrPris"
+                  type="number"
+                  onChange={e => (this.pris = e.target.value)}
+                  placeholder="00,00"
+                />
+                <br />
+                <Button onClick={this.nyPrisUtstyr}>Endre pris</Button>
+              </ListGroup.Item>
+            </Col>
+          </Row>
 
-        <Modal size="sm" show={this.state.endringPop} onHide={this.skjulEndringPop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Pris er oppdatert</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Type: {this.type} <br />
-            Pris: {this.pris} <br />
-            <br />
-            Er endret i systemet!
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulEndringPop}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          <Modal size="sm" show={this.state.endringPop} onHide={this.skjulEndringPop}>
+            <Modal.Header closeButton>
+              <Modal.Title>Pris er oppdatert</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Type: {this.type} <br />
+              Pris: {this.pris} <br />
+              <br />
+              Er endret i systemet!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulEndringPop}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </ListGroup.Item>
       </React.Fragment>
     ];
@@ -132,6 +132,7 @@ export class Pris extends Ny {
     this.PriserSykkel();
     document.getElementById('sykkelPris').value = '';
   }
+
   nyPrisUtstyr() {
     s_pris.EndrePris(this.pris, this.type);
     this.PriserUtstyr();
@@ -140,15 +141,16 @@ export class Pris extends Ny {
   }
 
   PriserSykkel() {
-    s_pris.Priser(this.type, Priser => {
-      this.Priser = Priser;
-      document.getElementById('sykkelPris').placeholder = this.Priser[0].pris + ',-';
+    s_pris.Priser(this.type, pris => {
+      this.pris = pris;
+      document.getElementById('sykkelPris').placeholder = this.pris[0].pris + ',-';
     });
   }
+
   PriserUtstyr() {
-    s_pris.Priser(this.type, Priser => {
-      this.Priser = Priser;
-      document.getElementById('utstyrPris').placeholder = this.Priser[0].pris + ',-';
+    s_pris.Priser(this.type, pris => {
+      this.pris = pris;
+      document.getElementById('utstyrPris').placeholder = this.pris[0].pris + ',-';
     });
   }
 }

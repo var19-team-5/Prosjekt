@@ -14,36 +14,37 @@ export class Lokasjon extends Ny {
       bek: false
     };
   }
+
   skjulBek() {
     this.setState({ bek: false });
   }
-
   visBek() {
     this.setState({ bek: true });
   }
+
   render() {
     return (
       <React.Fragment>
         <Form.Group>
           <ListGroup.Item className="list-group-item">
-          <h5> Legg til ny lokasjon: </h5>
-          <br/>
-          <Row>
-            <Col xs={3}>
-            <Form.Label> Lokasjon: </Form.Label>
-            <Form.Control
-              id="lokasjon"
-              onChange={this.sjekk}
-              type="text"
-              onInput={e => (this.lokasjon = e.target.value)}
-              placeholder="Stedsnavn"
-            />
+            <h5> Legg til ny lokasjon: </h5>
             <br />
-            <Button id="knapp" onClick={this.nyLokasjon}>
-              Legg til
-            </Button>
-            </Col>
-          </Row>
+            <Row>
+              <Col xs={3}>
+                <Form.Label> Lokasjon: </Form.Label>
+                <Form.Control
+                  id="lokasjon"
+                  onChange={this.sjekk}
+                  type="text"
+                  onInput={e => (this.lokasjon = e.target.value)}
+                  placeholder="Stedsnavn"
+                />
+                <br />
+                <Button id="knapp" onClick={this.nyLokasjon}>
+                  Legg til
+                </Button>
+              </Col>
+            </Row>
           </ListGroup.Item>
         </Form.Group>
 
@@ -65,9 +66,11 @@ export class Lokasjon extends Ny {
       </React.Fragment>
     );
   }
+
   mounted() {
     document.getElementById('knapp').disabled = true;
   }
+
   sjekk() {
     if (this.lokasjon == '') {
       document.getElementById('knapp').disabled = true;
@@ -75,6 +78,7 @@ export class Lokasjon extends Ny {
       document.getElementById('knapp').disabled = false;
     }
   }
+
   nyLokasjon() {
     s_lokasjon.NyLokasjoner(this.lokasjon);
     this.visBek();

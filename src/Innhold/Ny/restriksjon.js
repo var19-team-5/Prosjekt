@@ -10,7 +10,6 @@ export class Restriksjon extends Ny {
   minusUtstyr = [];
   plussUtstyr = [];
   type = [];
-  s_type = [];
   u_type = [];
 
   render() {
@@ -22,7 +21,7 @@ export class Restriksjon extends Ny {
           <Row>
             <Col xs={3}>
               <Form.Label>Velg sykkeltype:</Form.Label>
-              <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
+              <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.hent(e)}>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
                     {typeSykkel.type}
@@ -97,24 +96,28 @@ export class Restriksjon extends Ny {
       this.typerSykler = typerSykler;
       this.type = this.typerSykler[0].type;
     });
-    this.kjør();
+    setTimeout(() => {
+      this.hent();
+    }, 250);
   }
-  kjør() {
+
+  hent() {
     this.passendeUtstyr();
     this.upassendeUtstyr();
   }
+
   passendeUtstyr() {
-    s_restriksjon.hentPassendeUtstyr(this.type, minusUtstyr => {
+    s_restriksjon.HentPassendeUtstyr(this.type, minusUtstyr => {
       this.minusUtstyr = minusUtstyr;
     });
-    setTimeout(() => {}, 250);
   }
+
   upassendeUtstyr() {
-    s_restriksjon.hentUpassendeUtstyr(this.type, plussUtstyr => {
+    s_restriksjon.HentUpassendeUtstyr(this.type, plussUtstyr => {
       this.plussUtstyr = plussUtstyr;
     });
-    setTimeout(() => {}, 250);
   }
+
   fjernUtstyr() {
     this.plussUtstyr.push(this.type);
     this.minusUtstyr.pop(this.type);
@@ -124,8 +127,8 @@ export class Restriksjon extends Ny {
         this.minusUtstyr.splice(i, 1);
       }
     }
-    s_restriksjon.fjernPassendeUtstyr(this.type, this.u_type);
-    this.kjør();
+    s_restriksjon.FjernPassendeUtstyr(this.type, this.u_type);
+    this.hent();
   }
 
   leggTilUtstyr() {
@@ -137,8 +140,7 @@ export class Restriksjon extends Ny {
         this.plussUtstyr.splice(i, 1);
       }
     }
-
-    s_restriksjon.leggTilPassendeUtstyr(this.type, this.u_type);
-    this.kjør();
+    s_restriksjon.LeggTilPassendeUtstyr(this.type, this.u_type);
+    this.hent();
   }
 }
