@@ -11,16 +11,9 @@ class s_Lokasjon {
 }
 
 class s_Restriksjon {
-  NyRestriksjon(s_type, u_type, success) {
-    connection.query('insert into restriksjoner (s_type, u_type) values (?,?)', [s_type, u_type], (error, results) => {
-      if (error) return console.error(error);
-
-      success(results);
-    });
-  }
   hentUpassendeUtstyr(type, success) {
     connection.query(
-      'SELECT type FROM prisliste WHERE type NOT IN ( SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =?) AND kategori="utstyr" ORDER BY prisliste.`type` ASC ',
+      'SELECT type FROM prisliste WHERE type NOT IN ( SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =?) AND kategori="utstyr"  ORDER BY `prisliste`.`type` ASC ',
       [type],
       (error, results) => {
         if (error) return console.error(error);
@@ -31,7 +24,7 @@ class s_Restriksjon {
   }
   hentPassendeUtstyr(type, success) {
     connection.query(
-      'SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =? ',
+      'SELECT prisliste.type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type =? ORDER BY prisliste.type ASC ',
       [type],
       (error, results) => {
         if (error) return console.error(error);

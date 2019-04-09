@@ -62,8 +62,8 @@ ReactDOM.render(
       <Route path="/oversikt" component={Oversikt} />
       <Route exact path="/oversikt/salg" component={Salg} />
 
-      <Route path="/info" component={Info} />
-      <Route path="/hjelp" component={Hjelp} />
+      <Route exact path="/info" component={Info} />
+      <Route exact path="/hjelp" component={Hjelp} />
     </div>
   </HashRouter>,
   document.getElementById('root')

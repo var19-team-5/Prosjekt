@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { s_typer, s_hent } from './../../services';
-import { s_ny, s_info, s_sok, s_ledige } from './_bn_services';
+import { s_ny, s_info, s_sok, s_ledige, s_restriksjon } from './_bn_services';
 import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Modal } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 
@@ -120,6 +120,10 @@ export class BestillingNy extends Bestilling {
   varer = [];
 
   totalSum = [];
+
+  typerSykler = [];
+  minusUtstyr = [];
+  type = [];
 
   render() {
     const { idListe } = this.valgt;
@@ -359,7 +363,7 @@ export class BestillingNy extends Bestilling {
                         <div>Rabatt:</div>
                       </Col>
                       <Col>
-                        <div id="rabatt" />
+                        <div>{this.rabatt}</div>
                       </Col>
                     </Row>
                     <Row>
@@ -367,7 +371,7 @@ export class BestillingNy extends Bestilling {
                         <div>Pris:</div>
                       </Col>
                       <Col>
-                        <div id="pris" />
+                        <div> {this.totalSum} </div>
                       </Col>
                     </Row>
                     <br />
@@ -471,7 +475,7 @@ export class BestillingNy extends Bestilling {
           </Modal.Footer>
         </Modal>
 
-        <Modal centered size="sm" show={this.state.tomPop} onHide={this.skjulTomPop}>
+        <Modal centered size="md" show={this.state.tomPop} onHide={this.skjulTomPop}>
           <Modal.Header closeButton>
             <Modal.Title>Feil!</Modal.Title>
           </Modal.Header>
@@ -497,7 +501,40 @@ export class BestillingNy extends Bestilling {
           <Modal.Header closeButton>
             <Modal.Title>Restriksjoner</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Informasjon om restriksjoner</Modal.Body>
+          <Modal.Body>
+            <Row>
+              <Col>
+                <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.passendeUtstyr(e)}>
+                  {this.typerSykler.map(typeSykkel => (
+                    <option key={typeSykkel.type} value={typeSykkel.type}>
+                      {typeSykkel.type}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Col>
+            </Row>
+            <br />
+            <Row>
+              <Col>
+                <div className="restr">
+                  <Table striped bordered hover size="sm" xs={4}>
+                    <thead>
+                      <tr>
+                        <th>Passer til</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.minusUtstyr.map(utstyr => (
+                        <tr key={utstyr.type}>
+                          <td>{utstyr.type}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </Col>
+            </Row>
+          </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.skjulResPop}>
               OK
@@ -602,8 +639,8 @@ export class BestillingNy extends Bestilling {
     this.totalSum = totalSum;
     this.prisListe = prisListe;
 
-    document.getElementById('pris').innerHTML = totalSum;
-    document.getElementById('rabatt').innerHTML = rabatt;
+    console.log(this.totalSum);
+    console.log(this.rabatt);
   }
 
   leggTil(e) {
@@ -614,6 +651,7 @@ export class BestillingNy extends Bestilling {
     idListe.push(this.v_id);
     console.log(this.idListe);
     prisListe.push(this.pris);
+    console.log(this.prisListe);
 
     s_info.Varer(this.v_id, varer => {
       this.varer = varer;
@@ -648,6 +686,12 @@ export class BestillingNy extends Bestilling {
     this.idListe = idListe;
     this.vareListe = vareListe;
     this.prisListe = prisListe;
+
+    s_typer.AlleSykkelTyper(typerSykler => {
+      this.typerSykler = typerSykler;
+      this.type = this.typerSykler[0].type;
+    });
+    this.passendeUtstyr();
   }
   nyKunde() {
     s_ny.Kunde(this.navn, this.email, this.mobilnummer);
@@ -674,8 +718,7 @@ export class BestillingNy extends Bestilling {
         document.getElementById('navn').disabled = true;
         document.getElementById('email').disabled = true;
         document.getElementById('nyKunde').disabled = true;
-
-        this.sokKunde();
+        console.log(this.kundeListe.length);
       } else if (this.kundeListe.length == 0) {
         document.getElementById('navn').placeholder = '';
         document.getElementById('email').placeholder = '';
@@ -685,6 +728,7 @@ export class BestillingNy extends Bestilling {
 
         document.getElementById('navn').disabled = false;
         document.getElementById('email').disabled = false;
+        console.log(this.kundeListe.length);
       }
     }, 250);
   }
@@ -754,36 +798,54 @@ export class BestillingNy extends Bestilling {
     }
   }
 
+  passendeUtstyr() {
+    s_restriksjon.hentPassendeUtstyr(this.type, minusUtstyr => {
+      this.minusUtstyr = minusUtstyr;
+    });
+    setTimeout(() => {}, 250);
+  }
+
   reset() {
     const { idListe } = this.valgt;
     const { vareListe } = this.varerx;
     const { prisListe } = this.summer;
 
+    this.fjern = this.prisListe.length;
+
+    for (var m = 0; m < this.fjern; m++) {
+      this.idListe.pop(m);
+      this.vareListe.pop(m);
+      this.prisListe.pop(m);
+    }
+
+    this.setState({
+      vSykkel: false,
+      vUtstyr: false
+    });
+
+    this.totalSum = 0;
+    this.rabatt = 0;
+
     this.henting = this.steder[0].lokasjon;
     this.levering = this.steder[0].lokasjon;
 
-    for (var i = 0; i < this.sykler.length; i++) {
-      document.getElementById(this.sykler[i].v_id).disabled = false;
-      document.getElementById(this.sykler[i].v_id).checked = false;
-    }
-
-    for (var y = 0; y < this.utstyr.length; y++) {
-      document.getElementById(this.utstyr[y].v_id).disabled = false;
-      document.getElementById(this.utstyr[y].v_id).checked = false;
-    }
-
     document.getElementById('nyKunde').disabled = true;
-
-    document.getElementById('navn').placeholder = '';
-    document.getElementById('email').placeholder = '';
-
     document.getElementById('mobilnummer').value = '';
-    document.getElementById('navn').value = '';
-    document.getElementById('email').value = '';
+
+    this.mobilnummer = '';
+
     document.getElementById('fra').value = '';
     document.getElementById('til').value = '';
 
-    document.getElementById('navn').disabled = false;
-    document.getElementById('email').disabled = false;
+    this.kundeListe = [];
+
+    document.getElementById('henting').value = this.steder[0].lokasjon;
+    document.getElementById('levering').value = this.steder[0].lokasjon;
+
+    this.henting = this.steder[0].lokasjon;
+    this.levering = this.steder[0].lokasjon;
+
+    this.sokKunde();
+    this.prisOgRabatt();
   }
 }

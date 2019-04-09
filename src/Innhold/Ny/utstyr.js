@@ -146,8 +146,12 @@ export class Utstyr extends Ny {
           <Modal.Header closeButton>
             <Modal.Title>Ny type</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ny type er lagt til!</Modal.Body>
+          <Modal.Body>
+            Ny type er lagt til! <br />
+            <br /> Husk å legg til restriksjoner nå eller senere!
+          </Modal.Body>
           <Modal.Footer>
+            <Button href="#/ny/restriksjon">Restriksjoner</Button>
             <Button variant="secondary" onClick={this.skjulBekNY}>
               OK
             </Button>
@@ -176,7 +180,7 @@ export class Utstyr extends Ny {
           <Modal.Header closeButton>
             <Modal.Title>Nye utstyr</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Nye utstyr er lagt til!</Modal.Body>
+          <Modal.Body>Nytt utstyr er lagt til!</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.skjulBek}>
               OK

@@ -17,8 +17,8 @@ export class Restriksjon extends Ny {
     return [
       <React.Fragment>
         <ListGroup.Item className="list-group-item">
-        <h5> Koble sykkel til utstyr: </h5>
-        <br/>
+          <h5> Koble sykkel til utstyr: </h5>
+          <br />
           <Row>
             <Col xs={3}>
               <Form.Label>Velg sykkeltype:</Form.Label>
@@ -66,9 +66,7 @@ export class Restriksjon extends Ny {
                   <thead>
                     <tr>
                       <th>Legg til</th>
-                      <th className="text-center">
-                        +
-                      </th>
+                      <th className="text-center">+</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -97,8 +95,9 @@ export class Restriksjon extends Ny {
   mounted() {
     s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
-      this.s_type = this.typerSykler[0].type;
+      this.type = this.typerSykler[0].type;
     });
+    this.kjør();
   }
   kjør() {
     this.passendeUtstyr();

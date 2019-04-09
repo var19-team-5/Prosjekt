@@ -92,7 +92,22 @@ class s_Ledige {
   }
 }
 
+class s_Restriksjon {
+  hentPassendeUtstyr(type, success) {
+    connection.query(
+      'SELECT type FROM restriksjoner INNER JOIN prisliste ON restriksjoner.u_type = prisliste.type WHERE s_type=?',
+      [type],
+      (error, results) => {
+        if (error) return console.error(error);
+
+        success(results);
+      }
+    );
+  }
+}
+
 export let s_ny = new s_Ny();
 export let s_info = new s_Info();
 export let s_sok = new s_Sok();
 export let s_ledige = new s_Ledige();
+export let s_restriksjon = new s_Restriksjon();

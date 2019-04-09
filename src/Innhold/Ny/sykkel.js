@@ -176,8 +176,13 @@ export class Sykkel extends Ny {
           <Modal.Header closeButton>
             <Modal.Title>Type</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Ny type er lagt til!</Modal.Body>
+          <Modal.Body>
+            Ny type er lagt til! <br />
+            <br /> Husk å legg til restriksjoner nå eller senere!
+          </Modal.Body>
           <Modal.Footer>
+            <Button href="#/ny/restriksjon">Restriksjoner</Button>
+
             <Button variant="secondary" onClick={this.skjulBekNY}>
               OK
             </Button>
