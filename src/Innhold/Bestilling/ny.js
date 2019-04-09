@@ -132,201 +132,300 @@ export class BestillingNy extends Bestilling {
 
     return (
       <React.Fragment>
-      <ListGroup.Item className="list-group-item">
-        <Row>
-          <Col xs={3}>
-            <ListGroup.Item className="list-group-item">
-              <Row>
-                <Col>
-                  <Form.Label> Mobilnummer: </Form.Label>
-                  <Form.Control
-                    id="mobilnummer"
-                    placeholder="Søk mobilnummer"
-                    type="number"
-                    onInput={e => (this.mobilnummer = e.target.value)}
-                    onChange={this.sokKunde}
-                  />
+        <ListGroup.Item className="list-group-item">
+          <Row>
+            <Col xs={3}>
+              <ListGroup.Item className="list-group-item">
+                <Row>
+                  <Col>
+                    <Form.Label> Mobilnummer: </Form.Label>
+                    <Form.Control
+                      id="mobilnummer"
+                      placeholder="Søk mobilnummer"
+                      type="number"
+                      onInput={e => (this.mobilnummer = e.target.value)}
+                      onChange={this.sokKunde}
+                    />
 
-                  <Form.Label> Navn: </Form.Label>
-                  <Form.Control
-                    id="navn"
-                    placeholder="Fornavn Etternavn"
-                    value={this.navn}
-                    onInput={e => (this.navn = e.target.value)}
-                    onChange={this.tomKunde}
-                  />
+                    <Form.Label> Navn: </Form.Label>
+                    <Form.Control
+                      placeholder="Fornavn Etternavn"
+                      id="navn"
+                      value={this.navn}
+                      onInput={e => (this.navn = e.target.value)}
+                      onChange={this.tomKunde}
+                    />
 
-                  <Form.Label> Email: </Form.Label>
-                  <Form.Control
-                    id="email"
-                    placeholder="eksempel@email.com"
-                    value={this.email}
-                    onInput={e => (this.email = e.target.value)}
-                    onChange={this.tomKunde}
-                  />
-                </Col>
-              </Row>
-              <br />
-              <Button id="nyKunde" onClick={this.nyKunde}>
-                Ny kunde
-              </Button>
-            </ListGroup.Item>
+                    <Form.Label> Email: </Form.Label>
+                    <Form.Control
+                      placeholder="eksempel@email.com"
+                      id="email"
+                      value={this.email}
+                      onInput={e => (this.email = e.target.value)}
+                      onChange={this.tomKunde}
+                    />
+                  </Col>
+                </Row>
+                <br />
+                <Button id="nyKunde" onClick={this.nyKunde}>
+                  Ny kunde
+                </Button>
+              </ListGroup.Item>
 
-            <ListGroup.Item className="list-group-item">
-              <Row>
-                <Col>
-                  <Form.Label> Fra: </Form.Label>
-                  <Form.Control id="fra" required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
-                </Col>
-                <Col>
-                  <Form.Label> Til: </Form.Label>
-                  <Form.Control id="til" required type="datetime-local" onChange={e => (this.til = e.target.value)} />
-                </Col>
-              </Row>
-            </ListGroup.Item>
+              <ListGroup.Item className="list-group-item">
+                <Row>
+                  <Col>
+                    <Form.Label> Fra: </Form.Label>
+                    <Form.Control id="fra" required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+                  </Col>
+                  <Col>
+                    <Form.Label> Til: </Form.Label>
+                    <Form.Control id="til" required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+                  </Col>
+                </Row>
+              </ListGroup.Item>
 
-            <ListGroup.Item className="list-group-item">
+              <ListGroup.Item className="list-group-item">
+                <Row>
+                  <Col>
+                    <Form.Label>Hentested:</Form.Label>
+                    <Form.Control id="henting" as="select" onChange={e => (this.henting = e.target.value)}>
+                      {this.steder.map(sted => (
+                        <option key={sted.l_id}>{sted.lokasjon}</option>
+                      ))}
+                    </Form.Control>
+                  </Col>
+                  <Col>
+                    <Form.Label>Leveringsted:</Form.Label>
+                    <Form.Control id="levering" as="select" onChange={e => (this.levering = e.target.value)}>
+                      {this.steder.map(sted => (
+                        <option key={sted.l_id}>{sted.lokasjon}</option>
+                      ))}
+                    </Form.Control>
+                    <br />
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            </Col>
+            <Col xs={6}>
+              <ListGroup.Item className="list-group-item">
+                <Row>
+                  <Col>
+                    <Form.Control
+                      id="s_type"
+                      as="select"
+                      onClick={e => (this.type = e.target.value) && this.sokLedigeSyklerType(e)}
+                    >
+                      <option hidden>Velg sykkeltype</option>
+                      {this.typerSykler.map(typeSykkel => (
+                        <option key={typeSykkel.type} value={typeSykkel.type}>
+                          {typeSykkel.type}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Col>
+                  <Col>
+                    <Form.Control
+                      as="select"
+                      onClick={e => (this.type = e.target.value) && this.sokLedigeUtstyrType(e)}
+                    >
+                      <option hidden>Velg utstyrstype</option>
+                      {this.typerUtstyr.map(typerUtstyr => (
+                        <option key={typerUtstyr.type} value={typerUtstyr.type}>
+                          {typerUtstyr.type}
+                        </option>
+                      ))}
+                    </Form.Control>
+                    <br />
+                  </Col>
+                  <Col>
+                    <div className="align-center">
+                      <Button onClick={this.visResPop} id="restriksjoner">
+                        Restriksjoner
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              {this.state.vSykkel ? (
+                <div className="table">
+                  <Table striped bordered hover size="sm">
+                    <thead>
+                      <tr>
+                        <th className="text-center">ID</th>
+                        <th>Type</th>
+                        <th>Ramme</th>
+                        <th className="text-center">Gir</th>
+                        <th className="text-center">Hjul</th>
+                        <th className="text-center">Pris</th>
+                        <th className="text-center">Velg</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.sykler.map(sykkel => (
+                        <tr key={sykkel.v_id}>
+                          <td className="text-center">{sykkel.v_id}</td>
+                          <td>{sykkel.type}</td>
+                          <td>{sykkel.ramme}</td>
+                          <td className="text-center">{sykkel.girsystem}</td>
+                          <td className="text-center">{sykkel.størrelse_hjul}</td>
+                          <td className="text-center">{sykkel.pris}</td>
+                          <Form.Check
+                            tagName="box"
+                            id={sykkel.v_id}
+                            value={sykkel.pris}
+                            onClick={e => (this.v_id = parseInt(e.target.id)) && (this.pris = parseInt(e.target.value))}
+                            className="text-center"
+                            onChange={e => {
+                              this.leggTil(e);
+                            }}
+                          />
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              ) : null}
+              {this.state.vUtstyr ? (
+                <div className="table">
+                  <Table striped bordered hover size="sm">
+                    <thead>
+                      <tr>
+                        <th className="text-center">ID</th>
+                        <th>Type</th>
+                        <th className="text-center">Pris</th>
+                        <th className="text-center">Velg</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.utstyr.map(utstyr => (
+                        <tr key={utstyr.v_id}>
+                          <td className="text-center">{utstyr.v_id}</td>
+                          <td>{utstyr.type}</td>
+                          <td className="text-center">{utstyr.pris}</td>
+                          <Form.Check
+                            id={utstyr.v_id}
+                            value={utstyr.pris}
+                            onClick={e => (this.v_id = e.target.id) && (this.pris = parseInt(e.target.value))}
+                            className="text-center"
+                            onChange={e => {
+                              this.leggTil(e);
+                            }}
+                          />
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              ) : null}
+            </Col>
+            <Col xs={3}>
+              <ListGroup.Item className="list-group-item">
+                <Row>
+                  <Col>
+                    <div className="valgtvarer">
+                      <Table striped bordered hover size="sm">
+                        <thead>
+                          <tr>
+                            <th>Type</th>
+                            <th className="text-center">Pris</th>
+                            <th className="text-center">Fjern</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.vareListe.map(vare => (
+                            <tr key={vare.v_id}>
+                              <td>{vare.type}</td>
+                              <td className="text-center">{vare.pris}</td>
+                              <div className="text-center">
+                                <Button
+                                  value={vare.v_id}
+                                  id={vare.pris}
+                                  onClick={e =>
+                                    (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id)) && this.fjern(e)
+                                  }
+                                >
+                                  Fjern
+                                </Button>
+                              </div>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>
+                          <div>Antall varer:</div>
+                        </Col>
+                        <Col>
+                          <div> {this.prisListe.length} </div>
+                          <br />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <div>Rabatt:</div>
+                        </Col>
+                        <Col>
+                          <div>{this.rabatt}</div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <div>Pris:</div>
+                        </Col>
+                        <Col>
+                          <div> {this.totalSum} </div>
+                        </Col>
+                      </Row>
+                      <br />
+                      <Row>
+                        <Col>
+                          <Button id="nyBestilling" onClick={this.sjekkBestilling}>
+                            Ny bestilling
+                          </Button>
+                        </Col>
+                        <Col>
+                          <Button variant="danger" onClick={this.reset}>
+                            Nullstill
+                          </Button>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            </Col>
+          </Row>
+          <Modal centered size="lg" show={this.state.bestillingPop} onHide={this.skjulBestillingPop}>
+            <Modal.Header closeButton>
+              <Modal.Title>Bestilling</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
               <Row>
-                <Col>
-                  <Form.Label>Hentested:</Form.Label>
-                  <Form.Control id="henting" as="select" onChange={e => (this.henting = e.target.value)}>
-                    {this.steder.map(sted => (
-                      <option key={sted.l_id}>{sted.lokasjon}</option>
-                    ))}
-                  </Form.Control>
-                </Col>
-                <Col>
-                  <Form.Label>Leveringsted:</Form.Label>
-                  <Form.Control id="levering" as="select" onChange={e => (this.levering = e.target.value)}>
-                    {this.steder.map(sted => (
-                      <option key={sted.l_id}>{sted.lokasjon}</option>
-                    ))}
-                  </Form.Control>
-                  <br />
-                </Col>
-              </Row>
-            </ListGroup.Item>
-          </Col>
-          <Col xs={6}>
-            <ListGroup.Item className="list-group-item">
-              <Row>
-                <Col>
-                  <Form.Control
-                    id="s_type"
-                    as="select"
-                    onClick={e => (this.type = e.target.value) && this.sokLedigeSyklerType(e)}
-                  >
-                    <option hidden>Velg sykkeltype</option>
-                    {this.typerSykler.map(typeSykkel => (
-                      <option key={typeSykkel.type} value={typeSykkel.type}>
-                        {typeSykkel.type}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Col>
-                <Col>
-                  <Form.Control as="select" onClick={e => (this.type = e.target.value) && this.sokLedigeUtstyrType(e)}>
-                    <option hidden>Velg utstyrstype</option>
-                    {this.typerUtstyr.map(typerUtstyr => (
-                      <option key={typerUtstyr.type} value={typerUtstyr.type}>
-                        {typerUtstyr.type}
-                      </option>
-                    ))}
-                  </Form.Control>
-                  <br />
-                </Col>
                 <Col>
                   <div className="align-center">
-                    <Button onClick={this.visResPop} id="restriksjoner">
-                      Restriksjoner
-                    </Button>
+                    Navn: {this.navn} <br />
+                    Email: {this.email} <br />
+                    Mobilnummer: {this.mobilnummer} <br />
+                    <br />
+                    Fra: {this.fra2} <br />
+                    Til: {this.til2} <br />
+                    Hentested: {this.henting} <br />
+                    Leveringssted: {this.levering} <br />
+                    <br />
+                    Rabatt: {this.rabatt} kroner <br />
+                    Total sum: {this.totalSum} kroner
                   </div>
                 </Col>
-              </Row>
-            </ListGroup.Item>
-            {this.state.vSykkel ? (
-              <div className="table">
-                <Table striped bordered hover size="sm">
-                  <thead>
-                    <tr>
-                      <th className="text-center">ID</th>
-                      <th>Type</th>
-                      <th>Ramme</th>
-                      <th className="text-center">Gir</th>
-                      <th className="text-center">Hjul</th>
-                      <th className="text-center">Pris</th>
-                      <th className="text-center">Velg</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.sykler.map(sykkel => (
-                      <tr key={sykkel.v_id}>
-                        <td className="text-center">{sykkel.v_id}</td>
-                        <td>{sykkel.type}</td>
-                        <td>{sykkel.ramme}</td>
-                        <td className="text-center">{sykkel.girsystem}</td>
-                        <td className="text-center">{sykkel.størrelse_hjul}</td>
-                        <td className="text-center">{sykkel.pris}</td>
-                        <Form.Check
-                          tagName="box"
-                          id={sykkel.v_id}
-                          value={sykkel.pris}
-                          onClick={e => (this.v_id = parseInt(e.target.id)) && (this.pris = parseInt(e.target.value))}
-                          className="text-center"
-                          onChange={e => {
-                            this.leggTil(e);
-                          }}
-                        />
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            ) : null}
-            {this.state.vUtstyr ? (
-              <div className="table">
-                <Table striped bordered hover size="sm">
-                  <thead>
-                    <tr>
-                      <th className="text-center">ID</th>
-                      <th>Type</th>
-                      <th className="text-center">Pris</th>
-                      <th className="text-center">Velg</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.utstyr.map(utstyr => (
-                      <tr key={utstyr.v_id}>
-                        <td className="text-center">{utstyr.v_id}</td>
-                        <td>{utstyr.type}</td>
-                        <td className="text-center">{utstyr.pris}</td>
-                        <Form.Check
-                          id={utstyr.v_id}
-                          value={utstyr.pris}
-                          onClick={e => (this.v_id = e.target.id) && (this.pris = parseInt(e.target.value))}
-                          className="text-center"
-                          onChange={e => {
-                            this.leggTil(e);
-                          }}
-                        />
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-            ) : null}
-          </Col>
-          <Col xs={3}>
-            <ListGroup.Item className="list-group-item">
-              <Row>
                 <Col>
-                  <div className="valgtvarer">
-                    <Table striped bordered hover size="sm">
+                  <div className="bekreftelse">
+                    <Table striped bordered hover size="sm" xs={2}>
                       <thead>
                         <tr>
                           <th>Type</th>
                           <th className="text-center">Pris</th>
-                          <th className="text-center">Fjern</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -334,224 +433,125 @@ export class BestillingNy extends Bestilling {
                           <tr key={vare.v_id}>
                             <td>{vare.type}</td>
                             <td className="text-center">{vare.pris}</td>
-                            <div className="text-center">
-                              <Button
-                                value={vare.v_id}
-                                id={vare.pris}
-                                onClick={e =>
-                                  (this.v_id = e.target.value) && (this.pris = parseInt(e.target.id)) && this.fjern(e)
-                                }
-                              >
-                                Fjern
-                              </Button>
-                            </div>
                           </tr>
                         ))}
                       </tbody>
                     </Table>
                   </div>
-                  <ListGroup.Item>
-                    <Row>
-                      <Col>
-                        <div>Antall varer:</div>
-                      </Col>
-                      <Col>
-                        <div> {this.prisListe.length} </div>
-                        <br />
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <div>Rabatt:</div>
-                      </Col>
-                      <Col>
-                        <div>{this.rabatt}</div>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <div>Pris:</div>
-                      </Col>
-                      <Col>
-                        <div> {this.totalSum} </div>
-                      </Col>
-                    </Row>
-                    <br />
-                    <Row>
-                      <Col>
-                        <Button id="nyBestilling" onClick={this.sjekkBestilling}>
-                          Ny bestilling
-                        </Button>
-                      </Col>
-                      <Col>
-                        <Button variant="danger" onClick={this.reset}>
-                          Nullstill
-                        </Button>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
                 </Col>
               </Row>
-            </ListGroup.Item>
-          </Col>
-        </Row>
-        <Modal centered size="lg" show={this.state.bestillingPop} onHide={this.skjulBestillingPop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Bestilling</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <Col>
-                <div className="align-center">
-                  Navn: {this.navn} <br />
-                  Email: {this.email} <br />
-                  Mobilnummer: {this.mobilnummer} <br />
-                  <br />
-                  Fra: {this.fra2} <br />
-                  Til: {this.til2} <br />
-                  Hentested: {this.henting} <br />
-                  Leveringssted: {this.levering} <br />
-                  <br />
-                  Rabatt: {this.rabatt} kroner <br />
-                  Total sum: {this.totalSum} kroner
-                </div>
-              </Col>
-              <Col>
-                <div className="bekreftelse">
-                  <Table striped bordered hover size="sm" xs={2}>
-                    <thead>
-                      <tr>
-                        <th>Type</th>
-                        <th className="text-center">Pris</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.vareListe.map(vare => (
-                        <tr key={vare.v_id}>
-                          <td>{vare.type}</td>
-                          <td className="text-center">{vare.pris}</td>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulBestillingPop}>
+                Gå tilbake
+              </Button>
+              <Button variant="primary" onClick={this.nyBestilling}>
+                Fullfør Bestillingen
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal size="sm" centered show={this.state.kundePop} onHide={this.skjulKundePop}>
+            <Modal.Header closeButton>
+              <Modal.Title>Kunde</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Navn: {this.navn} <br />
+              Email: {this.email} <br />
+              Mobilnummer: {this.mobilnummer} <br />
+              <br />
+              Er lagt til i systemet!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulKundePop}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal size="sm" show={this.state.fullførtPop} onHide={this.skjulFullførtPop}>
+            <Modal.Header closeButton>
+              <Modal.Title>Bestilling</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Bestillingen er lagt til i systemet!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulFullførtPop}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal centered size="md" show={this.state.tomPop} onHide={this.skjulTomPop}>
+            <Modal.Header closeButton>
+              <Modal.Title>Feil!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Denne bestillingen har feil eller mangler! <br />
+              <br />
+              Dette kan være:
+              <ul>
+                <li> Manglende informasjon om kunden </li>
+                <li> Manglende dato </li>
+                <li> Startdato er før sluttdato </li>
+                <li> Bestillingen har ikke noe innhold </li>
+              </ul>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulTomPop}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal centered size="lg" show={this.state.resPop} onHide={this.skjulResPop}>
+            <Modal.Header closeButton>
+              <Modal.Title>Restriksjoner</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col>
+                  <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.passendeUtstyr(e)}>
+                    {this.typerSykler.map(typeSykkel => (
+                      <option key={typeSykkel.type} value={typeSykkel.type}>
+                        {typeSykkel.type}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+              </Row>
+              <br />
+              <Row>
+                <Col>
+                  <div className="restr">
+                    <Table striped bordered hover size="sm" xs={4}>
+                      <thead>
+                        <tr>
+                          <th>Passer til</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulBestillingPop}>
-              Gå tilbake
-            </Button>
-            <Button variant="primary" onClick={this.nyBestilling}>
-              Fullfør Bestillingen
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        <Modal size="sm" centered show={this.state.kundePop} onHide={this.skjulKundePop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Kunde</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Navn: {this.navn} <br />
-            Email: {this.email} <br />
-            Mobilnummer: {this.mobilnummer} <br />
-            <br />
-            Er lagt til i systemet!
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulKundePop}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal size="sm" show={this.state.fullførtPop} onHide={this.skjulFullførtPop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Bestilling</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Bestillingen er lagt til i systemet!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulFullførtPop}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal centered size="md" show={this.state.tomPop} onHide={this.skjulTomPop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Feil!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Denne bestillingen har feil eller mangler! <br />
-            <br />
-            Dette kan være:
-            <ul>
-              <li> Manglende informasjon om kunden </li>
-              <li> Manglende dato </li>
-              <li> Startdato er før sluttdato </li>
-              <li> Bestillingen har ikke noe innhold </li>
-            </ul>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulTomPop}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
-        <Modal centered size="lg" show={this.state.resPop} onHide={this.skjulResPop}>
-          <Modal.Header closeButton>
-            <Modal.Title>Restriksjoner</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <Col>
-                <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.passendeUtstyr(e)}>
-                  {this.typerSykler.map(typeSykkel => (
-                    <option key={typeSykkel.type} value={typeSykkel.type}>
-                      {typeSykkel.type}
-                    </option>
-                  ))}
-                </Form.Control>
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col>
-                <div className="restr">
-                  <Table striped bordered hover size="sm" xs={4}>
-                    <thead>
-                      <tr>
-                        <th>Passer til</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.minusUtstyr.map(utstyr => (
-                        <tr key={utstyr.type}>
-                          <td>{utstyr.type}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </div>
-              </Col>
-            </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulResPop}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </ListGroup.Item>
+                      </thead>
+                      <tbody>
+                        {this.minusUtstyr.map(utstyr => (
+                          <tr key={utstyr.type}>
+                            <td>{utstyr.type}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulResPop}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </ListGroup.Item>
       </React.Fragment>
     );
   }
 
   sjekkBestilling() {
-    document.getElementById('navn').value = document.getElementById('navn').placeholder;
-    document.getElementById('email').value = document.getElementById('email').placeholder;
-
     this.navn = document.getElementById('navn').value;
     this.email = document.getElementById('email').value;
 
@@ -713,23 +713,26 @@ export class BestillingNy extends Bestilling {
       this.antall = antall;
     });
     setTimeout(() => {
-      if (this.kundeListe.length == 1) {
-        document.getElementById('navn').placeholder = this.kundeListe[0].navn;
-        document.getElementById('email').placeholder = this.kundeListe[0].email;
-
-        document.getElementById('navn').disabled = true;
-        document.getElementById('email').disabled = true;
-        document.getElementById('nyKunde').disabled = true;
-        console.log(this.kundeListe.length);
-      } else if (this.kundeListe.length == 0) {
-        document.getElementById('navn').placeholder = '';
-        document.getElementById('email').placeholder = '';
+      if (this.kundeListe.length == 0) {
+        document.getElementById('navn').placeholder = 'Fornavn Etternavn';
+        document.getElementById('email').placeholder = 'eksempel@email.com';
 
         document.getElementById('navn').value = '';
         document.getElementById('email').value = '';
 
         document.getElementById('navn').disabled = false;
         document.getElementById('email').disabled = false;
+        console.log(this.kundeListe.length);
+      } else if (this.kundeListe.length == 1) {
+        document.getElementById('navn').placeholder = this.kundeListe[0].navn;
+        document.getElementById('email').placeholder = this.kundeListe[0].email;
+
+        document.getElementById('navn').value = document.getElementById('navn').placeholder;
+        document.getElementById('email').value = document.getElementById('email').placeholder;
+
+        document.getElementById('navn').disabled = true;
+        document.getElementById('email').disabled = true;
+        document.getElementById('nyKunde').disabled = true;
         console.log(this.kundeListe.length);
       }
     }, 250);
@@ -846,6 +849,15 @@ export class BestillingNy extends Bestilling {
 
     this.henting = this.steder[0].lokasjon;
     this.levering = this.steder[0].lokasjon;
+
+    document.getElementById('navn').placeholder = 'Fornavn Etternavn';
+    document.getElementById('email').placeholder = 'eksempel@email.com';
+
+    document.getElementById('navn').value = '';
+    document.getElementById('email').value = '';
+
+    document.getElementById('navn').disabled = false;
+    document.getElementById('email').disabled = false;
 
     this.sokKunde();
     this.prisOgRabatt();

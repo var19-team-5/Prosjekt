@@ -36,6 +36,9 @@ ReactDOM.render(
     <div>
       <Menu />
 
+      <Route exact path="/" component={Bestilling} />
+      <Route exact path="/" component={BestillingNy} />
+
       <Route path="/bestilling" component={Bestilling} />
       <Route exact path="/bestilling/ny" component={BestillingNy} />
       <Route exact path="/bestilling/liste" component={BestillingListe} />

@@ -34,15 +34,15 @@ class s_Status {
       success(results);
     });
   }
-  TrengerReperasjon(v_id, success) {
-    connection.query('update vare set status ="trenger reperasjon" where v_id=?', [v_id], (error, results) => {
+  TrengerReparasjon(v_id, success) {
+    connection.query('update vare set status ="trenger reparasjon" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);
     });
   }
-  PåReperasjon(v_id, success) {
-    connection.query('update vare set status ="på reperasjon" where v_id=?', [v_id], (error, results) => {
+  PåReparasjon(v_id, success) {
+    connection.query('update vare set status ="på reparasjon" where v_id=?', [v_id], (error, results) => {
       if (error) return console.error(error);
 
       success(results);

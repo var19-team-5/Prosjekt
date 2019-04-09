@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react-simplified';
 import { Navbar, Nav } from 'react-bootstrap';
 
+// Dette er den øverste menyen i applikasjonen
 export class Menu extends Component {
   render() {
     return (

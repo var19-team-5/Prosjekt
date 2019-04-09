@@ -88,11 +88,15 @@ class s_Bestilling {
     });
   }
   SokNavn(navn, success) {
-    connection.query('SELECT * FROM alle_bestillinger WHERE navn LIKE ?', ['%' + navn + '%'], (error, results) => {
-      if (error) return console.error(error);
+    connection.query(
+      'SELECT * FROM alle_bestillinger WHERE navn LIKE ? ORDER BY ABS( DATEDIFF( fra, NOW() ) )',
+      ['%' + navn + '%'],
+      (error, results) => {
+        if (error) return console.error(error);
 
-      success(results);
-    });
+        success(results);
+      }
+    );
   }
   InfoBestilling(b_id, success) {
     connection.query('SELECT * FROM alle_bestillinger WHERE b_id=?', [b_id], (error, results) => {

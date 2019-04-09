@@ -98,8 +98,8 @@ export class StatusStatus extends Status {
               <ButtonGroup>
                 <DropdownButton as={ButtonGroup} title="Endre status" id="bg-nested-dropdown">
                   <Dropdown.Item onClick={this.lager}>På lager</Dropdown.Item>
-                  <Dropdown.Item onClick={this.trengerRep}>Trenger reperasjon</Dropdown.Item>
-                  <Dropdown.Item onClick={this.påRep}>På reperasjon</Dropdown.Item>
+                  <Dropdown.Item onClick={this.trengerRep}>Trenger reparasjon</Dropdown.Item>
+                  <Dropdown.Item onClick={this.påRep}>På reparasjon</Dropdown.Item>
                   <Dropdown.Item onClick={this.savnet}>savnet</Dropdown.Item>
                 </DropdownButton>
               </ButtonGroup>
@@ -160,18 +160,22 @@ export class StatusStatus extends Status {
   lager() {
     s_status.PåLager(this.v_id);
     this.mounted();
+    this.skjulInfoPop();
   }
   trengerRep() {
-    s_status.TrengerReperasjon(this.v_id);
+    s_status.TrengerReparasjon(this.v_id);
     this.mounted();
+    this.skjulInfoPop();
   }
   påRep() {
-    s_status.PåReperasjon(this.v_id);
+    s_status.PåReparasjon(this.v_id);
     this.mounted();
+    this.skjulInfoPop();
   }
   savnet() {
     s_status.Savnet(this.v_id);
     this.mounted();
+    this.skjulInfoPop();
   }
   slett() {
     s_slett.Vare(this.v_id);

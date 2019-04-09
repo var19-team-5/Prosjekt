@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { s_ny, s_hent, s_typer } from './../../services';
+import { s_hent, s_typer } from './../../services';
 import { s_vare, s_utstyr } from './_n_services';
 import { ListGroup, Form, Row, Col, Button, Modal } from 'react-bootstrap';
 
@@ -63,130 +63,134 @@ export class Utstyr extends Ny {
 
   steder = [];
   typerUtstyr = [];
-
   nytype = '';
   nypris = '';
 
   render() {
     return [
       <React.Fragment>
-      <ListGroup.Item className="list-group-item">
-      <h5> Legg til nytt utstyr: </h5>
-      <br/>
         <ListGroup.Item className="list-group-item">
-        <Row>
-        <Col xs={3}>
-          <Form.Label>Velg type:</Form.Label>
-          <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
-            {this.typerUtstyr.map(typeUtstyr => (
-              <option key={typeUtstyr.type} value={typeUtstyr.type}>
-                {typeUtstyr.type}
-              </option>
-            ))}
-          </Form.Control>
+          <h5> Legg til nytt utstyr: </h5>
           <br />
-          <Button onClick={this.visNyType}>Ny type</Button>
-        </Col>
-        <Col xs={1}>
-          <Form.Label>Antall:</Form.Label>
-          <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} placeholder="00"/>
-        </Col>
-        </Row>
-        </ListGroup.Item>
-
-        <Form.Group>
           <ListGroup.Item className="list-group-item">
             <Row>
               <Col xs={3}>
-                <Form.Label>Tilhører:</Form.Label>
-                <Form.Control id="test" as="select" onChange={e => (this.tilhører = e.target.value)}>
-                  {this.steder.map(sted => (
-                    <option key={sted.lokasjon} value={sted.tilhører}>
-                      {sted.lokasjon}
+                <Form.Label>Velg type:</Form.Label>
+                <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
+                  {this.typerUtstyr.map(typeUtstyr => (
+                    <option key={typeUtstyr.type} value={typeUtstyr.type}>
+                      {typeUtstyr.type}
                     </option>
                   ))}
                 </Form.Control>
-              </Col>
-            </Row>
-              <br />
-            <Button id="ny" onClick={this.visSam}>
-              Legg til
-            </Button>
-          </ListGroup.Item>
-        </Form.Group>
-
-        <Modal size="lg" centered show={this.state.nytypepop} onHide={this.skjulNyType}>
-          <Modal.Header closeButton>
-            <Modal.Title>Legg til ny type</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Row>
-              <Col>
-                <Form.Label>Ny type:</Form.Label>
-                <Form.Control onChange={this.sjekk} onInput={e => (this.nytype = e.target.value)} />
-              </Col>
-              <Col>
-                <Form.Label>Pris:</Form.Label>
-                <Form.Control type="number" onChange={this.sjekk} onInput={e => (this.nypris = e.target.value)} />
                 <br />
+                <Button onClick={this.visNyType}>Ny type</Button>
+              </Col>
+              <Col xs={1}>
+                <Form.Label>Antall:</Form.Label>
+                <Form.Control
+                  id="antall"
+                  type="number"
+                  onChange={e => (this.antall = e.target.value)}
+                  placeholder="00"
+                />
               </Col>
             </Row>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulNyType}>
-              Gå tilbake
-            </Button>
-            <Button id="nyType" onClick={this.nyTypeUtstyr}>
-              Legg til
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          </ListGroup.Item>
 
-        <Modal size="sm" centered show={this.state.bekpopNY} onHide={this.skjulBekNY}>
-          <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Ny type er lagt til! <br />
-            <br /> Husk å legg til restriksjoner nå eller senere!
-          </Modal.Body>
-          <Modal.Footer>
-            <Button href="#/ny/restriksjon">Restriksjoner</Button>
-            <Button variant="secondary" onClick={this.skjulBekNY}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          <Form.Group>
+            <ListGroup.Item className="list-group-item">
+              <Row>
+                <Col xs={3}>
+                  <Form.Label>Tilhører:</Form.Label>
+                  <Form.Control id="test" as="select" onChange={e => (this.tilhører = e.target.value)}>
+                    {this.steder.map(sted => (
+                      <option key={sted.lokasjon} value={sted.tilhører}>
+                        {sted.lokasjon}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Col>
+              </Row>
+              <br />
+              <Button id="ny" onClick={this.visSam}>
+                Legg til
+              </Button>
+            </ListGroup.Item>
+          </Form.Group>
 
-        <Modal size="sm" centered show={this.state.sampop} onHide={this.skjulSam}>
-          <Modal.Header closeButton>
-            <Modal.Title>Ny type</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Type: {this.type} <br />
-            Tilhører: {this.tilhører} <br />
-            <br />
-            Antall: {this.antall}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulSam}>
-              Gå tilbake
-            </Button>
-            <Button onClick={this.nyUtstyr}>Legg til</Button>
-          </Modal.Footer>
-        </Modal>
+          <Modal size="lg" centered show={this.state.nytypepop} onHide={this.skjulNyType}>
+            <Modal.Header closeButton>
+              <Modal.Title>Legg til ny type</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col>
+                  <Form.Label>Ny type:</Form.Label>
+                  <Form.Control onChange={this.sjekk} onInput={e => (this.nytype = e.target.value)} />
+                </Col>
+                <Col>
+                  <Form.Label>Pris:</Form.Label>
+                  <Form.Control type="number" onChange={this.sjekk} onInput={e => (this.nypris = e.target.value)} />
+                  <br />
+                </Col>
+              </Row>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulNyType}>
+                Gå tilbake
+              </Button>
+              <Button id="nyType" onClick={this.nyTypeUtstyr}>
+                Legg til
+              </Button>
+            </Modal.Footer>
+          </Modal>
 
-        <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
-          <Modal.Header closeButton>
-            <Modal.Title>Nye utstyr</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Nytt utstyr er lagt til!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.skjulBek}>
-              OK
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          <Modal size="sm" centered show={this.state.bekpopNY} onHide={this.skjulBekNY}>
+            <Modal.Header closeButton>
+              <Modal.Title>Ny type</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Ny type er lagt til! <br />
+              <br /> Husk å legg til restriksjoner nå eller senere!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button href="#/ny/restriksjon">Restriksjoner</Button>
+              <Button variant="secondary" onClick={this.skjulBekNY}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal size="sm" centered show={this.state.sampop} onHide={this.skjulSam}>
+            <Modal.Header closeButton>
+              <Modal.Title>Ny type</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Type: {this.type} <br />
+              Tilhører: {this.tilhører} <br />
+              <br />
+              Antall: {this.antall}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulSam}>
+                Gå tilbake
+              </Button>
+              <Button onClick={this.nyUtstyr}>Legg til</Button>
+            </Modal.Footer>
+          </Modal>
+
+          <Modal size="sm" centered show={this.state.bekpop} onHide={this.skjulBek}>
+            <Modal.Header closeButton>
+              <Modal.Title>Nye utstyr</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Nytt utstyr er lagt til!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.skjulBek}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </ListGroup.Item>
       </React.Fragment>
     ];
@@ -202,6 +206,7 @@ export class Utstyr extends Ny {
       this.tilhører = steder[0].lokasjon;
     });
   }
+
   sjekk() {
     if (this.nytype == '' || this.nypris == '') {
       document.getElementById('nyType').disabled = true;
@@ -209,6 +214,7 @@ export class Utstyr extends Ny {
       document.getElementById('nyType').disabled = false;
     }
   }
+
   nyUtstyr() {
     for (var i = 0; i < this.antall; i++) {
       s_vare.NyVare(this.tilhører, this.type);
@@ -218,6 +224,7 @@ export class Utstyr extends Ny {
       this.mounted();
     }
   }
+
   nyTypeUtstyr() {
     s_utstyr.NyTypeUtstyr(this.nytype, this.nypris);
     this.skjulNyType();
