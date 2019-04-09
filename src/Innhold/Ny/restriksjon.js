@@ -16,10 +16,12 @@ export class Restriksjon extends Ny {
   render() {
     return [
       <React.Fragment>
-        <ListGroup.Item className="list-group-item" xs={8}>
+        <ListGroup.Item className="list-group-item">
+          <h5> Koble sykkel til utstyr: </h5>
+          <br />
           <Row>
-            <Col>
-              <Form.Label>Koble sykkel til utstyr:</Form.Label>
+            <Col xs={3}>
+              <Form.Label>Velg sykkeltype:</Form.Label>
               <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.kjør(e)}>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -32,8 +34,8 @@ export class Restriksjon extends Ny {
           <br />
           <Row>
             <Col>
-              <div className="restr">
-                <Table striped bordered hover size="sm" xs={4}>
+              <div className="bekreftelse">
+                <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
                       <th>Koblet</th>
@@ -59,14 +61,12 @@ export class Restriksjon extends Ny {
               </div>
             </Col>
             <Col>
-              <div className="restr">
-                <Table striped bordered hover size="sm" xs={4}>
+              <div className="bekreftelse">
+                <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
                       <th>Legg til</th>
-                      <th className="text-center" xs={1}>
-                        +
-                      </th>
+                      <th className="text-center">+</th>
                     </tr>
                   </thead>
                   <tbody>

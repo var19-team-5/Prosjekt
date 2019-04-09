@@ -132,7 +132,8 @@ export class BestillingNy extends Bestilling {
 
     return (
       <React.Fragment>
-        <Row xs={3}>
+      <ListGroup.Item className="list-group-item">
+        <Row>
           <Col xs={3}>
             <ListGroup.Item className="list-group-item">
               <Row>
@@ -140,7 +141,7 @@ export class BestillingNy extends Bestilling {
                   <Form.Label> Mobilnummer: </Form.Label>
                   <Form.Control
                     id="mobilnummer"
-                    placeholder="Søk eksisterende mob.nr."
+                    placeholder="Søk mobilnummer"
                     type="number"
                     onInput={e => (this.mobilnummer = e.target.value)}
                     onChange={this.sokKunde}
@@ -149,6 +150,7 @@ export class BestillingNy extends Bestilling {
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
                     id="navn"
+                    placeholder="Fornavn Etternavn"
                     value={this.navn}
                     onInput={e => (this.navn = e.target.value)}
                     onChange={this.tomKunde}
@@ -157,6 +159,7 @@ export class BestillingNy extends Bestilling {
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
                     id="email"
+                    placeholder="eksempel@email.com"
                     value={this.email}
                     onInput={e => (this.email = e.target.value)}
                     onChange={this.tomKunde}
@@ -206,7 +209,7 @@ export class BestillingNy extends Bestilling {
           </Col>
           <Col xs={6}>
             <ListGroup.Item className="list-group-item">
-              <Row xs={6}>
+              <Row>
                 <Col>
                   <Form.Control
                     id="s_type"
@@ -232,7 +235,7 @@ export class BestillingNy extends Bestilling {
                   </Form.Control>
                   <br />
                 </Col>
-                <Col sm="2.8">
+                <Col>
                   <div className="align-center">
                     <Button onClick={this.visResPop} id="restriksjoner">
                       Restriksjoner
@@ -243,7 +246,7 @@ export class BestillingNy extends Bestilling {
             </ListGroup.Item>
             {this.state.vSykkel ? (
               <div className="table">
-                <Table striped bordered hover size="sm" xs={6}>
+                <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
                       <th className="text-center">ID</th>
@@ -282,7 +285,7 @@ export class BestillingNy extends Bestilling {
             ) : null}
             {this.state.vUtstyr ? (
               <div className="table">
-                <Table striped bordered hover size="sm" xs={6}>
+                <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
                       <th className="text-center">ID</th>
@@ -313,12 +316,12 @@ export class BestillingNy extends Bestilling {
               </div>
             ) : null}
           </Col>
-          <Col>
+          <Col xs={3}>
             <ListGroup.Item className="list-group-item">
               <Row>
                 <Col>
                   <div className="valgtvarer">
-                    <Table striped bordered hover size="sm" xs={3}>
+                    <Table striped bordered hover size="sm">
                       <thead>
                         <tr>
                           <th>Type</th>
@@ -382,7 +385,7 @@ export class BestillingNy extends Bestilling {
                       </Col>
                       <Col>
                         <Button variant="danger" onClick={this.reset}>
-                          Reset Bestilling
+                          Nullstill
                         </Button>
                       </Col>
                     </Row>
@@ -540,6 +543,7 @@ export class BestillingNy extends Bestilling {
             </Button>
           </Modal.Footer>
         </Modal>
+      </ListGroup.Item>
       </React.Fragment>
     );
   }

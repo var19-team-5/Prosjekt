@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { s_lokasjon } from './_n_services';
-import { Form, ListGroup, Button, Modal } from 'react-bootstrap';
+import { Form, ListGroup, Button, Modal, Row, Col } from 'react-bootstrap';
 
 import { Ny } from './nav';
 
@@ -26,17 +26,24 @@ export class Lokasjon extends Ny {
       <React.Fragment>
         <Form.Group>
           <ListGroup.Item className="list-group-item">
-            <Form.Label> Sted: </Form.Label>
+          <h5> Legg til ny lokasjon: </h5>
+          <br/>
+          <Row>
+            <Col xs={3}>
+            <Form.Label> Lokasjon: </Form.Label>
             <Form.Control
               id="lokasjon"
               onChange={this.sjekk}
               type="text"
               onInput={e => (this.lokasjon = e.target.value)}
+              placeholder="Stedsnavn"
             />
             <br />
             <Button id="knapp" onClick={this.nyLokasjon}>
               Legg til
             </Button>
+            </Col>
+          </Row>
           </ListGroup.Item>
         </Form.Group>
 

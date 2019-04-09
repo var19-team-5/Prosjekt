@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { s_salg } from './_o_services';
-import { Col, Button, Form, Row } from 'react-bootstrap';
+import { ListGroup, Col, Button, Form, Row } from 'react-bootstrap';
 
 import { Oversikt } from './nav';
 export class Salg extends Oversikt {
@@ -13,6 +13,7 @@ export class Salg extends Oversikt {
   render() {
     return [
       <React.Fragment>
+      <ListGroup.Item className="list-group-item">
         <Row>
           <Col className="text-center" xs={2}>
             <Form.Label>Antall bestillinger:</Form.Label>
@@ -45,6 +46,7 @@ export class Salg extends Oversikt {
             ))}
           </Col>
         </Row>
+      </ListGroup.Item>
       </React.Fragment>
     ];
   }

@@ -74,8 +74,13 @@ export class Sykkel extends Ny {
   render() {
     return [
       <React.Fragment>
+      <ListGroup.Item className="list-group-item">
+        <h5>Legg til ny sykkel: </h5>
+        <br/>
         <ListGroup.Item className="list-group-item">
-          <Form.Label>Legg til ny sykkel:</Form.Label>
+        <Row>
+        <Col xs={3}>
+          <Form.Label>Velg type:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
             {this.typerSykler.map(typeSykkel => (
               <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -85,12 +90,18 @@ export class Sykkel extends Ny {
           </Form.Control>
           <br />
           <Button onClick={this.visNyType}>Ny type</Button>
+        </Col>
+        <Col xs={1}>
+          <Form.Label>Antall:</Form.Label>
+          <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} placeholder="00"/>
+        </Col>
+        </Row>
         </ListGroup.Item>
 
         <Form.Group>
           <ListGroup.Item className="list-group-item">
             <Row>
-              <Col>
+              <Col xs={3}>
                 <Form.Label>Tilhører:</Form.Label>
                 <Form.Control as="select" onChange={e => (this.tilhører = e.target.value)}>
                   {this.steder.map(sted => (
@@ -102,31 +113,29 @@ export class Sykkel extends Ny {
                 </Form.Control>
               </Col>
 
-              <Col>
+              <Col xs={3}>
                 <Form.Label>Ramme:</Form.Label>
-                <Form.Control id="ramme" onInput={e => (this.ramme = e.target.value)} onChange={this.sjekk} />
+                <Form.Control id="ramme" onInput={e => (this.ramme = e.target.value)} onChange={this.sjekk} placeholder="Navn"/>
               </Col>
-              <Col>
-                <Form.Label>Girsystem:</Form.Label>
+              <Col xs={1}>
+                <Form.Label> Gir: </Form.Label>
                 <Form.Control
                   id="girsystem"
                   type="number"
                   onInput={e => (this.girsystem = e.target.value)}
                   onChange={this.sjekk}
+                  placeholder="00"
                 />
               </Col>
-              <Col>
-                <Form.Label>Størrese hjul:</Form.Label>
+              <Col xs={1}>
+                <Form.Label>Hjul:</Form.Label>
                 <Form.Control
                   id="størrelse_hjul"
                   type="number"
                   onInput={e => (this.størrelse_hjul = e.target.value)}
                   onChange={this.sjekk}
+                  placeholder="00"
                 />
-              </Col>
-              <Col>
-                <Form.Label>Antall:</Form.Label>
-                <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} />
               </Col>
             </Row>
             <br />
@@ -217,6 +226,7 @@ export class Sykkel extends Ny {
             </Button>
           </Modal.Footer>
         </Modal>
+        </ListGroup.Item>
       </React.Fragment>
     ];
   }

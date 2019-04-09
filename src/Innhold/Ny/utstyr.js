@@ -70,8 +70,13 @@ export class Utstyr extends Ny {
   render() {
     return [
       <React.Fragment>
+      <ListGroup.Item className="list-group-item">
+      <h5> Legg til nytt utstyr: </h5>
+      <br/>
         <ListGroup.Item className="list-group-item">
-          <Form.Label>Legg til nytt utstyr:</Form.Label>
+        <Row>
+        <Col xs={3}>
+          <Form.Label>Velg type:</Form.Label>
           <Form.Control id="type" as="select" onChange={e => (this.type = e.target.value)}>
             {this.typerUtstyr.map(typeUtstyr => (
               <option key={typeUtstyr.type} value={typeUtstyr.type}>
@@ -81,12 +86,18 @@ export class Utstyr extends Ny {
           </Form.Control>
           <br />
           <Button onClick={this.visNyType}>Ny type</Button>
+        </Col>
+        <Col xs={1}>
+          <Form.Label>Antall:</Form.Label>
+          <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} placeholder="00"/>
+        </Col>
+        </Row>
         </ListGroup.Item>
 
         <Form.Group>
           <ListGroup.Item className="list-group-item">
             <Row>
-              <Col>
+              <Col xs={3}>
                 <Form.Label>Tilhører:</Form.Label>
                 <Form.Control id="test" as="select" onChange={e => (this.tilhører = e.target.value)}>
                   {this.steder.map(sted => (
@@ -96,12 +107,8 @@ export class Utstyr extends Ny {
                   ))}
                 </Form.Control>
               </Col>
-              <Col>
-                <Form.Label>Antall:</Form.Label>
-                <Form.Control id="antall" type="number" onChange={e => (this.antall = e.target.value)} />
-              </Col>
             </Row>
-            <br />
+              <br />
             <Button id="ny" onClick={this.visSam}>
               Legg til
             </Button>
@@ -180,6 +187,7 @@ export class Utstyr extends Ny {
             </Button>
           </Modal.Footer>
         </Modal>
+        </ListGroup.Item>
       </React.Fragment>
     ];
   }
