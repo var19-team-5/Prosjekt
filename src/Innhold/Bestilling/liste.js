@@ -14,6 +14,7 @@ import {
   Dropdown
 } from 'react-bootstrap';
 
+// Henter navigasjonsbaren fra nav
 import { Bestilling } from './nav';
 
 export class BestillingListe extends Bestilling {

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import ReactDOM from 'react-dom';
-import { NavLink, HashRouter, Route } from 'react-router-dom';
+// Metoder som blir hentet fra services
 import { s_typer } from './../../services';
 import { s_nav } from './_s_services';
-
+// Komponenter som blir brukt i dokumentet
 import { Navbar, Nav, NavDropdown, ListGroup, InputGroup, FormControl } from 'react-bootstrap';
 
+// Klasse for navigasjonsbar under Status
 export class Status extends Component {
   typerSykler = [];
   typerUtstyr = [];

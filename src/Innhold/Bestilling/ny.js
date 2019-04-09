@@ -4,6 +4,7 @@ import { s_ny, s_info, s_sok, s_ledige, s_restriksjon } from './_bn_services';
 import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Modal } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 
+// Henter navigasjonsbaren fra nav
 import { Bestilling } from './nav';
 
 export class BestillingNy extends Bestilling {

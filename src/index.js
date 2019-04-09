@@ -3,7 +3,7 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 
-import { Menu } from './Innhold/meny';
+import { Meny } from './Innhold/meny';
 
 import { Info } from './Innhold/info';
 import { Hjelp } from './Innhold/hjelp';
@@ -34,7 +34,7 @@ import { Salg } from './Innhold/Oversikt/salg';
 ReactDOM.render(
   <HashRouter>
     <div>
-      <Menu />
+      <Meny />
 
       <Route exact path="/" component={Bestilling} />
       <Route exact path="/" component={BestillingNy} />

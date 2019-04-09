@@ -1,3 +1,4 @@
+// Henter koblingen mot databasen
 import { connection } from './../../mysql_connection';
 
 // Klasse som inneholder metodene som blir brukt mot databasen for navigasjonsbaren
