@@ -29,10 +29,15 @@ export class Pris extends Ny {
   render() {
     return [
       <React.Fragment>
+      <ListGroup.Item className="list-group-item">
+      <h5> Endre pris på type: </h5>
+      <br/>
         <Row>
           <Col>
             <ListGroup.Item className="list-group-item">
-              <Form.Label>Type sykkel:</Form.Label>
+            <h5> Sykkel </h5>
+            <br/>
+              <Form.Label>Velg type:</Form.Label>
               <Form.Control
                 id="sykkelType"
                 as="select"
@@ -43,17 +48,24 @@ export class Pris extends Ny {
                     {typeSykkel.type}
                   </option>
                 ))}
-                <br />
               </Form.Control>
+              <br />
               <Form.Label>Pris:</Form.Label>
-              <Form.Control id="sykkelPris" type="number" onChange={e => (this.pris = e.target.value)} />
+              <Form.Control
+                id="sykkelPris"
+                type="number"
+                onChange={e => (this.pris = e.target.value)}
+                placeholder="00,00"
+              />
               <br />
               <Button onClick={this.nyPrisSykkel}>Endre pris</Button>
             </ListGroup.Item>
           </Col>
           <Col>
             <ListGroup.Item className="list-group-item">
-              <Form.Label>Type Utstyr:</Form.Label>
+            <h5> Utstyr </h5>
+            <br/>
+              <Form.Label>Velg type:</Form.Label>
               <Form.Control
                 id="utstyrType"
                 as="select"
@@ -66,8 +78,14 @@ export class Pris extends Ny {
                 ))}
                 <br />
               </Form.Control>
+              <br />
               <Form.Label>Pris:</Form.Label>
-              <Form.Control id="utstyrPris" type="number" onChange={e => (this.pris = e.target.value)} />
+              <Form.Control
+                id="utstyrPris"
+                type="number"
+                onChange={e => (this.pris = e.target.value)}
+                placeholder="00,00"
+              />
               <br />
               <Button onClick={this.nyPrisUtstyr}>Endre pris</Button>
             </ListGroup.Item>
@@ -76,7 +94,7 @@ export class Pris extends Ny {
 
         <Modal size="sm" show={this.state.endringPop} onHide={this.skjulEndringPop}>
           <Modal.Header closeButton>
-            <Modal.Title>Oppdatert pris!</Modal.Title>
+            <Modal.Title>Pris er oppdatert</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             Type: {this.type} <br />
@@ -90,6 +108,7 @@ export class Pris extends Ny {
             </Button>
           </Modal.Footer>
         </Modal>
+        </ListGroup.Item>
       </React.Fragment>
     ];
   }

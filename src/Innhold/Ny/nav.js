@@ -11,7 +11,7 @@ export class Ny extends Component {
           <Nav.Link href="#/ny/utstyr">Utstyr</Nav.Link>
           <Nav.Link href="#/ny/lokasjon">Lokasjon</Nav.Link>
           <Nav.Link href="#/ny/restriksjon">Restriksjon</Nav.Link>
-          <Nav.Link href="#/ny/pris">Ny pris</Nav.Link>
+          <Nav.Link href="#/ny/pris">Pris</Nav.Link>
         </Nav>
       </Navbar>
     );

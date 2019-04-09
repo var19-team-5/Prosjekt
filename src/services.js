@@ -8,6 +8,20 @@ class s_Hent {
       success(results);
     });
   }
+  typeSykkel(success) {
+    connection.query('SELECT * FROM prisliste WHERE kategori="sykkel"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  typeUtstyr(success) {
+    connection.query('SELECT * FROM prisliste WHERE kategori="utstyr"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
 }
 
 class s_Typer {
