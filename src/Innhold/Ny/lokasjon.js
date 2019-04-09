@@ -1,9 +1,11 @@
 import * as React from 'react';
+//henter inn alt under s_lokasjon så vi kan bruke det for å hente data fra databasen
 import { s_lokasjon } from './_n_services';
+//henter komponentene i react bootstrap som vi bruker i denne filen
 import { Form, ListGroup, Button, Modal, Row, Col } from 'react-bootstrap';
-
+//henter klassen Ny fra navbaren
 import { Ny } from './nav';
-
+//eksporterer Lokasjon klassen som skal vises under Ny
 export class Lokasjon extends Ny {
   constructor(props, context) {
     super(props, context);
@@ -21,10 +23,11 @@ export class Lokasjon extends Ny {
   visBek() {
     this.setState({ bek: true });
   }
+  //starter en render funksjon
   render() {
     return (
+      //legger inn en ListGroup med innhold
       <React.Fragment>
-        <Form.Group>
           <ListGroup.Item className="list-group-item">
           <h5> Legg til ny lokasjon: </h5>
           <br/>
@@ -45,8 +48,6 @@ export class Lokasjon extends Ny {
             </Col>
           </Row>
           </ListGroup.Item>
-        </Form.Group>
-
         <Modal size="sm" show={this.state.bek} onHide={this.skjulBek}>
           <Modal.Header closeButton>
             <Modal.Title>Ny lokasjon!</Modal.Title>

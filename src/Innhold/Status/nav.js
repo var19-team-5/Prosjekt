@@ -18,17 +18,17 @@ export class Status extends Component {
       <React.Fragment>
         <Navbar bg="light" variant="light">
           <Nav>
-            <Nav.Link href="#/status/alle">Alle varer</Nav.Link>
-            <Nav.Link href="#/status/sykler">Sykler</Nav.Link>
-            <NavDropdown id="nav-dropdown">
+            <Nav.Link href="#/status/alle" title='Alle varer'>Varer</Nav.Link>
+            <Nav.Link href="#/status/sykler" title='Alle sykler'>Sykler</Nav.Link>
+            <NavDropdown title='Sykkeltyper' id="nav-dropdown">
               {this.typerSykler.map(typeSykkel => (
                 <NavDropdown.Item key={typeSykkel.type} href={'#/status/sykler' + typeSykkel.type}>
                   {typeSykkel.type}
                 </NavDropdown.Item>
               ))}
             </NavDropdown>
-            <Nav.Link href="#/status/utstyr">Utstyr</Nav.Link>
-            <NavDropdown id="nav-dropdown">
+            <Nav.Link href="#/status/utstyr" title='Alt Utstyr'>Utstyr</Nav.Link>
+            <NavDropdown title='Utstyrtyper' id="nav-dropdown">
               {this.typerUtstyr.map(typerUtstyr => (
                 <NavDropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
                   {typerUtstyr.type}

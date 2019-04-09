@@ -7,11 +7,11 @@ export class Ny extends Component {
     return (
       <Navbar bg="light" variant="light">
         <Nav>
-          <Nav.Link href="#/ny/sykkel">Sykkel</Nav.Link>
-          <Nav.Link href="#/ny/utstyr">Utstyr</Nav.Link>
-          <Nav.Link href="#/ny/lokasjon">Lokasjon</Nav.Link>
-          <Nav.Link href="#/ny/restriksjon">Restriksjon</Nav.Link>
-          <Nav.Link href="#/ny/pris">Pris</Nav.Link>
+          <Nav.Link href="#/ny/sykkel" title='Legg til sykkel'>Sykkel</Nav.Link>
+          <Nav.Link href="#/ny/utstyr" title='Legg til utstyr'>Utstyr</Nav.Link>
+          <Nav.Link href="#/ny/lokasjon" title='Legg til Lokasjon'>Lokasjon</Nav.Link>
+          <Nav.Link href="#/ny/restriksjon" title='Koble sykkel til utstyr'>Restriksjon</Nav.Link>
+          <Nav.Link href="#/ny/pris" title='Endre pris'>Pris</Nav.Link>
         </Nav>
       </Navbar>
     );
