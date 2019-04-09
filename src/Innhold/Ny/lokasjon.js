@@ -1,5 +1,5 @@
 import * as React from 'react';
-//henter inn alt under s_lokasjon så vi kan bruke det for å hente data fra databasen
+//henter inn de forskjellige klassenne som inneholder metoder som henter informasjons fra databasen
 import { s_lokasjon } from './_n_services';
 //henter komponentene i react bootstrap som vi bruker i denne filen
 import { Form, ListGroup, Button, Modal, Row, Col } from 'react-bootstrap';
@@ -26,8 +26,8 @@ export class Lokasjon extends Ny {
   //starter en render funksjon
   render() {
     return (
-      //legger inn en ListGroup med innhold
       <React.Fragment>
+        {/*legger inn en ListGroup med innhold*/}
         <ListGroup.Item className="list-group-item">
           <h5> Legg til ny lokasjon: </h5>
           <br />
