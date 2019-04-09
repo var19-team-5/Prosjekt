@@ -9,13 +9,21 @@ export class Meny extends Component {
     return (
       <Navbar bg="dark" variant="dark">
         {/*Navn på applikasjonen*/}
-        <Navbar.Brand>SUSU v9.2</Navbar.Brand>
+        <Navbar.Brand title="Smart Utleie av Sykler og Utstyr">SUSU v9.3</Navbar.Brand>
         <Nav className="mr-auto">
           {/*Linker til venstre*/}
-          <Nav.Link href="#bestilling/ny">Bestilling</Nav.Link>
-          <Nav.Link href="#status/alle">Status</Nav.Link>
-          <Nav.Link href="#ny/sykkel">Ny</Nav.Link>
-          <Nav.Link href="#oversikt/salg">Oversikt</Nav.Link>
+          <Nav.Link href="#bestilling/ny" title="Bestillingside">
+            Bestilling
+          </Nav.Link>
+          <Nav.Link href="#status/alle" title="Status på varer">
+            Status
+          </Nav.Link>
+          <Nav.Link href="#ny/sykkel" title="Endre/Legg til">
+            Ny
+          </Nav.Link>
+          <Nav.Link href="#oversikt/statistikk" title="Oversikt">
+            Oversikt
+          </Nav.Link>
         </Nav>
         <Nav>
           {/*Linker til høyre*/}
@@ -24,5 +32,8 @@ export class Meny extends Component {
         </Nav>
       </Navbar>
     );
+  }
+  mouseOver() {
+    document.getElementById('demo').style.color = 'red';
   }
 }

@@ -510,9 +510,9 @@ export class BestillingNy extends Bestilling {
             <Modal.Body>
               <Row>
                 <Col>
-                  <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.passendeUtstyr(e)}>
+                  <Form.Control as="select" onChange={e => this.passendeUtstyr(e)}>
                     {this.typerSykler.map(typeSykkel => (
-                      <option key={typeSykkel.type} value={typeSykkel.type}>
+                      <option id="typerep" key={typeSykkel.type} value={typeSykkel.type}>
                         {typeSykkel.type}
                       </option>
                     ))}
@@ -641,9 +641,6 @@ export class BestillingNy extends Bestilling {
     this.rabatt = rabatt;
     this.totalSum = totalSum;
     this.prisListe = prisListe;
-
-    console.log(this.totalSum);
-    console.log(this.rabatt);
   }
 
   leggTil(e) {

@@ -19,6 +19,14 @@ class s_Salg {
       success(results);
     });
   }
+  // Teller hvor mange varer det er i databasen
+  AntallVarer(success) {
+    connection.query('SELECT COUNT(v_id) AS varer FROM vare', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
   // Teller hvor mange sykler det er i databasen
   AntallSykler(success) {
     connection.query('SELECT COUNT(v_id) AS sykler FROM sykkel', (error, results) => {
@@ -27,16 +35,48 @@ class s_Salg {
       success(results);
     });
   }
-  // Teller hvor mange sykler som har status på reperasjon i databasen
-  AntallSyklerRep(success) {
+  // Teller hvor mange varer som har status "på lager" i databasen
+  AntallPåLager(success) {
+    connection.query('SELECT COUNT(v_id) AS lager FROM vare WHERE status = "på lager"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  // Teller hvor mange varer som har status "savnet" i databasen
+  AntallSavnet(success) {
+    connection.query('SELECT COUNT(v_id) AS savnet FROM vare AS savnet WHERE status = "savnet"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  // Teller hvor mange varer som har status "trenger reperasjon" i databasen
+  AntallTrengerReparasjon(success) {
     connection.query(
-      'SELECT COUNT(sykkel.v_id) AS srep FROM sykkel INNER JOIN vare ON sykkel.v_id = vare.v_id WHERE status = "på reparasjon"',
+      'SELECT COUNT(v_id) AS trengerrep FROM vare WHERE status = "trenger reparasjon"',
       (error, results) => {
         if (error) return console.error(error);
 
         success(results);
       }
     );
+  }
+  // Teller hvor mange varer som har status "på reperasjon" i databasen
+  AntallPåReparasjon(success) {
+    connection.query('SELECT COUNT(v_id) AS pårep FROM vare WHERE status = "på reparasjon"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
+  }
+  // Teller hvor mange varer som har status "transporteres" i databasen
+  AntallTransporteres(success) {
+    connection.query('SELECT COUNT(v_id) AS transp FROM vare WHERE status = "transporteres"', (error, results) => {
+      if (error) return console.error(error);
+
+      success(results);
+    });
   }
   // Summerer hvor stor sum totalt det er med alle sumBestillingene
   SumBestillinger(success) {

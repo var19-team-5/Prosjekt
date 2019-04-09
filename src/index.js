@@ -29,7 +29,8 @@ import { Restriksjon } from './Innhold/Ny/restriksjon';
 import { Pris } from './Innhold/Ny/pris';
 
 import { Oversikt } from './Innhold/Oversikt/nav';
-import { Salg } from './Innhold/Oversikt/salg';
+import { Statistikk } from './Innhold/Oversikt/statistikk';
+import { Statusvarer } from './Innhold/Oversikt/statusvarer';
 
 ReactDOM.render(
   <HashRouter>
@@ -63,7 +64,9 @@ ReactDOM.render(
       <Route exact path="/ny/pris" component={Pris} />
 
       <Route path="/oversikt" component={Oversikt} />
-      <Route exact path="/oversikt/salg" component={Salg} />
+      <Route exact path="/oversikt/statistikk" component={Statistikk} />
+      <Route exact path="/oversikt/statusvarer" component={Statusvarer} />
+
 
       <Route exact path="/info" component={Info} />
       <Route exact path="/hjelp" component={Hjelp} />
