@@ -146,7 +146,6 @@ export class BestillingNy extends Bestilling {
                   <Form.Label> Navn: </Form.Label>
                   <Form.Control
                     id="navn"
-                    placeholder="Fornavn Etternavn"
                     value={this.navn}
                     onInput={e => (this.navn = e.target.value)}
                     onChange={this.tomKunde}
@@ -155,7 +154,6 @@ export class BestillingNy extends Bestilling {
                   <Form.Label> Email: </Form.Label>
                   <Form.Control
                     id="email"
-                    placeholder="eksempel@email.com"
                     value={this.email}
                     onInput={e => (this.email = e.target.value)}
                     onChange={this.tomKunde}
