@@ -27,6 +27,10 @@
   max-height:550px;
   overflow-y:scroll
   }
+#hjelp{
+  max-height:550px;
+  overflow-y:scroll
+  }
   /* endre farge på knappene i systemet
     og endring når man hovrer over*/
 .btn-danger{
@@ -53,3 +57,25 @@
   background-color:#abceb8;
   border-color:#abceb8
   }
+  /* endre størrelse på knappene i systemet */
+.img-thumbnail{
+  width: 100%;
+}
+#h1{
+  width: 80%;
+}
+#h2{
+  width: 20%;
+}
+#h3{
+  width: 50%;
+}
+#h4{
+  width: 20%;
+}
+#h5{
+  width: 50%;
+}
+#h6{
+  width: 20%;
+}
