@@ -131,32 +131,32 @@ export class Pris extends Ny {
   // Metode som endrer pris på en sykkeltype
   nyPrisSykkel() {
     s_pris.EndrePris(this.pris, this.type);
-    this.visEndringPop();
-    this.PriserSykkel();
     document.getElementById('sykkelPris').value = '';
+    this.PriserSykkel();
+    this.visEndringPop();
   }
 
   // Metode som endrer pris på en utstyrstype
   nyPrisUtstyr() {
     s_pris.EndrePris(this.pris, this.type);
+    document.getElementById('utstyrPris').value = '';
     this.PriserUtstyr();
     this.visEndringPop();
-    document.getElementById('utstyrPris').value = '';
   }
 
   // Metode som heler pris på valgt sykkeltype
   PriserSykkel() {
-    s_pris.Priser(this.type, pris => {
-      this.pris = pris;
-      document.getElementById('sykkelPris').placeholder = this.pris[0].pris + ',-';
+    s_pris.Priser(this.type, priser => {
+      this.priser = priser;
+      document.getElementById('sykkelPris').placeholder = this.priser[0].pris + ',-';
     });
   }
 
   // Metode som henter pris på valgt utstyrstype
   PriserUtstyr() {
-    s_pris.Priser(this.type, pris => {
-      this.pris = pris;
-      document.getElementById('utstyrPris').placeholder = this.pris[0].pris + ',-';
+    s_pris.Priser(this.type, priser => {
+      this.priser = priser;
+      document.getElementById('utstyrPris').placeholder = this.priser[0].pris + ',-';
     });
   }
 }
