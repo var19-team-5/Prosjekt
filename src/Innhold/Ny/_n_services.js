@@ -1,3 +1,4 @@
+// Henter koblingen mot databasen
 import { connection } from './../../mysql_connection';
 
 // Klasse som inneholder metodene som blir brukt mot databasen for siden ny lokasjon
@@ -147,6 +148,7 @@ class s_Pris {
   }
 }
 
+// Eksporterer de forskjellige klassene
 export let s_lokasjon = new s_Lokasjon();
 export let s_restriksjon = new s_Restriksjon();
 export let s_vare = new s_Vare();

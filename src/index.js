@@ -3,7 +3,7 @@ import { Component } from 'react-simplified';
 import ReactDOM from 'react-dom';
 import { NavLink, HashRouter, Route } from 'react-router-dom';
 
-import { Menu } from './Innhold/meny';
+import { Meny } from './Innhold/meny';
 
 import { Info } from './Innhold/info';
 import { Hjelp } from './Innhold/hjelp';
@@ -29,12 +29,13 @@ import { Restriksjon } from './Innhold/Ny/restriksjon';
 import { Pris } from './Innhold/Ny/pris';
 
 import { Oversikt } from './Innhold/Oversikt/nav';
-import { Salg } from './Innhold/Oversikt/salg';
+import { Statistikk } from './Innhold/Oversikt/statistikk';
+import { Statusvarer } from './Innhold/Oversikt/statusvarer';
 
 ReactDOM.render(
   <HashRouter>
     <div>
-      <Menu />
+      <Meny />
 
       <Route exact path="/" component={Bestilling} />
       <Route exact path="/" component={BestillingNy} />
@@ -63,7 +64,9 @@ ReactDOM.render(
       <Route exact path="/ny/pris" component={Pris} />
 
       <Route path="/oversikt" component={Oversikt} />
-      <Route exact path="/oversikt/salg" component={Salg} />
+      <Route exact path="/oversikt/statistikk" component={Statistikk} />
+      <Route exact path="/oversikt/statusvarer" component={Statusvarer} />
+
 
       <Route exact path="/info" component={Info} />
       <Route exact path="/hjelp" component={Hjelp} />

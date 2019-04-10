@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-import ReactDOM from 'react-dom';
-import { NavLink, HashRouter, Route } from 'react-router-dom';
+// Metoder som blir hentet fra services
 import { s_typer } from './../../services';
 import { s_nav } from './_s_services';
-
+// Komponenter som blir brukt i dokumentet
 import { Navbar, Nav, NavDropdown, ListGroup, InputGroup, FormControl } from 'react-bootstrap';
 
+// Klasse for navigasjonsbar under Status
 export class Status extends Component {
   typerSykler = [];
   typerUtstyr = [];
@@ -18,17 +18,17 @@ export class Status extends Component {
       <React.Fragment>
         <Navbar bg="light" variant="light">
           <Nav>
-            <Nav.Link href="#/status/alle">Alle varer</Nav.Link>
-            <Nav.Link href="#/status/sykler">Sykler</Nav.Link>
-            <NavDropdown id="nav-dropdown">
+            <Nav.Link href="#/status/alle" title='Alle varer'>Varer</Nav.Link>
+            <Nav.Link href="#/status/sykler" title='Alle sykler'>Sykler</Nav.Link>
+            <NavDropdown title='Sykkeltyper' id="nav-dropdown">
               {this.typerSykler.map(typeSykkel => (
                 <NavDropdown.Item key={typeSykkel.type} href={'#/status/sykler' + typeSykkel.type}>
                   {typeSykkel.type}
                 </NavDropdown.Item>
               ))}
             </NavDropdown>
-            <Nav.Link href="#/status/utstyr">Utstyr</Nav.Link>
-            <NavDropdown id="nav-dropdown">
+            <Nav.Link href="#/status/utstyr" title='Alt Utstyr'>Utstyr</Nav.Link>
+            <NavDropdown title='Utstyrtyper' id="nav-dropdown">
               {this.typerUtstyr.map(typerUtstyr => (
                 <NavDropdown.Item key={typerUtstyr.type} href={'#/status/utstyr' + typerUtstyr.type}>
                   {typerUtstyr.type}
