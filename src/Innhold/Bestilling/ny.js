@@ -117,7 +117,6 @@ export class BestillingNy extends Bestilling {
   prisListe = [];
   vareListe = [];
   varer = [];
-  totalSum = [];
   typerSykler = [];
   minusUtstyr = [];
   type = [];
@@ -176,12 +175,22 @@ export class BestillingNy extends Bestilling {
                   <Col>
                     {/*Fra dato*/}
                     <Form.Label> Fra: </Form.Label>
-                    <Form.Control id="fra" required type="datetime-local" onChange={e => (this.fra = e.target.value)} />
+                    <Form.Control
+                      id="fra"
+                      required
+                      type="datetime-local"
+                      onChange={e => (this.fra = e.target.value) && this.beregnDager()}
+                    />
                   </Col>
                   <Col>
                     {/*Til dato*/}
                     <Form.Label> Til: </Form.Label>
-                    <Form.Control id="til" required type="datetime-local" onChange={e => (this.til = e.target.value)} />
+                    <Form.Control
+                      id="til"
+                      required
+                      type="datetime-local"
+                      onChange={e => (this.til = e.target.value) && this.beregnDager()}
+                    />
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -526,16 +535,16 @@ export class BestillingNy extends Bestilling {
           </Modal>
 
           {/*Popup som viser de forskjellige sykkeltypene og hvilke utstyrstyper som passer*/}
-          <Modal centered size="lg" show={this.state.resPop} onHide={this.skjulResPop}>
+          <Modal centered size="sm" show={this.state.resPop} onHide={this.skjulResPop}>
             <Modal.Header closeButton>
               <Modal.Title>Restriksjoner</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Row>
                 <Col>
-                  <Form.Control as="select" onChange={e => this.passendeUtstyr(e)}>
+                  <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.passendeUtstyr(e)}>
                     {this.typerSykler.map(typeSykkel => (
-                      <option>{typeSykkel.type}</option>
+                      <option value={typeSykkel.type}>{typeSykkel.type}</option>
                     ))}
                   </Form.Control>
                 </Col>
@@ -591,6 +600,7 @@ export class BestillingNy extends Bestilling {
       this.typerUtstyr = typerUtstyr;
     });
     // Setter ny kunde-knappen til disabled
+    document.getElementById('nyKunde').disabled = true;
 
     const { idListe } = this.valgt;
     const { vareListe } = this.varerx;
@@ -863,6 +873,8 @@ export class BestillingNy extends Bestilling {
     } else if (this.dager >= 7) {
       this.dager = 7;
     }
+    // Beregner pris og rabatt
+    this.BeregnPrisOgRabatt();
   }
 
   // Metode som heter passende utstyr
