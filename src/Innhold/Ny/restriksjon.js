@@ -108,7 +108,9 @@ export class Restriksjon extends Ny {
       this.type = this.typerSykler[0].type;
     });
     // Henter passende og upassende utstyr
-    this.hent();
+    setTimeout(() => {
+      this.hent();
+    }, 250);
   }
 
   // Metode som kjører metode for å hente passende og upassende utstyr
