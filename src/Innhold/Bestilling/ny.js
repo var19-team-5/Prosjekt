@@ -256,7 +256,7 @@ export class BestillingNy extends Bestilling {
               </ListGroup.Item>
               {/*Tabell for sykler*/}
               {this.state.tabellSykler ? (
-                <div className="table">
+                <div id="bestill" className="tabeller">
                   <Table striped bordered hover size="sm">
                     <thead>
                       <tr>
@@ -298,7 +298,7 @@ export class BestillingNy extends Bestilling {
               ) : null}
               {/*Tabell for utstyr*/}
               {this.state.tabellUtstyr ? (
-                <div className="table">
+                <div id="bestill" className="tabeller">
                   <Table striped bordered hover size="sm">
                     <thead>
                       <tr>
@@ -336,7 +336,7 @@ export class BestillingNy extends Bestilling {
               <ListGroup.Item className="list-group-item">
                 <Row>
                   <Col>
-                    <div className="statevarer">
+                    <div id="valgtvarer" className="tabeller">
                       {/*Tabell som viser informasjon om de valgte varene*/}
                       <Table striped bordered hover size="sm">
                         <thead>
@@ -349,7 +349,7 @@ export class BestillingNy extends Bestilling {
                         <tbody>
                           {/*Går gjennom de valgte varene og henter ut informasjon om de*/}
                           {this.vareListe.map(vare => (
-                            <tr key={vare.v_id}>
+                            <tr key={vare.v_id} className='scroll'>
                               <td>{vare.type}</td>
                               <td className="text-center">{vare.pris}</td>
                               <div className="text-center">
@@ -443,7 +443,7 @@ export class BestillingNy extends Bestilling {
                   </div>
                 </Col>
                 <Col>
-                  <div className="bekreftelse">
+                  <div id="bekreftelse" className="tabeller">
                     <Table striped bordered hover size="sm" xs={2}>
                       <thead>
                         <tr>
@@ -548,7 +548,7 @@ export class BestillingNy extends Bestilling {
               <br />
               <Row>
                 <Col>
-                  <div className="restr">
+                  <div id="restr" className="tabeller">
                     <Table striped bordered hover size="sm" xs={4}>
                       <thead>
                         <tr>
