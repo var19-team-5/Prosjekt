@@ -6,7 +6,7 @@ export class Hjelp extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>Brukerveiledning, hvordan gjøre en bestilling</h1>
+        <h1>Brukerveiledning</h1>
         <p> Her kommer en brukerveiledning til hvordan man gjør en bestilling i SUSU.</p>
         <Col>
           <h3>Punkt 1</h3>
