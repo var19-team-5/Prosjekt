@@ -82,7 +82,6 @@ export class BestillingListe extends Bestilling {
         </ListGroup.Item>
         <div id="status" className="tabeller">
         {/*Tabell som viser informasjon om bestillingene*/}
-
           <Table striped bordered hover size="sm">
             <thead>
               <tr>

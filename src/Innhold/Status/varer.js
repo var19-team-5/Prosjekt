@@ -1,8 +1,12 @@
 import * as React from 'react';
+// Metoder som blir hentet fra services
 import { s_varer } from './_s_services';
+// Komponenter som blir brukt i dokumentet
 import { Table } from 'react-bootstrap';
+//henter Status siden fra navbar
 import { Status } from './nav';
 
+// Klasse som viser tabell med alle varer
 export class StatusVarer extends Status {
   varer = [];
   lokasjoner = [];
@@ -20,6 +24,7 @@ export class StatusVarer extends Status {
             </tr>
           </thead>
           <tbody>
+          {/*Henter alle fra alle_varer*/}
             {this.varer.map(alle_varer => (
               <tr key={alle_varer.v_id}>
                 <td className="text-center">{alle_varer.v_id}</td>
@@ -34,7 +39,9 @@ export class StatusVarer extends Status {
     ];
   }
 
+  // Metode som kjører når man henter inn siden
   mounted() {
+    //henter varene fra en spørring i metoden AlleVarer, som henter alle varer fra alle_varer
     s_varer.AlleVarer(varer => {
       this.varer = varer;
     });
