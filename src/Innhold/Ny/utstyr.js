@@ -91,7 +91,8 @@ export class Utstyr extends Ny {
                 <Form.Control
                   id="antall"
                   type="number"
-                  onChange={e => (this.antall = e.target.value)}
+                  onChange={this.sjekk}
+                  onInput={e => (this.antall = e.target.value)}
                   placeholder="00"
                 />
               </Col>
@@ -127,11 +128,11 @@ export class Utstyr extends Ny {
               <Row>
                 <Col>
                   <Form.Label>Ny type:</Form.Label>
-                  <Form.Control onChange={this.sjekk} onInput={e => (this.nytype = e.target.value)} />
+                  <Form.Control onChange={this.sjekkNy} onInput={e => (this.nytype = e.target.value)} />
                 </Col>
                 <Col>
                   <Form.Label>Pris:</Form.Label>
-                  <Form.Control type="number" onChange={this.sjekk} onInput={e => (this.nypris = e.target.value)} />
+                  <Form.Control type="number" onChange={this.sjekkNy} onInput={e => (this.nypris = e.target.value)} />
                   <br />
                 </Col>
               </Row>
@@ -196,18 +197,34 @@ export class Utstyr extends Ny {
     ];
   }
 
+  // Metode som kjører når man henter inn siden
   mounted() {
+    // Henter alle de forskjellige utstyrstypene
     s_typer.AlleUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
       this.type = this.typerUtstyr[0].type;
     });
+    // Henter inn stedene
     s_steder.Steder(steder => {
       this.steder = steder;
       this.tilhører = steder[0].lokasjon;
     });
+    document.getElementById('ny').disabled = true;
   }
 
+  // Metode som sjekker om det er noen mangler når man legger til en ny sykkel/sykler
   sjekk() {
+    // Hvis det ikke er skrevet noe inn i antall-bok kan man ikke trykke på legg til-knappen
+    if (this.antall == '') {
+      document.getElementById('ny').disabled = true;
+    } else {
+      document.getElementById('ny').disabled = false;
+    }
+  }
+
+  // Metode som sjekker om det er noen mangler når man legger til en nytt utstyr
+  sjekkNy() {
+    // Hvis det ikke er skrevet noe inn i en boks kan man ikke trykke på legg til-knappen
     if (this.nytype == '' || this.nypris == '') {
       document.getElementById('nyType').disabled = true;
     } else {
@@ -215,7 +232,9 @@ export class Utstyr extends Ny {
     }
   }
 
+  // Metode for å legge inn nytt utstyr
   nyUtstyr() {
+    // Loop som legger inn alt utstyret
     for (var i = 0; i < this.antall; i++) {
       s_vare.NyVare(this.tilhører, this.type);
       s_utstyr.NyUtstyr(this.type);
@@ -225,6 +244,7 @@ export class Utstyr extends Ny {
     }
   }
 
+  // Metode for å legge inn ny utstyrstype
   nyTypeUtstyr() {
     s_utstyr.NyTypeUtstyr(this.nytype, this.nypris);
     this.skjulNyType();

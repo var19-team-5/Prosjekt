@@ -1,10 +1,13 @@
 import * as React from 'react';
+//Henter inn de forskjellige klassenne som inneholder metoder som henter informasjons fra databasen
 import { s_typer } from './../../services';
 import { s_restriksjon } from './_n_services';
+//Henter komponentene i react bootstrap som vi bruker i denne filen
 import { ListGroup, Row, Col, Form, Button, Card, Table } from 'react-bootstrap';
-
+//Henter navigasjonsbaren fra nav
 import { Ny } from './nav';
 
+//Eksporterer klassen for ny restriksjon
 export class Restriksjon extends Ny {
   typerSykler = [];
   minusUtstyr = [];
@@ -21,6 +24,7 @@ export class Restriksjon extends Ny {
           <Row>
             <Col xs={3}>
               <Form.Label>Velg sykkeltype:</Form.Label>
+              {/*De forskjellige sykkeltypene*/}
               <Form.Control as="select" onChange={e => (this.type = e.target.value) && this.hent(e)}>
                 {this.typerSykler.map(typeSykkel => (
                   <option key={typeSykkel.type} value={typeSykkel.type}>
@@ -34,6 +38,7 @@ export class Restriksjon extends Ny {
           <Row>
             <Col>
               <div id="bekreftelse" className="tabeller">
+              {/*Viser utstyret som passer*/}
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
@@ -46,6 +51,7 @@ export class Restriksjon extends Ny {
                       <tr key={utstyr.type}>
                         <td>{utstyr.type}</td>
                         <td className="text-center">
+                          {/*Mulighet til å fjerne passende utstyr*/}
                           <Button
                             value={utstyr.type}
                             onClick={e => (this.u_type = e.target.value) && this.fjernUtstyr()}
@@ -61,6 +67,7 @@ export class Restriksjon extends Ny {
             </Col>
             <Col>
               <div id="bekreftelse" className="tabeller">
+              {/*Viser utstyret som ikke passer*/}
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
@@ -73,6 +80,7 @@ export class Restriksjon extends Ny {
                       <tr key={utstyr.type}>
                         <td>{utstyr.type}</td>
                         <td className="text-center">
+                          {/*Mulighet til å legge til upassende utstyr*/}
                           <Button
                             value={utstyr.type}
                             onClick={e => (this.u_type = e.target.value) && this.leggTilUtstyr()}
@@ -91,33 +99,39 @@ export class Restriksjon extends Ny {
       </React.Fragment>
     ];
   }
+
+  // Metode som kjører når man henter inn siden
   mounted() {
+    // Henter de forskjellige sykkeltypene
     s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
       this.type = this.typerSykler[0].type;
     });
-    setTimeout(() => {
-      this.hent();
-    }, 250);
+    // Henter passende og upassende utstyr
+    this.hent();
   }
 
+  // Metode som kjører metode for å hente passende og upassende utstyr
   hent() {
     this.passendeUtstyr();
     this.upassendeUtstyr();
   }
 
+  // Metode som heter passende utstyr
   passendeUtstyr() {
     s_restriksjon.HentPassendeUtstyr(this.type, minusUtstyr => {
       this.minusUtstyr = minusUtstyr;
     });
   }
 
+  // Metode som henter upassende utstyr
   upassendeUtstyr() {
     s_restriksjon.HentUpassendeUtstyr(this.type, plussUtstyr => {
       this.plussUtstyr = plussUtstyr;
     });
   }
 
+  // Metode for å fjerne passende utstyr
   fjernUtstyr() {
     this.plussUtstyr.push(this.type);
     this.minusUtstyr.pop(this.type);
@@ -131,6 +145,7 @@ export class Restriksjon extends Ny {
     this.hent();
   }
 
+  // Metode for å legge til upassende utstyr
   leggTilUtstyr() {
     this.minusUtstyr.push(this.type);
     this.plussUtstyr.pop(this.type);

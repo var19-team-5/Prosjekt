@@ -1,5 +1,7 @@
 import * as React from 'react';
+//Henter inn de forskjellige klassenne som inneholder metoder som henter informasjons fra databasen
 import { s_statuser, s_slett, s_bestilling } from './_bl_services';
+//Henter komponentene i react bootstrap som vi bruker i denne filen
 import {
   Table,
   ListGroup,
@@ -13,20 +15,19 @@ import {
   DropdownButton,
   Dropdown
 } from 'react-bootstrap';
-
 // Henter navigasjonsbaren fra nav
 import { Bestilling } from './nav';
 
+// Klassen for oversikt over bestillingene i systemet
 export class BestillingListe extends Bestilling {
+  // Popupbokser med forskjellig informasjon
   constructor(props, context) {
     super(props, context);
 
     this.visInfoPop = this.visInfoPop.bind(this);
     this.skjulInfoPop = this.skjulInfoPop.bind(this);
-
     this.visSikkerPop = this.visSikkerPop.bind(this);
     this.skjulSikkerPop = this.skjulSikkerPop.bind(this);
-
     this.visSlettPop = this.visSlettPop.bind(this);
     this.skjulSlettPop = this.skjulSlettPop.bind(this);
 
@@ -37,26 +38,24 @@ export class BestillingListe extends Bestilling {
     };
   }
 
+  // Skjul og vis popup informasjon om en bestilling
   skjulInfoPop() {
     this.setState({ infoPop: false });
   }
-
   visInfoPop() {
     this.setState({ infoPop: true });
   }
-
+  // Skjul og vis popup for bekreftelse på å slette en bestilling
   skjulSikkerPop() {
     this.setState({ sikkerPop: false });
   }
-
   visSikkerPop() {
     this.setState({ sikkerPop: true });
   }
-
+  // Skjul og vis popup når en har slettet en bestilling
   skjulSlettPop() {
     this.setState({ slettPop: false });
   }
-
   visSlettPop() {
     this.setState({ slettPop: true });
   }
@@ -70,6 +69,7 @@ export class BestillingListe extends Bestilling {
       <React.Fragment>
         <ListGroup.Item className="list-group-item">
           <InputGroup className="mb-3">
+            {/*Mulighet til å finne bestillingene til en person*/}
             <FormControl
               placeholder="Søk kundenavn"
               aria-describedby="basic-addon2"
@@ -81,6 +81,8 @@ export class BestillingListe extends Bestilling {
           </InputGroup>
         </ListGroup.Item>
         <div id="status" className="tabeller">
+        {/*Tabell som viser informasjon om bestillingene*/}
+
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
@@ -97,6 +99,7 @@ export class BestillingListe extends Bestilling {
               </tr>
             </thead>
             <tbody>
+              {/*Går gjennom bestillingene og legger de i en tabell*/}
               {this.bestillinger.map(bestilling => (
                 <tr value={bestilling.b_id}>
                   <td className="text-center">{bestilling.b_id}</td>
@@ -125,6 +128,7 @@ export class BestillingListe extends Bestilling {
                   <td className="text-center">{bestilling.pris}</td>
                   <td>{bestilling.status}</td>
                   <div className="text-center">
+                    {/*Knapp for å lese mer informasjon om en bestilling og kunne endre status eller fjerne en bestilling*/}
                     <Button value={bestilling.b_id} onClick={e => (this.b_id = e.target.value) && this.hent(e)}>
                       vis
                     </Button>
@@ -134,10 +138,13 @@ export class BestillingListe extends Bestilling {
             </tbody>
           </Table>
         </div>
+
+        {/*Popup for å vise informasjon om en bestilling*/}
         <Modal centered size="lg" show={this.state.infoPop} onHide={this.skjulInfoPop}>
           <Modal.Header closeButton>
             <Modal.Title>Bestilling {this.b_id}</Modal.Title>
           </Modal.Header>
+          {/*Viser informasjonen om bestillingen*/}
           {this.valgt.map(valgt => (
             <Modal.Body>
               <Row>
@@ -177,6 +184,7 @@ export class BestillingListe extends Bestilling {
                     Status: {valgt.status}
                     <br />
                     <ButtonGroup>
+                      {/*Dropdown-meny for å kunne endre status på bestillingen og varene*/}
                       <DropdownButton as={ButtonGroup} title="Endre status" id="bg-nested-dropdown">
                         <Dropdown.Item onClick={this.bestilt}>Bestilt</Dropdown.Item>
                         <Dropdown.Item onClick={this.utlevert}>Utlevert</Dropdown.Item>
@@ -191,6 +199,7 @@ export class BestillingListe extends Bestilling {
                 </Col>
                 <Col>
                   <div id="bekreftelse" className="tabeller">
+                  {/*Tabell som viser innholdet i bestillingen*/}
                     <Table striped bordered hover size="sm" xs={2}>
                       <thead>
                         <tr>
@@ -215,7 +224,8 @@ export class BestillingListe extends Bestilling {
             </Modal.Body>
           ))}
           <Modal.Footer>
-            <Button variant="danger" onClick={this.sikker}>
+            {/*Mulighet for å slette en bestilling*/}
+            <Button variant="danger" onClick={this.visSikkerPop}>
               Slett bestilling
             </Button>
             <Button variant="secondary" onClick={this.skjulInfoPop}>
@@ -224,6 +234,7 @@ export class BestillingListe extends Bestilling {
           </Modal.Footer>
         </Modal>
 
+        {/*Popup som kommer opp når man trykker på slett på en bestilling*/}
         <Modal size="sm" show={this.state.sikkerPop} onHide={this.skjulSikkerPop}>
           <Modal.Header closeButton>
             <Modal.Title>Sikker?</Modal.Title>
@@ -239,6 +250,7 @@ export class BestillingListe extends Bestilling {
           </Modal.Footer>
         </Modal>
 
+        {/*Popup som kommer opp når man har slettet en bestilling*/}
         <Modal size="sm" show={this.state.slettPop} onHide={this.skjulSlettPop}>
           <Modal.Header closeButton>
             <Modal.Title>Slettet!</Modal.Title>
@@ -253,47 +265,57 @@ export class BestillingListe extends Bestilling {
       </React.Fragment>
     );
   }
+
+  // Metode som kjører når man henter inn siden
   mounted() {
     s_bestilling.Bestillinger(bestillinger => {
       this.bestillinger = bestillinger;
     });
   }
+
+  // Metode som søker opp bestillingene til navnet man skriver inn
   sok() {
     s_bestilling.SokNavn(this.navn, bestillinger => {
       this.bestillinger = bestillinger;
     });
   }
+
+  // Metode som henter informasjon om en bestilling og informasjon om varene i den
   hent() {
+    // Bruker b_id'en til å hente infor om bestillingen
     s_bestilling.InfoBestilling(this.b_id, valgt => {
       this.valgt = valgt;
     });
+    // Bruker b_id'en til å hente info om varene i bestillingen
     s_bestilling.InfoBestillingVarer(this.b_id, varer => {
       this.varer = varer;
     });
     this.visInfoPop();
   }
+
+  // Metode som setter status til bestilt
   bestilt() {
+    // Går gjennom varene og setter statusen på bestillingen til "bestilt" og varene til "på lager"
     for (var i = 0; i < this.varer.length; i++) {
       s_statuser.Bestilt(this.varer[i].v_id, this.b_id);
     }
     this.mounted();
     this.hent();
   }
+
+  // Metode som setter status til utlevert
   utlevert() {
+    // Går gjennom varene og setter statusen på bestillingen til "utlevert" og varene til "utleid"
     for (var i = 0; i < this.varer.length; i++) {
       s_statuser.Utlevert(this.varer[i].v_id, this.b_id);
     }
     this.mounted();
     this.hent();
   }
-  ferdig() {
-    for (var i = 0; i < this.varer.length; i++) {
-      s_statuser.Ferdig(this.varer[i].v_id, this.b_id);
-    }
-    this.mounted();
-    this.hent();
-  }
+
+  // Metode som setter status til transport
   transport() {
+    // Går gjennom varene og setter statusen på bestillingen til "transporteres" og varene til "transporteres"
     for (var i = 0; i < this.varer.length; i++) {
       s_statuser.Transport(this.varer[i].v_id, this.b_id);
     }
@@ -301,7 +323,9 @@ export class BestillingListe extends Bestilling {
     this.hent();
   }
 
+  // Metode som setter status til savnet
   savnet() {
+    // Går gjennom varene og setter statusen på bestillingen til "savnet" og varene til "savnet"
     for (var i = 0; i < this.varer.length; i++) {
       s_statuser.Savnet(this.varer[i].v_id, this.b_id);
     }
@@ -309,10 +333,23 @@ export class BestillingListe extends Bestilling {
     this.hent();
   }
 
-  sikker() {
-    this.visSikkerPop();
+  // Metode som setter status til ferdig
+  ferdig() {
+    // Går gjennom varene og setter statusen på bestillingen til "ferdig" og varene til "på lager"
+    for (var i = 0; i < this.varer.length; i++) {
+      s_statuser.Ferdig(this.varer[i].v_id, this.b_id);
+    }
+    this.mounted();
+    this.hent();
   }
+
+  // Metode for å slette bestilling
   slett() {
+    // Går gjennom varene og setter status til "på lager"
+    for (var i = 0; i < this.varer.length; i++) {
+      s_statuser.Ferdig(this.varer[i].v_id, this.b_id);
+    }
+    // Fjerner bestillingen
     s_slett.Bestilling(this.b_id);
 
     this.mounted();

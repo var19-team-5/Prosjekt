@@ -9,7 +9,7 @@ export class Meny extends Component {
     return (
       <Navbar bg="dark" variant="dark">
         {/*Navn på applikasjonen*/}
-        <Navbar.Brand title="Smart Utleie av Sykler og Utstyr">SUSU v9.3</Navbar.Brand>
+        <Navbar.Brand title="Smart Utleie av Sykler og Utstyr">SUSU v9.4</Navbar.Brand>
         <Nav className="mr-auto">
           {/*Linker til venstre*/}
           <Nav.Link href="#bestilling/ny" title="Bestillingside">
