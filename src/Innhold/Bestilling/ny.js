@@ -9,7 +9,7 @@ import { Bestilling } from './nav';
 
 // Klassen for å legge inn nye bestillinger
 export class BestillingNy extends Bestilling {
-  // Popupbokser og veksling mellom tabell for sykler og utstyr
+  // Popupbokser med forskjellig informasjon
   constructor(props, context) {
     super(props, context);
 
@@ -24,6 +24,16 @@ export class BestillingNy extends Bestilling {
     this.visResPop = this.visResPop.bind(this);
     this.skjulResPop = this.skjulResPop.bind(this);
 
+    this.valgt = {
+      idListe: []
+    };
+    this.summer = {
+      prisListe: []
+    };
+    this.varerx = {
+      vareListe: []
+    };
+
     this.state = {
       tabellSykler: true,
       tabellUtstyr: false,
@@ -31,10 +41,7 @@ export class BestillingNy extends Bestilling {
       kundePop: false,
       fullførtPop: false,
       feilPop: false,
-      resPop: false,
-      idListe: [],
-      prisListe: [],
-      vareListe: []
+      resPop: false
     };
   }
 
@@ -46,7 +53,7 @@ export class BestillingNy extends Bestilling {
     this.setState({ bestillingPop: true });
   }
 
-  // Skjul og vis popup for
+  // Skjul og vis popup for feilmelding
   skjulFeilPop() {
     this.setState({ feilPop: false });
   }
@@ -116,7 +123,9 @@ export class BestillingNy extends Bestilling {
   type = [];
 
   render() {
-    const { idListe, prisListe, vareListe } = this.state;
+    const { idListe } = this.valgt;
+    const { prisListe } = this.summer;
+    const { vareListe } = this.varerx;
 
     return (
       <React.Fragment>
@@ -583,7 +592,10 @@ export class BestillingNy extends Bestilling {
     });
     // Setter ny kunde-knappen til disabled
 
-    const { idListe, prisListe, vareListe } = this.state;
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
+
     this.idListe = idListe;
     this.vareListe = vareListe;
     this.prisListe = prisListe;
@@ -638,7 +650,9 @@ export class BestillingNy extends Bestilling {
 
   // Metode som fjerner en vare fra bestillingen
   fjernVare(e) {
-    const { idListe, prisListe, vareListe } = this.state;
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
 
     // Loop som går gjennom å sjekker om den v_id'en man sletter viser i utstyrstabellen. Hvis den viser så gjør den at knappen kan klikkes på igjen
     for (var j = 0; j < this.utstyr.length; j++) {
@@ -670,7 +684,7 @@ export class BestillingNy extends Bestilling {
 
   // Beregner pris og rabatt på en bestilling
   BeregnPrisOgRabatt() {
-    const { prisListe } = this.state;
+    const { prisListe } = this.summer;
     var totalSum = 0;
     var rabatt = 0;
 
@@ -695,7 +709,9 @@ export class BestillingNy extends Bestilling {
 
   // Metode som legger til en ny vare i bestillingen
   leggTilVare(e) {
-    const { idListe, prisListe, vareListe } = this.state;
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
     // Legger til v_id'en i de forskjellige listene
     idListe.push(this.v_id);
     prisListe.push(this.pris);
@@ -859,7 +875,9 @@ export class BestillingNy extends Bestilling {
 
   // Metode som reseter bestillingen tilbake til null
   reset() {
-    const { idListe, prisListe, vareListe } = this.state;
+    const { idListe } = this.valgt;
+    const { vareListe } = this.varerx;
+    const { prisListe } = this.summer;
 
     this.fjernVare = this.prisListe.length;
 
@@ -885,10 +903,6 @@ export class BestillingNy extends Bestilling {
     this.levering = this.steder[0].lokasjon;
 
     document.getElementById('mobilnummer').value = '';
-    document.getElementById('navn').placeholder = 'Fornavn Etternavn';
-    document.getElementById('email').placeholder = 'eksempel@email.com';
-    document.getElementById('navn').value = '';
-    document.getElementById('email').value = '';
     document.getElementById('navn').disabled = false;
     document.getElementById('email').disabled = false;
     document.getElementById('nyKunde').disabled = true;

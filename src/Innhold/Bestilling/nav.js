@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react-simplified';
-// Komponenter som blir brukt i dokumentet
+//Henter komponentene i react bootstrap som vi bruker i denne filen
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
 // Klasse for navigasjonsbar under bestilling

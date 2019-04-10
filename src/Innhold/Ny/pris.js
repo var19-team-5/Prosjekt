@@ -1,10 +1,13 @@
 import * as React from 'react';
+//Henter inn de forskjellige klassenne som inneholder metoder som henter informasjons fra databasen
 import { s_typer } from './../../services';
 import { s_pris } from './_n_services';
+//Henter komponentene i react bootstrap som vi bruker i denne filen
 import { ListGroup, Form, Row, Col, Button, InputGroup, FormControl, Modal, Table } from 'react-bootstrap';
-
+//Henter navigasjonsbaren fra nav
 import { Ny } from './nav';
 
+//Eksporterer klassen for ny pris
 export class Pris extends Ny {
   constructor(props, context) {
     super(props, context);
@@ -15,10 +18,11 @@ export class Pris extends Ny {
       endringPop: false
     };
   }
+
+  // Viser og skjuler bekreftelses-popup
   skjulEndringPop() {
     this.setState({ endringPop: false });
   }
-
   visEndringPop() {
     this.setState({ endringPop: true });
   }
@@ -38,6 +42,7 @@ export class Pris extends Ny {
                 <h5> Sykkel </h5>
                 <br />
                 <Form.Label>Velg type:</Form.Label>
+                {/*De forskjellige sykkeltypene*/}
                 <Form.Control
                   id="sykkelType"
                   as="select"
@@ -51,12 +56,8 @@ export class Pris extends Ny {
                 </Form.Control>
                 <br />
                 <Form.Label>Pris:</Form.Label>
-                <Form.Control
-                  id="sykkelPris"
-                  type="number"
-                  onChange={e => (this.pris = e.target.value)}
-                  placeholder="00,00"
-                />
+                {/*Viser gammel pris som placeholder og kan skrive inn ny pris*/}
+                <Form.Control id="sykkelPris" type="number" onChange={e => (this.pris = e.target.value)} />
                 <br />
                 <Button onClick={this.nyPrisSykkel}>Endre pris</Button>
               </ListGroup.Item>
@@ -66,6 +67,7 @@ export class Pris extends Ny {
                 <h5> Utstyr </h5>
                 <br />
                 <Form.Label>Velg type:</Form.Label>
+                {/*De forskjellige utstyrstypene*/}
                 <Form.Control
                   id="utstyrType"
                   as="select"
@@ -80,18 +82,15 @@ export class Pris extends Ny {
                 </Form.Control>
                 <br />
                 <Form.Label>Pris:</Form.Label>
-                <Form.Control
-                  id="utstyrPris"
-                  type="number"
-                  onChange={e => (this.pris = e.target.value)}
-                  placeholder="00,00"
-                />
+                {/*Viser gammel pris som placeholder og kan skrive inn ny pris*/}
+                <Form.Control id="utstyrPris" type="number" onChange={e => (this.pris = e.target.value)} />
                 <br />
                 <Button onClick={this.nyPrisUtstyr}>Endre pris</Button>
               </ListGroup.Item>
             </Col>
           </Row>
 
+          {/*Popup for å bekrefte endringen*/}
           <Modal size="sm" show={this.state.endringPop} onHide={this.skjulEndringPop}>
             <Modal.Header closeButton>
               <Modal.Title>Pris er oppdatert</Modal.Title>
@@ -113,12 +112,15 @@ export class Pris extends Ny {
     ];
   }
 
+  // Metode som kjører når man henter inn siden
   mounted() {
+    // Henter de forskjellige sykkeltypene
     s_typer.AlleSykkelTyper(typerSykler => {
       this.typerSykler = typerSykler;
       this.type = this.typerSykler[0].type;
       document.getElementById('sykkelPris').placeholder = this.typerSykler[0].pris + ',-';
     });
+    // Henter de forskjellige utstyrstypene
     s_typer.AlleUtstyrTyper(typerUtstyr => {
       this.typerUtstyr = typerUtstyr;
       this.type = this.typerUtstyr[0].type;
@@ -126,6 +128,7 @@ export class Pris extends Ny {
     });
   }
 
+  // Metode som endrer pris på en sykkeltype
   nyPrisSykkel() {
     s_pris.EndrePris(this.pris, this.type);
     this.visEndringPop();
@@ -133,6 +136,7 @@ export class Pris extends Ny {
     document.getElementById('sykkelPris').value = '';
   }
 
+  // Metode som endrer pris på en utstyrstype
   nyPrisUtstyr() {
     s_pris.EndrePris(this.pris, this.type);
     this.PriserUtstyr();
@@ -140,6 +144,7 @@ export class Pris extends Ny {
     document.getElementById('utstyrPris').value = '';
   }
 
+  // Metode som heler pris på valgt sykkeltype
   PriserSykkel() {
     s_pris.Priser(this.type, pris => {
       this.pris = pris;
@@ -147,6 +152,7 @@ export class Pris extends Ny {
     });
   }
 
+  // Metode som henter pris på valgt utstyrstype
   PriserUtstyr() {
     s_pris.Priser(this.type, pris => {
       this.pris = pris;
