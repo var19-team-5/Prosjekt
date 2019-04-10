@@ -13,11 +13,14 @@ export class Statusvarer extends Oversikt {
   render() {
     return [
       <React.Fragment>
+      {/*Opretter en ListGroup for å skille mellom overskriften og innholdet*/}
         <ListGroup.Item className="list-group-item">
           <h5>Status varer:</h5>
           <br />
+          {/*Opretter en ListGroup med innhold*/}
           <ListGroup.Item className="list-group-item">
             <Row>
+            {/*Hver Col er koblet til hver sin variabel definert i classen*/}
               <Col className="text-center" xs={2}>
                 <Form.Label>På lager:</Form.Label>
                 <div>{this.lager}</div>
@@ -44,7 +47,7 @@ export class Statusvarer extends Oversikt {
       </React.Fragment>
     ];
   }
-
+  //setter at hver variabel får verdien som hentes ut gjennom en spørring i metoden i _o_services
   mounted() {
     s_salg.AntallPåLager(lager => {
       this.lager = lager[0].lager;

@@ -80,7 +80,7 @@ export class BestillingListe extends Bestilling {
             />
           </InputGroup>
         </ListGroup.Item>
-        <div className="status">
+        <div id="status" className="tabeller">
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
@@ -190,7 +190,7 @@ export class BestillingListe extends Bestilling {
                   </div>
                 </Col>
                 <Col>
-                  <div className="bekreftelse">
+                  <div id="bekreftelse" className="tabeller">
                     <Table striped bordered hover size="sm" xs={2}>
                       <thead>
                         <tr>

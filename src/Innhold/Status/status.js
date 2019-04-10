@@ -53,7 +53,7 @@ export class StatusStatus extends Status {
   render() {
     return [
       <React.Fragment>
-        <div className="status">
+        <div id="status" className="tabeller">
           <Table striped bordered hover size="sm">
             <thead>
               <tr>

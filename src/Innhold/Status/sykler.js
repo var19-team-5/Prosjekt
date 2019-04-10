@@ -9,7 +9,7 @@ export class StatusSykler extends Status {
 
   render() {
     return [
-      <div className="status">
+      <div id="status" className="tabeller">
         <Table striped bordered hover size="sm">
           <thead>
             <tr>

@@ -33,7 +33,7 @@ export class Restriksjon extends Ny {
           <br />
           <Row>
             <Col>
-              <div className="bekreftelse">
+              <div id="bekreftelse" className="tabeller">
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
@@ -60,7 +60,7 @@ export class Restriksjon extends Ny {
               </div>
             </Col>
             <Col>
-              <div className="bekreftelse">
+              <div id="bekreftelse" className="tabeller">
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
