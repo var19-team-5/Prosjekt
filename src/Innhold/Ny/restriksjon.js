@@ -37,8 +37,8 @@ export class Restriksjon extends Ny {
           <br />
           <Row>
             <Col>
-              <div className="bekreftelse">
-                {/*Viser utstyret som passer*/}
+              <div id="bekreftelse" className="tabeller">
+              {/*Viser utstyret som passer*/}
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>
@@ -66,8 +66,8 @@ export class Restriksjon extends Ny {
               </div>
             </Col>
             <Col>
-              <div className="bekreftelse">
-                {/*Viser utstyret som ikke passer*/}
+              <div id="bekreftelse" className="tabeller">
+              {/*Viser utstyret som ikke passer*/}
                 <Table striped bordered hover size="sm">
                   <thead>
                     <tr>

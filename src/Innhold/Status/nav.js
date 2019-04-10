@@ -47,6 +47,7 @@ export class Status extends Component {
 
         <ListGroup.Item className="list-group-item">
           <InputGroup className="mb-3">
+          {/*Mulighet til å finne bestillingene til en person*/}
             <FormControl
               placeholder="Søk vare ID"
               aria-describedby="basic-addon2"

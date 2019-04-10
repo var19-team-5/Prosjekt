@@ -80,8 +80,8 @@ export class BestillingListe extends Bestilling {
             />
           </InputGroup>
         </ListGroup.Item>
-        <div className="status">
-          {/*Tabell som viser informasjon om bestillingene*/}
+        <div id="status" className="tabeller">
+        {/*Tabell som viser informasjon om bestillingene*/}
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
@@ -197,8 +197,8 @@ export class BestillingListe extends Bestilling {
                   </div>
                 </Col>
                 <Col>
-                  <div className="bekreftelse">
-                    {/*Tabell som viser innholdet i bestillingen*/}
+                  <div id="bekreftelse" className="tabeller">
+                  {/*Tabell som viser innholdet i bestillingen*/}
                     <Table striped bordered hover size="sm" xs={2}>
                       <thead>
                         <tr>
