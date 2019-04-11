@@ -6,8 +6,7 @@ export class Hjelp extends Component {
   render() {
     return (
       <React.Fragment>
-      <ListGroup.Item className="list-group-item">
-        <h2>Brukerveiledning: hvordan gjøre en bestilling</h2>
+        <h1>Brukerveiledning</h1>
         <p> Her kommer en brukerveiledning til hvordan man gjør en bestilling i SUSU.</p>
         <ListGroup.Item className="list-group-item">
         <div id="hjelp" className="tabeller">

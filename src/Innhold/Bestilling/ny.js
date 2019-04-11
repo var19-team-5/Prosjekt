@@ -349,7 +349,7 @@ export class BestillingNy extends Bestilling {
                         <tbody>
                           {/*Går gjennom de valgte varene og henter ut informasjon om de*/}
                           {this.vareListe.map(vare => (
-                            <tr key={vare.v_id} className='scroll'>
+                            <tr key={vare.v_id} className="scroll">
                               <td>{vare.type}</td>
                               <td className="text-center">{vare.pris}</td>
                               <div className="text-center">
@@ -776,7 +776,6 @@ export class BestillingNy extends Bestilling {
 
         document.getElementById('navn').disabled = false;
         document.getElementById('email').disabled = false;
-        console.log(this.kundeListe.length);
       } else if (this.kundeListe.length == 1) {
         document.getElementById('navn').placeholder = this.kundeListe[0].navn;
         document.getElementById('email').placeholder = this.kundeListe[0].email;
@@ -787,7 +786,6 @@ export class BestillingNy extends Bestilling {
         document.getElementById('navn').disabled = true;
         document.getElementById('email').disabled = true;
         document.getElementById('nyKunde').disabled = true;
-        console.log(this.kundeListe.length);
       }
     }, 250);
   }
@@ -906,19 +904,19 @@ export class BestillingNy extends Bestilling {
     this.rabatt = 0;
     this.mobilnummer = '';
     this.kundeListe = [];
-
     this.henting = this.steder[0].lokasjon;
     this.levering = this.steder[0].lokasjon;
 
-    document.getElementById('mobilnummer').value = '';
-    document.getElementById('navn').disabled = false;
-    document.getElementById('email').disabled = false;
     document.getElementById('nyKunde').disabled = true;
+    document.getElementById('mobilnummer').value = '';
 
     document.getElementById('fra').value = '';
     document.getElementById('til').value = '';
 
+    document.getElementById('henting').value = this.steder[0].lokasjon;
+    document.getElementById('levering').value = this.steder[0].lokasjon;
+
     this.sokKunde();
-    this.BeregnPrisOgRabatt();
+    this.prisOgRabatt();
   }
 }
