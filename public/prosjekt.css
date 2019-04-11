@@ -28,7 +28,11 @@
   overflow-y:scroll
 }
 #hjelp{
-  max-height:73vh;
+  max-height:66vh;
+  overflow-y:scroll
+}
+#hjelp2{
+  max-height:66vh;
   overflow-y:scroll
 }
   /* endre farge på knappene i systemet
@@ -86,5 +90,14 @@
   width: 20%;
 }
 #h7 {
+  width: 80%;
+}
+#h8 {
+  width: 80%;
+}
+#h9 {
+  width: 20%;
+}
+#h10 {
   width: 20%;
 }
