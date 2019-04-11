@@ -10,10 +10,10 @@ export class Hjelp extends Component {
       <Navbar bg="light" variant="light">
         <Nav>
           {/*Link til sidene under hjelp*/}
-          <Nav.Link href="#/Hjelp/hjelp_bestille" title="Ny bestilling">
+          <Nav.Link href="#/Hjelp/hjelp_bestille" title="Bestilling">
             Bestilling
           </Nav.Link>
-          <Nav.Link href="#/Hjelp/hjelp_ny" title="Bestillingsoversikt">
+          <Nav.Link href="#/Hjelp/hjelp_ny" title="Legg til">
             Legg til
           </Nav.Link>
         </Nav>
