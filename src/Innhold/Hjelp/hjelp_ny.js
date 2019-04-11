@@ -17,7 +17,7 @@ export class Hjelpny extends Hjelp {
                 <p>
                   {' '}
                   Her ser man et oversiktsbilde av "Ny" siden, hvor man kan legge til en ny vare, lokasjon, restriksjon
-                  eller endrer en pris. Nedenfor følger en forklaring på hvordan man foretar seg noe.
+                  eller endre en pris. Nedenfor følger en forklaring på hvordan man foretar seg noe.
                 </p>
                 <Image id="h7" className="img-thumbnail" src="./Nyvare/su1.jpg" class="instruksjon" />
 
