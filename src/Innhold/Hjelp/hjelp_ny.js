@@ -36,7 +36,7 @@ export class Hjelpny extends Hjelp {
                 <Image id="h3" className="img-thumbnail" src="./Nyvare/su3.jpg" alt="instruksjon" />
 
                 <h4>Punkt 4</h4>
-                <p>Et eksempen på at en ny sykkel er lagt til</p>
+                <p>Et eksempel på at en ny sykkel er lagt til</p>
 
                 <Image id="h4" className="img-thumbnail" src="./Nyvare/su4.jpg" alt="instruksjon" />
               </Col>
