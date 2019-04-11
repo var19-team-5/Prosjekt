@@ -13,16 +13,16 @@ export class Statistikk extends Oversikt {
   render() {
     return [
       <React.Fragment>
-      {/*Opretter en ListGroup for å skille mellom overskriften og innholdet*/}
+        {/*Opretter en ListGroup for å skille mellom overskriften og innholdet*/}
         <ListGroup.Item className="list-group-item">
           <h5>Statistikk:</h5>
           <br />
           {/*Opretter en ListGroup med innhold*/}
           <ListGroup.Item className="list-group-item">
             <Row>
-            {/*Hver Col er koblet til hver sin variabel definert i classen*/}
+              {/*Hver Col er koblet til hver sin variabel definert i classen*/}
               <Col className="text-center" xs={2}>
-                <Form.Label>Sum bestillinger:</Form.Label>
+                <Form.Label>Total inntjening:</Form.Label>
                 <div>{this.sum}</div>
               </Col>
               <Col className="text-center" xs={2}>
@@ -47,7 +47,7 @@ export class Statistikk extends Oversikt {
       </React.Fragment>
     ];
   }
-//setter at hver variabel får verdien som hentes ut gjennom en spørring i metoden i _o_services
+  //setter at hver variabel får verdien som hentes ut gjennom en spørring i metoden i _o_services
   mounted() {
     s_salg.SumBestillinger(sum => {
       this.sum = sum[0].sum;
