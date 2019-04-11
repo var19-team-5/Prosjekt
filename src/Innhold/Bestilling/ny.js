@@ -664,6 +664,15 @@ export class BestillingNy extends Bestilling {
     const { vareListe } = this.varerx;
     const { prisListe } = this.summer;
 
+    // Loop som går gjennom de forskjellige listene og fjerner v_id'en man fjerner
+    for (var i = 0; i < this.idListe.length; i++) {
+      if (this.idListe[i] == this.v_id) {
+        this.idListe.splice(i, 1);
+        this.vareListe.splice(i, 1);
+        this.prisListe.splice(i, 1);
+      }
+    }
+
     // Loop som går gjennom å sjekker om den v_id'en man sletter viser i utstyrstabellen. Hvis den viser så gjør den at knappen kan klikkes på igjen
     for (var j = 0; j < this.utstyr.length; j++) {
       if (this.utstyr[j].v_id == this.v_id) {
@@ -678,14 +687,7 @@ export class BestillingNy extends Bestilling {
         document.getElementById(this.v_id).checked = false;
       }
     }
-    // Loop som går gjennom de forskjellige listene og fjerner v_id'en man fjerner
-    for (var i = 0; i < this.idListe.length; i++) {
-      if (this.idListe[i] == this.v_id) {
-        this.idListe.splice(i, 1);
-        this.vareListe.splice(i, 1);
-        this.prisListe.splice(i, 1);
-      }
-    }
+
     // Beregner dager på ny
     this.beregnDager();
     // Beregner pris og rabatt på ny
