@@ -1,81 +1,84 @@
-  /* setter maks høyde på tabellene i systemet
+/* setter maks høyde på tabellene i systemet
     og legger in scrolling på y-aksen med styling*/
-.tabeller::-webkit-scrollbar{
+.tabeller::-webkit-scrollbar {
   width: 14px;
-  background-color: #F5F5F5;
-  }
-.tabeller::-webkit-scrollbar-thumb{
+  background-color: #f5f5f5;
+}
+.tabeller::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #bcbcbc;
-  }
-.tabeller::-webkit-scrollbar-thumb:hover{
-    background-color: #a8a8a8;
 }
-#bestill{
-  max-height:500px;
-  overflow-y:scroll
-  }
-#valgtvarer{
-  max-height:380px;
-  overflow-y:scroll
-  }
-#bekreftelse{
-  max-height:430px;
-  overflow-y:scroll
-  }
-#status{
-  max-height:550px;
-  overflow-y:scroll
-  }
-#hjelp{
-  max-height:550px;
-  overflow-y:scroll
-  }
-  /* endre farge på knappene i systemet
+.tabeller::-webkit-scrollbar-thumb:hover {
+  background-color: #a8a8a8;
+}
+#bestill {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+#valgtvarer {
+  max-height: 380px;
+  overflow-y: scroll;
+}
+#bekreftelse {
+  max-height: 430px;
+  overflow-y: scroll;
+}
+#status {
+  max-height: 550px;
+  overflow-y: scroll;
+}
+#hjelp {
+  max-height: 73vh;
+  overflow-y: scroll;
+}
+/* endre farge på knappene i systemet
     og endring når man hovrer over*/
-.btn-danger{
-  background-color:#cc5555;
-  border-color:#cc5555
-  }
-.btn-danger:hover{
-  background-color:#cc6c6c;
-  border-color:#cc6c6c
-  }
-.btn-secondary{
-  background-color:#686868;
-  border-color:#686868
-  }
-.btn-secondary:hover{
-  background-color:#7f7f7f;
-  border-color:#7f7f7f
+.btn-danger {
+  background-color: #cc5555;
+  border-color: #cc5555;
 }
-.btn-primary{
-  background-color:#7dd1aa;
-  border-color:#7dd1aa
-  }
-.btn-primary:hover{
-  background-color:#abceb8;
-  border-color:#abceb8
-  }
-  /* endre størrelse på knappene i systemet */
-.img-thumbnail{
+.btn-danger:hover {
+  background-color: #cc6c6c;
+  border-color: #cc6c6c;
+}
+.btn-secondary {
+  background-color: #686868;
+  border-color: #686868;
+}
+.btn-secondary:hover {
+  background-color: #7f7f7f;
+  border-color: #7f7f7f;
+}
+.btn-primary {
+  background-color: #7dd1aa;
+  border-color: #7dd1aa;
+}
+.btn-primary:hover {
+  background-color: #abceb8;
+  border-color: #abceb8;
+}
+/* endre størrelse på knappene i systemet */
+.img-thumbnail {
   width: 100%;
 }
-#h1{
+#h1 {
   width: 80%;
 }
-#h2{
+#h2 {
   width: 20%;
 }
-#h3{
+#h3 {
   width: 50%;
 }
-#h4{
+#h4 {
   width: 20%;
 }
-#h5{
+#h5 {
   width: 50%;
 }
-#h6{
+#h6 {
+  width: 20%;
+}
+#h7 {
   width: 20%;
 }

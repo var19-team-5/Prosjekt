@@ -6,7 +6,10 @@ import { NavLink, HashRouter, Route } from 'react-router-dom';
 import { Meny } from './Innhold/meny';
 
 import { Info } from './Innhold/info';
-import { Hjelp } from './Innhold/hjelp';
+
+import { Hjelp } from './Innhold/Hjelp/nav';
+import { Hjelpbestille } from './Innhold/Hjelp/hjelp_bestille';
+import { Hjelpny } from './Innhold/Hjelp/hjelp_ny';
 
 import { Bestilling } from './Innhold/Bestilling/nav';
 import { BestillingNy } from './Innhold/Bestilling/ny';
@@ -67,9 +70,10 @@ ReactDOM.render(
       <Route exact path="/oversikt/statistikk" component={Statistikk} />
       <Route exact path="/oversikt/statusvarer" component={Statusvarer} />
 
-
-      <Route exact path="/info" component={Info} />
-      <Route exact path="/hjelp" component={Hjelp} />
+      <Route path="/info" component={Info} />
+      <Route path="/hjelp" component={Hjelp} />
+      <Route exact path="/hjelp/hjelp_bestille" component={Hjelpbestille} />
+      <Route exact path="/hjelp/hjelp_ny" component={Hjelpny} />
     </div>
   </HashRouter>,
   document.getElementById('root')
