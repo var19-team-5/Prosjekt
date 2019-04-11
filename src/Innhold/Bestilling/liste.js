@@ -61,6 +61,8 @@ export class BestillingListe extends Bestilling {
   }
 
   bestillinger = [];
+  valgt = [];
+  varer = [];
 
   render() {
     return (
