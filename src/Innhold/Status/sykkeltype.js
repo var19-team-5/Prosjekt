@@ -4,10 +4,10 @@ import { s_sykler } from './_s_services';
 // Komponenter som blir brukt i dokumentet
 import { Table } from 'react-bootstrap';
 //henter StatusSykler siden fra navbar
-import { StatusSykler } from './sykler';
+import { SSykler } from './sykler';
 
 // Klasse som viser tabell for valgt sykkeltype
-export class StatusSyklerType extends StatusSykler {
+export class SyklerType extends SSykler {
   sykler = [];
 
   render() {
@@ -27,7 +27,7 @@ export class StatusSyklerType extends StatusSykler {
             </tr>
           </thead>
           <tbody>
-          {/*Går gjennom syklene og velger riktig type*/}
+            {/*Går gjennom syklene og velger riktig type*/}
             {this.sykler.map(sykkel => (
               <tr key={sykkel.v_id}>
                 <td className="text-center">{sykkel.v_id}</td>

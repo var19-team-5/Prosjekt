@@ -7,7 +7,7 @@ import { Table } from 'react-bootstrap';
 import { Status } from './nav';
 
 // Klasse som viser tabell med alle varer
-export class StatusVarer extends Status {
+export class Varer extends Status {
   varer = [];
   lokasjoner = [];
 
@@ -24,7 +24,7 @@ export class StatusVarer extends Status {
             </tr>
           </thead>
           <tbody>
-          {/*Henter alle fra alle_varer*/}
+            {/*Henter alle fra alle_varer*/}
             {this.varer.map(alle_varer => (
               <tr key={alle_varer.v_id}>
                 <td className="text-center">{alle_varer.v_id}</td>

@@ -9,7 +9,7 @@ export class Meny extends Component {
     return (
       <Navbar bg="dark" variant="dark">
         {/*Navn på applikasjonen*/}
-        <Navbar.Brand title="Smart Utleie av Sykler og Utstyr">SUSU v9.4</Navbar.Brand>
+        <Navbar.Brand title="Smart Utleie av Sykler og Utstyr">SUSU</Navbar.Brand>
         <Nav className="mr-auto">
           {/*Linker til venstre*/}
           <Nav.Link href="#bestilling/ny" title="Bestillingside">
@@ -27,8 +27,12 @@ export class Meny extends Component {
         </Nav>
         <Nav>
           {/*Linker til høyre*/}
-          <Nav.Link href="#hjelp/hjelp_bestille">Hjelp</Nav.Link>
-          <Nav.Link href="#info">Info</Nav.Link>
+          <Nav.Link href="#hjelp/hjelp_bestille" title="Hjelp">
+            Hjelp
+          </Nav.Link>
+          <Nav.Link href="#info" title="Info">
+            Info
+          </Nav.Link>
         </Nav>
       </Navbar>
     );

@@ -19,7 +19,7 @@ import {
 import { Bestilling } from './nav';
 
 // Klassen for oversikt over bestillingene i systemet
-export class BestillingListe extends Bestilling {
+export class Liste extends Bestilling {
   // Popupbokser med forskjellig informasjon
   constructor(props, context) {
     super(props, context);

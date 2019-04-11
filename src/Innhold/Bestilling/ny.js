@@ -8,7 +8,7 @@ import { Row, Col, Button, Form, FormControl, ListGroup, Table, InputGroup, Moda
 import { Bestilling } from './nav';
 
 // Klassen for å legge inn nye bestillinger
-export class BestillingNy extends Bestilling {
+export class BNy extends Bestilling {
   // Popupbokser med forskjellig informasjon
   constructor(props, context) {
     super(props, context);

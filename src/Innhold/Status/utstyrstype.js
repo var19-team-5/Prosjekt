@@ -4,10 +4,10 @@ import { s_utstyr } from './_s_services';
 // Komponenter som blir brukt i dokumentet
 import { Table } from 'react-bootstrap';
 //henter StatusUtstyr siden fra navbar
-import { StatusUtstyr } from './utstyr';
+import { SUtstyr } from './utstyr';
 
 // Klasse som viser tabell for valgt utstyrstype
-export class StatusUtstyrType extends StatusUtstyr {
+export class UtstyrType extends SUtstyr {
   utstyr = [];
 
   render() {
@@ -24,7 +24,7 @@ export class StatusUtstyrType extends StatusUtstyr {
             </tr>
           </thead>
           <tbody>
-          {/*Går gjennom utstyret og velger riktig type*/}
+            {/*Går gjennom utstyret og velger riktig type*/}
             {this.utstyr.map(utstyr => (
               <tr key={utstyr.v_id}>
                 <td className="text-center">{utstyr.v_id}</td>

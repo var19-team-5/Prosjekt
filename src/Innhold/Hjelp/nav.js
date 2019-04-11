@@ -9,7 +9,7 @@ export class Hjelp extends Component {
     return (
       <Navbar bg="light" variant="light">
         <Nav>
-          {/*Link til ny bestilling og listen over bestillinger*/}
+          {/*Link til sidene under hjelp*/}
           <Nav.Link href="#/Hjelp/hjelp_bestille" title="Ny bestilling">
             Bestilling
           </Nav.Link>

@@ -7,7 +7,7 @@ import { Table } from 'react-bootstrap';
 import { Status } from './nav';
 
 // Klasse som viser tabell med alle sykler
-export class StatusSykler extends Status {
+export class SSykler extends Status {
   sykler = [];
 
   render() {
@@ -27,16 +27,16 @@ export class StatusSykler extends Status {
             </tr>
           </thead>
           <tbody>
-          {/*Henter alle fra alle_sykler*/}
-            {this.alle_sykler.map(alle_sykler => (
-              <tr key={alle_sykler.v_id}>
-                <td className="text-center">{alle_sykler.v_id}</td>
-                <td>{alle_sykler.type}</td>
-                <td>{alle_sykler.ramme}</td>
-                <td className="text-center">{alle_sykler.girsystem}</td>
-                <td className="text-center">{alle_sykler.størrelse_hjul}</td>
-                <td>{alle_sykler.status}</td>
-                <td className="text-center">{alle_sykler.pris}</td>
+            {/*Henter alle fra sykler*/}
+            {this.sykler.map(sykkel => (
+              <tr key={sykkel.v_id}>
+                <td className="text-center">{sykkel.v_id}</td>
+                <td>{sykkel.type}</td>
+                <td>{sykkel.ramme}</td>
+                <td className="text-center">{sykkel.girsystem}</td>
+                <td className="text-center">{sykkel.størrelse_hjul}</td>
+                <td>{sykkel.status}</td>
+                <td className="text-center">{sykkel.pris}</td>
               </tr>
             ))}
           </tbody>
@@ -46,9 +46,9 @@ export class StatusSykler extends Status {
   }
   // Metode som kjører når man henter inn siden
   mounted() {
-    //henter syklene fra en spørring i metoden AlleSykler, som henter alle sykler fra alle_sykler
-    s_sykler.AlleSykler(alle_sykler => {
-      this.alle_sykler = alle_sykler;
+    //henter syklene fra en spørring i metoden AlleSykler, som henter alle sykler fra sykler
+    s_sykler.AlleSykler(sykler => {
+      this.sykler = sykler;
     });
   }
 }

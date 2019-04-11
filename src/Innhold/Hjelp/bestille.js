@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { Component } from 'react-simplified';
+//Henter komponentene i react bootstrap som vi bruker i denne filen
 import { ListGroup, Col, Image } from 'react-bootstrap';
+//Henter navigasjonsbaren fra nav
 import { Hjelp } from './nav';
 
-export class Hjelpbestille extends Hjelp {
+// Klasse under hjelp - bestille med bilder og test
+export class Bestille extends Hjelp {
   render() {
     return (
       <React.Fragment>
