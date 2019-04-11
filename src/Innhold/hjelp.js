@@ -29,7 +29,7 @@ export class Hjelp extends Component {
           </p>
           <Image id="h2" className="img-thumbnail" src="./Brukerveiledning/susu2.jpg" alt="instruksjon" />
 
-          <h3>Punkt 3</h3>
+          <h4>Punkt 3</h4>
           <p>
             {' '}
             Man skal så velge de varene man ønsker å leie. Man huker av i checkboksen for å legge varen i handlekurven.

@@ -359,6 +359,8 @@ export class BestillingNy extends Bestilling {
                               <div className="text-center">
                                 {/*Knapp for å fjerne varer fra bestillingen*/}
                                 <Button
+                                  className="fjern"
+                                  variant="secondary"
                                   value={vare.v_id}
                                   id={vare.pris}
                                   onClick={e =>
@@ -367,7 +369,7 @@ export class BestillingNy extends Bestilling {
                                     this.fjernVare(e)
                                   }
                                 >
-                                  Fjern
+                                  -
                                 </Button>
                               </div>
                             </tr>
