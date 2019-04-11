@@ -61,8 +61,6 @@ export class BestillingListe extends Bestilling {
   }
 
   bestillinger = [];
-  valgt = [];
-  varer = [];
 
   render() {
     return (
@@ -81,7 +79,7 @@ export class BestillingListe extends Bestilling {
           </InputGroup>
         </ListGroup.Item>
         <div id="status" className="tabeller">
-        {/*Tabell som viser informasjon om bestillingene*/}
+          {/*Tabell som viser informasjon om bestillingene*/}
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
@@ -198,7 +196,7 @@ export class BestillingListe extends Bestilling {
                 </Col>
                 <Col>
                   <div id="bekreftelse" className="tabeller">
-                  {/*Tabell som viser innholdet i bestillingen*/}
+                    {/*Tabell som viser innholdet i bestillingen*/}
                     <Table striped bordered hover size="sm" xs={2}>
                       <thead>
                         <tr>
@@ -351,11 +349,13 @@ export class BestillingListe extends Bestilling {
     // Fjerner bestillingen
     s_slett.Bestilling(this.b_id);
 
-    this.mounted();
     this.hent();
 
     this.skjulInfoPop();
     this.skjulSikkerPop();
     this.visSlettPop();
+    setTimeout(() => {
+      this.mounted();
+    }, 250);
   }
 }

@@ -27,7 +27,7 @@ export class Meny extends Component {
         </Nav>
         <Nav>
           {/*Linker til høyre*/}
-          <Nav.Link href="#hjelp">Hjelp</Nav.Link>
+          <Nav.Link href="#hjelp/hjelp_bestille">Hjelp</Nav.Link>
           <Nav.Link href="#info">Info</Nav.Link>
         </Nav>
       </Navbar>

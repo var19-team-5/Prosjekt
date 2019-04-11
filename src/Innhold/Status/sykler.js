@@ -8,7 +8,7 @@ import { Status } from './nav';
 
 // Klasse som viser tabell med alle sykler
 export class StatusSykler extends Status {
-  alle_sykler = [];
+  sykler = [];
 
   render() {
     return [

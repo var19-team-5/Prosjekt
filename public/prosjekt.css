@@ -1,6 +1,6 @@
-  /* setter maks høyde på tabellene i systemet
+/* setter maks høyde på tabellene i systemet
     og legger in scrolling på y-aksen med styling*/
-.tabeller::-webkit-scrollbar{
+.tabeller::-webkit-scrollbar {
   width: 14px;
   background-color: #F5F5F5;
 }
@@ -67,21 +67,24 @@
 .img-thumbnail{
   width: 100%;
 }
-#h1{
+#h1 {
   width: 80%;
 }
-#h2{
+#h2 {
   width: 20%;
 }
-#h3{
+#h3 {
   width: 50%;
 }
-#h4{
+#h4 {
   width: 20%;
 }
-#h5{
+#h5 {
   width: 50%;
 }
-#h6{
+#h6 {
+  width: 20%;
+}
+#h7 {
   width: 20%;
 }
