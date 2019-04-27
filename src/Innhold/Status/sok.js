@@ -170,12 +170,12 @@ export class Sok extends Status {
   }
   // Metode som setter status til trenger reparasjon
   trengerRep() {
-    s_status.TrengerReperasjon(this.v_id);
+    s_status.TrengerReparasjon(this.v_id);
     this.mounted();
   }
   // Metode som setter status til på reparasjon
   påRep() {
-    s_status.PåReperasjon(this.v_id);
+    s_status.PåReparasjon(this.v_id);
     this.mounted();
   }
   // Metode som setter status til savnet
