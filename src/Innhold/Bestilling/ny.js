@@ -921,6 +921,6 @@ export class BNy extends Bestilling {
     document.getElementById('levering').value = this.steder[0].lokasjon;
 
     this.sokKunde();
-    this.prisOgRabatt();
+    this.BeregnPrisOgRabatt();
   }
 }
